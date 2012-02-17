@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- When selected, use this -->
-    <item android:drawable="@drawable/tab_selected"
-          android:state_selected="true"
-           />
-    <!-- When not selected, use that-->
-    <item android:drawable="@drawable/tab_unselected" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:drawable="@drawable/button_pressed" android:state_enabled="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/button_focus" android:state_selected="true" android:state_enabled="true" />
+    <item android:drawable="@drawable/button_enabled" android:state_enabled="true"/>
+
 </selector>

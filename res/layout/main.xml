@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tabhostMain"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-     >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
         <TabWidget
             android:id="@android:id/tabs"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            >
-        </TabWidget>
+            android:layout_alignParentTop="true"
+            android:padding="5dp"
+            android:tabStripEnabled="false"
+            android:orientation="horizontal"
+             />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" 
+            android:layout_below="@android:id/tabs"
+            >
 
             <LinearLayout
                 android:id="@+id/tabGeneral"
@@ -87,9 +89,8 @@
                         <Button
                             android:id="@+id/buttonCategoriesEdit"
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:layout_weight="5"
-                            android:background="@drawable/custom_button"
                             android:text="@string/buttonCategoriesEditText" />
                     </LinearLayout>
 
@@ -112,7 +113,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:background="@drawable/custom_button"
                         android:text="@string/buttonQuickAddInsertText" />
                 </LinearLayout>
             </LinearLayout>
@@ -130,7 +130,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/custom_button"
                     android:text="@string/buttonShowTodayEntriesText" />
 
                 <Button
@@ -139,7 +138,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_margin="10dp"
-                    android:background="@drawable/custom_button"
                     android:text="@string/buttonShowWeeklyEntriesText" />
 
                 <Button
@@ -148,7 +146,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_margin="10dp"
-                    android:background="@drawable/custom_button"
                     android:text="@string/buttonShowMonthEntriesText" />
 
                 <Button
@@ -157,7 +154,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_margin="10dp"
-                    android:background="@drawable/custom_button"
                     android:text="@string/buttonShowReminderEntriesText" />
 
                 <Button
@@ -166,7 +162,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_margin="10dp"
-                    android:background="@drawable/custom_button"
                     android:text="@string/buttonDeleteAllEnteriesText" />
             </LinearLayout>
 
@@ -278,17 +273,19 @@
                 <TimePicker
                     android:id="@+id/timePicker"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
 
                 <Button
                     android:id="@+id/buttonAddReminder"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:background="@drawable/custom_button"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
                     android:text="@string/buttonAddReminderText" />
             </LinearLayout>
         </FrameLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </TabHost>

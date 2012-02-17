@@ -74,5 +74,11 @@
     
     <!--  Alert dialog title -->
     <string name="alertDialgTitleViewEntriesSpent">Edit entry</string>
+    
+    <!-- TABS -->
+    
+    <string name="tabGeneralText">General</string>
+    <string name="tabRemindersText">Reminders</string>
+    <string name="tabEntriesText">Entries</string>
 
 </resources>

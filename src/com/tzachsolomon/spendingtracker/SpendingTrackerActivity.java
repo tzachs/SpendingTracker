@@ -28,7 +28,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -87,9 +89,9 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private RadioGroup radioGroupReminder;
 
-	private final String m_TabTagGeneral = "tagGeneral";
-	private final String m_TabTagEntries = "tagEntries";
-	private final String m_TabTagReminders = "tagReminders";
+	private final String TAB_TAG_GENERAL = "tagGeneral";
+	private final String TAB_TAG_ENTRIES = "tagEntries";
+	private final String TAB_TAG_REMINDERS = "tagReminders";
 
 	private SharedPreferences m_SharedPreferences;
 
@@ -177,12 +179,12 @@ public class SpendingTrackerActivity extends Activity implements
 		// Currently only support one reminder
 
 		Bundle extras = getIntent().getExtras();
-		
-		int flag = getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY;
-		
+
+		int flag = getIntent().getFlags()
+				& Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY;
 
 		if (extras != null && flag == 0) {
-			
+
 			getIntent().getExtras().clear();
 
 			Log.i(TAG, "Found extras, checking if starting from reminder");
@@ -214,7 +216,7 @@ public class SpendingTrackerActivity extends Activity implements
 				final CheckBox checkBoxAutoExit = new CheckBox(this);
 				checkBoxAutoExit.setText("Auto exit");
 				checkBoxAutoExit.setChecked(true);
-				
+
 				final String amount = extras
 						.getString(SpendingTrackerDbEngine.KEY_AMOUNT);
 				final String category = extras
@@ -238,12 +240,12 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(category);
 				sb.append(' ');
 				sb.append("?");
-				
+
 				alertDialog.setTitle("Spent money?");
 
 				alertDialog.setMessage(sb.toString());
 				alertDialog.setView(checkBoxAutoExit);
-				
+
 				alertDialog.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
 
@@ -254,8 +256,8 @@ public class SpendingTrackerActivity extends Activity implements
 								m_SpendingTrackerDbEngine
 										.insertNewSpending(amount, category,
 												"From reminder", null);
-								
-								if ( checkBoxAutoExit.isChecked()){
+
+								if (checkBoxAutoExit.isChecked()) {
 									finish();
 								}
 
@@ -268,7 +270,7 @@ public class SpendingTrackerActivity extends Activity implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								//
-								if ( checkBoxAutoExit.isChecked()){
+								if (checkBoxAutoExit.isChecked()) {
 									finish();
 								}
 
@@ -276,12 +278,11 @@ public class SpendingTrackerActivity extends Activity implements
 						});
 
 				alertDialog.show();
-				
+
 				sb.setLength(0);
 
 			}
-			
-			
+
 		}
 
 	}
@@ -308,7 +309,7 @@ public class SpendingTrackerActivity extends Activity implements
 				Toast.makeText(SpendingTrackerActivity.this, sb.toString(),
 						Toast.LENGTH_LONG).show();
 			}
-			
+
 			sb.setLength(0);
 		} catch (Exception e) {
 			Log.d(TAG, e.toString());
@@ -404,6 +405,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void initTabs() {
 
 		Resources resources = getResources();
+		TextView tabContent;
 
 		// setting up the tabs
 		thMain = (TabHost) findViewById(R.id.tabhostMain);
@@ -412,24 +414,53 @@ public class SpendingTrackerActivity extends Activity implements
 		thMain.setOnTabChangedListener(this);
 
 		// setup general tab
-		tabSpec = thMain.newTabSpec(m_TabTagGeneral);
+		tabSpec = thMain.newTabSpec(TAB_TAG_GENERAL);
 		tabSpec.setContent(R.id.tabGeneral);
-		tabSpec.setIndicator("General",
-				resources.getDrawable(R.drawable.custom_tab));
+		tabContent = new TextView(this);
+		tabContent.setText(getString(R.string.tabGeneralText));
+
+		tabContent.setBackgroundDrawable(resources
+				.getDrawable(R.drawable.custom_tab));
+		tabContent.setLayoutParams(new ViewGroup.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		tabSpec.setIndicator(tabContent);
+
 		thMain.addTab(tabSpec);
+		
 
 		// setup Reminders tab
-		tabSpec = thMain.newTabSpec(m_TabTagReminders);
+		tabSpec = thMain.newTabSpec(TAB_TAG_REMINDERS);
 		tabSpec.setContent(R.id.tabReminders);
-		tabSpec.setIndicator("Reminders",
-				resources.getDrawable(R.drawable.custom_tab));
+
+		tabContent = new TextView(this);
+		tabContent.setText(getString(R.string.tabRemindersText));
+
+		tabContent.setBackgroundDrawable(resources
+				.getDrawable(R.drawable.custom_tab));
+		tabContent.setLayoutParams(new ViewGroup.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		tabSpec.setIndicator(tabContent);
+
 		thMain.addTab(tabSpec);
 
 		// setup Entries tab
-		tabSpec = thMain.newTabSpec(m_TabTagEntries);
+		tabSpec = thMain.newTabSpec(TAB_TAG_ENTRIES);
 		tabSpec.setContent(R.id.tabEntries);
-		tabSpec.setIndicator("Enteries",
-				resources.getDrawable(R.drawable.custom_tab));
+		tabContent = new TextView(this);
+		tabContent.setText(getString(R.string.tabEntriesText));
+
+		tabContent.setBackgroundDrawable(resources
+				.getDrawable(R.drawable.custom_tab));
+		tabContent.setLayoutParams(new ViewGroup.LayoutParams(
+				ViewGroup.LayoutParams.FILL_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		tabSpec.setIndicator(tabContent);
+
 		thMain.addTab(tabSpec);
 
 	}
@@ -669,7 +700,7 @@ public class SpendingTrackerActivity extends Activity implements
 				// change to tab reminders
 				if (checkBoxAutoAddReminder.isChecked()) {
 
-					thMain.setCurrentTabByTag(m_TabTagReminders);
+					thMain.setCurrentTabByTag(TAB_TAG_REMINDERS);
 				} else {
 					// initialize edit text
 					editTextQuickAddAmount.setText("");
@@ -778,7 +809,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(" with time " + currentHour + ":" + currentMinute);
 
 			}
-			
+
 			sb.setLength(0);
 
 			break;
@@ -867,7 +898,7 @@ public class SpendingTrackerActivity extends Activity implements
 	@Override
 	public void onTabChanged(String tabId) {
 		//
-		if (m_TabTagReminders.contentEquals(tabId)) {
+		if (TAB_TAG_REMINDERS.contentEquals(tabId)) {
 			timePickerDay.setCurrentHour(Calendar.getInstance().get(
 					Calendar.HOUR_OF_DAY));
 			timePickerDay.setCurrentMinute(Calendar.getInstance().get(
