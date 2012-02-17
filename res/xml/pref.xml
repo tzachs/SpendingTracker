@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="UI and notifications" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="cbShowEntryAdded"
+            android:summary="Show entry added message"
+            android:title="Show entry added" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Background services" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="cbServiceAlwaysOn"
+            android:summary="If unchecked service will be stopped on exit, meaning no reminders!"
+            android:title="Service Always On" />
+        
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notification options" >
+        
+        <CheckBoxPreference 
+            android:defaultValue="true"
+            android:key="cbNotifictionLights"
+            android:summary="Blink lights on notification"
+            android:title="Blink lights"
+            />
+        <CheckBoxPreference 
+            android:defaultValue="true"
+            android:key="cbNotifictionSound"
+            android:summary="Play notification sound on notification"
+            android:title="Play Sound"
+            />
+        <CheckBoxPreference 
+            android:defaultValue="true"
+            android:key="cbNotifictionVibrate"
+            android:summary="Vibrate on notification"
+            android:title="Vibrate"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

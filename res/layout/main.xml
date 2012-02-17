@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabhostMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </TabWidget>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:id="@+id/tabGeneral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textViewSpentToday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textViewSpentTodayText"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/textViewSpentWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textViewSpentWeekText"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/textViewSpentMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textViewSpentMonthText"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/textViewAddEntry"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/textViewAddEntryText"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <EditText
+                        android:id="@+id/editTextQuickAddAmount"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_button"
+                        android:hint="@string/editTextQuickAddAmountHint"
+                        android:inputType="numberDecimal" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <Spinner
+                            android:id="@+id/spinnerCategories"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/custom_button"
+                            android:prompt="@string/spinnerPrompt" />
+
+                        <Button
+                            android:id="@+id/buttonCategoriesEdit"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5"
+                            android:background="@drawable/custom_button"
+                            android:text="@string/buttonCategoriesEditText" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/editTextComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_button"
+                        android:hint="@string/editTextCommentHint" >
+                    </EditText>
+
+                    <CheckBox
+                        android:id="@+id/checkBoxAutoAddReminder"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/checkBoxAutoAddReminderText" />
+
+                    <Button
+                        android:id="@+id/buttonQuickAddInsert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@drawable/custom_button"
+                        android:text="@string/buttonQuickAddInsertText" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- TAB ENTERIES -->
+
+            <LinearLayout
+                android:id="@+id/tabEntries"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/buttonShowTodayEntries"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/buttonShowTodayEntriesText" />
+
+                <Button
+                    android:id="@+id/buttonShowWeeklyEntries"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/buttonShowWeeklyEntriesText" />
+
+                <Button
+                    android:id="@+id/buttonShowMonthEntries"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/buttonShowMonthEntriesText" />
+
+                <Button
+                    android:id="@+id/buttonShowReminderEntries"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/buttonShowReminderEntriesText" />
+
+                <Button
+                    android:id="@+id/buttonDeleteAllEnteries"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/buttonDeleteAllEnteriesText" />
+            </LinearLayout>
+
+            <!-- TAB REMINDERS -->
+
+            <LinearLayout
+                android:id="@+id/tabReminders"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroupReminders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/radioButtonEveryday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/radioButtonEverydayText" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonWeekly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/radioButtonWeeklyText" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonMonthly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/radioButtonMonthlyText" />
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/editTextDayInMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editTextDayInMonthHint"
+                    android:inputType="number"
+                    android:maxLength="2" >
+                </EditText>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <CheckBox
+                        android:id="@+id/checkBoxSunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/checkBoxSundayHint"
+                        android:text="@string/checkBoxSundayText" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxMonday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/checkBoxSunday"
+                        android:hint="@string/checkBoxMondayHint"
+                        android:text="@string/checkBoxMondayText" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxTuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/checkBoxMonday"
+                        android:hint="@string/checkBoxTuesdayHint"
+                        android:text="@string/checkBoxTuesdayText" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxWednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkBoxSunday"
+                        android:hint="@string/checkBoxWednesdayHint"
+                        android:text="@string/checkBoxWednesdayText" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxThursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkBoxSunday"
+                        android:layout_toRightOf="@id/checkBoxWednesday"
+                        android:hint="@string/checkBoxThursdayHint"
+                        android:text="@string/checkBoxThursdayText" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxFriday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkBoxSunday"
+                        android:layout_toRightOf="@id/checkBoxThursday"
+                        android:hint="@string/checkBoxFridayHint"
+                        android:text="@string/checkBoxFridayText" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxSaturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkBoxWednesday"
+                        android:hint="@string/checkBoxSaturdayHint"
+                        android:text="@string/checkBoxSaturdayText" />
+                </RelativeLayout>
+
+                <TimePicker
+                    android:id="@+id/timePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/buttonAddReminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/buttonAddReminderText" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</TabHost>

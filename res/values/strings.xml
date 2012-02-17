@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Spending Tracker</string>
+    <string name="spinnerPrompt">Choose a category</string>
+    <string name="buttonCategoriesEditText">Edit</string>
+    <string name="textViewAddEntryText">Add an entry</string>
+    <string name="buttonDeleteCategoryText">Delete</string>
+    <string name="addCategoryTitle">Add a category</string>
+    <string name="addCategoryMessage">Enter the name of the category</string>
+    <string name="deleteCategoryTitle">Delete category?</string>
+    <string name="stringDidYouSpend">Did you spend</string>
+    <string name="stringDidYouSpendOn">on</string>
+
+    <!-- RADIO BUTTON -->
+
+    <string name="radioButtonMonthlyText">Monthly</string>
+    <string name="radioButtonWeeklyText">Weekly</string>
+    <string name="radioButtonEverydayText">Everyday</string>
+
+    <!-- EDIT TEXT -->
+
+    <string name="editTextQuickAddAmountHint">Type amount spent</string>
+    <string name="editTextCommentHint">Type comment (optional)</string>
+    <string name="editTextDayInMonthHint">Day in the month (as number)</string>
+
+    <!-- TEXT VIEWS -->
+
+    <string name="textViewSpentTodayText">Total spent today: </string>
+    <string name="textViewSpentWeekText">Total spent this week: </string>
+    <string name="textViewSpentMonthText">Total spent this month: </string>
+    <string name="buttonDeleteAllEnteriesText">Delete all entries</string>
+    <string name="textViewEntriesSpentRowIdText">Row ID</string>
+    <string name="textViewEntriesSpentAmountText">Amount</string>
+    <string name="textViewEntriesSpentCategoryText">Category</string>
+    <string name="textViewEntriesSpentDateText">Date</string>
+    <string name="textViewEntriesRemindersIdText">ID</string>
+    <string name="textViewEntriesRemindersTypeText">Type</string>
+    <string name="textViewEntriesRemindersHourText">Hour</string>
+    <string name="textViewEntriesRemindersMinText">Min</string>
+    <string name="textViewEntriesRemindersDayText">Day</string>
+
+    <!-- BUTTONS -->
+
+    <string name="buttonAddReminderText">Add reminder</string>
+    <string name="buttonQuickAddInsertText">Add entry</string>
+    <string name="buttonShowTodayEntriesText">Show Today Entries</string>
+    <string name="buttonShowWeeklyEntriesText">Show Weekly Entries</string>
+    <string name="buttonShowMonthEntriesText">Show Monthly Entries</string>
+    <string name="buttonShowReminderEntriesText">Show Reminders</string>
+
+    <!-- CHECK BOXES -->
+
+    <string name="checkBoxAutoAddReminderText">Auto add reminder</string>
+    <string name="checkBoxSaturdayText">Saturday</string>
+    <string name="checkBoxSaturdayHint">7</string>
+    <string name="checkBoxFridayText">Friday</string>
+    <string name="checkBoxFridayHint">6</string>
+    <string name="checkBoxThursdayText">Thursday</string>
+    <string name="checkBoxThursdayHint">5</string>
+    <string name="checkBoxWednesdayText">Wednesday</string>
+    <string name="checkBoxWednesdayHint">4</string>
+    <string name="checkBoxTuesdayText">Tuesday</string>
+    <string name="checkBoxTuesdayHint">3</string>
+    <string name="checkBoxMondayText">Monday</string>
+    <string name="checkBoxMondayHint">2</string>
+    <string name="checkBoxSundayText">Sunday</string>
+    <string name="checkBoxSundayHint">1</string>
+
+    <!-- Menu Items -->
+
+    <string name="menuItemReminderDeleteText">Delete</string>
+
+</resources>

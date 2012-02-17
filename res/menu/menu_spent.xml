@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuItemSpentDelete"
+        android:alphabeticShortcut="d"
+        android:numericShortcut="1"
+        android:title="Delete"/>
+    <item
+        android:id="@+id/menuItemSpentEdit"
+        android:alphabeticShortcut="e"
+        android:numericShortcut="2"
+        android:title="Edit"/>
+    
+    <item
+        android:visible="false"
+        android:id="@+id/menuItemSpentExport"
+        android:alphabeticShortcut="x"
+        android:numericShortcut="3"
+        android:title="Export"/>
+    
+    <item
+        android:visible="false"
+        android:id="@+id/menuItemSpentImport"
+        android:alphabeticShortcut="i"
+        android:numericShortcut="4"
+        android:title="Import"/>
+
+</menu>

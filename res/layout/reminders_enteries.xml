@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:id="@+id/tableLayoutEnteriesReminders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRowHeaderEnteriesReminders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="@string/textViewEntriesRemindersIdText" />
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="@string/textViewEntriesRemindersTypeText" />
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="@string/textViewEntriesRemindersHourText" />
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="@string/textViewEntriesRemindersMinText" />
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="@string/textViewEntriesRemindersDayText" />
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="@string/textViewEntriesSpentAmountText" />
+
+            <TextView
+                android:id="@+id/textViewEntriesRemindersCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="@string/textViewEntriesSpentCategoryText" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

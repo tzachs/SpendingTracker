@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewSpentEditAmount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Amount" />
+
+    <EditText
+        android:id="@+id/editTextSpentEditAmount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textViewSpentEditDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textViewEntriesSpentDateText" />
+
+    <EditText
+        android:id="@+id/editTextSpentEditDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         />
+
+    <Button
+        android:id="@+id/buttonSpentEditUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update" />
+    
+</LinearLayout>
