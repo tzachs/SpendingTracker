@@ -100,44 +100,48 @@ public final class R {
     public static final class string {
         public static final int addCategoryMessage=0x7f050006;
         public static final int addCategoryTitle=0x7f050005;
+        /**   Alert dialog title 
+         */
+        public static final int alertDialgTitleViewEntriesSpent=0x7f050034;
         public static final int app_name=0x7f050000;
         /**  BUTTONS 
          */
-        public static final int buttonAddReminderText=0x7f05001d;
+        public static final int buttonAddReminderText=0x7f05001e;
         public static final int buttonCategoriesEditText=0x7f050002;
-        public static final int buttonDeleteAllEnteriesText=0x7f050013;
+        public static final int buttonDeleteAllEnteriesText=0x7f050014;
         public static final int buttonDeleteCategoryText=0x7f050004;
-        public static final int buttonQuickAddInsertText=0x7f05001e;
-        public static final int buttonShowMonthEntriesText=0x7f050021;
-        public static final int buttonShowReminderEntriesText=0x7f050022;
-        public static final int buttonShowTodayEntriesText=0x7f05001f;
-        public static final int buttonShowWeeklyEntriesText=0x7f050020;
+        public static final int buttonQuickAddInsertText=0x7f05001f;
+        public static final int buttonShowMonthEntriesText=0x7f050022;
+        public static final int buttonShowReminderEntriesText=0x7f050023;
+        public static final int buttonShowTodayEntriesText=0x7f050020;
+        public static final int buttonShowWeeklyEntriesText=0x7f050021;
         /**  CHECK BOXES 
          */
-        public static final int checkBoxAutoAddReminderText=0x7f050023;
-        public static final int checkBoxFridayHint=0x7f050027;
-        public static final int checkBoxFridayText=0x7f050026;
-        public static final int checkBoxMondayHint=0x7f05002f;
-        public static final int checkBoxMondayText=0x7f05002e;
-        public static final int checkBoxSaturdayHint=0x7f050025;
-        public static final int checkBoxSaturdayText=0x7f050024;
-        public static final int checkBoxSundayHint=0x7f050031;
-        public static final int checkBoxSundayText=0x7f050030;
-        public static final int checkBoxThursdayHint=0x7f050029;
-        public static final int checkBoxThursdayText=0x7f050028;
-        public static final int checkBoxTuesdayHint=0x7f05002d;
-        public static final int checkBoxTuesdayText=0x7f05002c;
-        public static final int checkBoxWednesdayHint=0x7f05002b;
-        public static final int checkBoxWednesdayText=0x7f05002a;
+        public static final int checkBoxAutoAddReminderText=0x7f050024;
+        public static final int checkBoxFridayHint=0x7f050028;
+        public static final int checkBoxFridayText=0x7f050027;
+        public static final int checkBoxMondayHint=0x7f050030;
+        public static final int checkBoxMondayText=0x7f05002f;
+        public static final int checkBoxSaturdayHint=0x7f050026;
+        public static final int checkBoxSaturdayText=0x7f050025;
+        public static final int checkBoxSundayHint=0x7f050032;
+        public static final int checkBoxSundayText=0x7f050031;
+        public static final int checkBoxThursdayHint=0x7f05002a;
+        public static final int checkBoxThursdayText=0x7f050029;
+        public static final int checkBoxTuesdayHint=0x7f05002e;
+        public static final int checkBoxTuesdayText=0x7f05002d;
+        public static final int checkBoxWednesdayHint=0x7f05002c;
+        public static final int checkBoxWednesdayText=0x7f05002b;
         public static final int deleteCategoryTitle=0x7f050007;
         public static final int editTextCommentHint=0x7f05000e;
         public static final int editTextDayInMonthHint=0x7f05000f;
         /**  EDIT TEXT 
          */
         public static final int editTextQuickAddAmountHint=0x7f05000d;
+        public static final int editTextRowIdHint=0x7f050010;
         /**  Menu Items 
          */
-        public static final int menuItemReminderDeleteText=0x7f050032;
+        public static final int menuItemReminderDeleteText=0x7f050033;
         public static final int radioButtonEverydayText=0x7f05000c;
         /**  RADIO BUTTON 
          */
@@ -147,20 +151,20 @@ public final class R {
         public static final int stringDidYouSpend=0x7f050008;
         public static final int stringDidYouSpendOn=0x7f050009;
         public static final int textViewAddEntryText=0x7f050003;
-        public static final int textViewEntriesRemindersDayText=0x7f05001c;
-        public static final int textViewEntriesRemindersHourText=0x7f05001a;
-        public static final int textViewEntriesRemindersIdText=0x7f050018;
-        public static final int textViewEntriesRemindersMinText=0x7f05001b;
-        public static final int textViewEntriesRemindersTypeText=0x7f050019;
-        public static final int textViewEntriesSpentAmountText=0x7f050015;
-        public static final int textViewEntriesSpentCategoryText=0x7f050016;
-        public static final int textViewEntriesSpentDateText=0x7f050017;
-        public static final int textViewEntriesSpentRowIdText=0x7f050014;
-        public static final int textViewSpentMonthText=0x7f050012;
+        public static final int textViewEntriesRemindersDayText=0x7f05001d;
+        public static final int textViewEntriesRemindersHourText=0x7f05001b;
+        public static final int textViewEntriesRemindersIdText=0x7f050019;
+        public static final int textViewEntriesRemindersMinText=0x7f05001c;
+        public static final int textViewEntriesRemindersTypeText=0x7f05001a;
+        public static final int textViewEntriesSpentAmountText=0x7f050016;
+        public static final int textViewEntriesSpentCategoryText=0x7f050017;
+        public static final int textViewEntriesSpentDateText=0x7f050018;
+        public static final int textViewEntriesSpentRowIdText=0x7f050015;
+        public static final int textViewSpentMonthText=0x7f050013;
         /**  TEXT VIEWS 
          */
-        public static final int textViewSpentTodayText=0x7f050010;
-        public static final int textViewSpentWeekText=0x7f050011;
+        public static final int textViewSpentTodayText=0x7f050011;
+        public static final int textViewSpentWeekText=0x7f050012;
     }
     public static final class xml {
         public static final int pref=0x7f040000;

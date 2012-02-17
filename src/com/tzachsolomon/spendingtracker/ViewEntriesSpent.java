@@ -254,8 +254,12 @@ public class ViewEntriesSpent extends Activity {
 		final EditText editTextRowId = new EditText(this);
 
 		editTextRowId.setInputType(InputType.TYPE_CLASS_NUMBER);
-
+		editTextRowId.setHint(getString(R.string.editTextRowIdHint));
+		
 		alertDialog.setView(editTextRowId);
+		
+		alertDialog.setTitle(getString(R.string.alertDialgTitleViewEntriesSpent));
+		
 
 		alertDialog.setPositiveButton("Edit",
 				new DialogInterface.OnClickListener() {

@@ -23,6 +23,7 @@
     <string name="editTextQuickAddAmountHint">Type amount spent</string>
     <string name="editTextCommentHint">Type comment (optional)</string>
     <string name="editTextDayInMonthHint">Day in the month (as number)</string>
+    <string name="editTextRowIdHint">Type row id</string>
 
     <!-- TEXT VIEWS -->
 
@@ -70,5 +71,8 @@
     <!-- Menu Items -->
 
     <string name="menuItemReminderDeleteText">Delete</string>
+    
+    <!--  Alert dialog title -->
+    <string name="alertDialgTitleViewEntriesSpent">Edit entry</string>
 
 </resources>

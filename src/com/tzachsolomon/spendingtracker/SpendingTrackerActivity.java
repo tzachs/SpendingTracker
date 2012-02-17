@@ -211,6 +211,10 @@ public class SpendingTrackerActivity extends Activity implements
 
 			if (isReminder) {
 
+				final CheckBox checkBoxAutoExit = new CheckBox(this);
+				checkBoxAutoExit.setText("Auto exit");
+				checkBoxAutoExit.setChecked(true);
+				
 				final String amount = extras
 						.getString(SpendingTrackerDbEngine.KEY_AMOUNT);
 				final String category = extras
@@ -235,10 +239,11 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(' ');
 				sb.append("?");
 				
-
 				alertDialog.setTitle("Spent money?");
 
 				alertDialog.setMessage(sb.toString());
+				alertDialog.setView(checkBoxAutoExit);
+				
 				alertDialog.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
 
@@ -249,6 +254,10 @@ public class SpendingTrackerActivity extends Activity implements
 								m_SpendingTrackerDbEngine
 										.insertNewSpending(amount, category,
 												"From reminder", null);
+								
+								if ( checkBoxAutoExit.isChecked()){
+									finish();
+								}
 
 							}
 						});
@@ -259,6 +268,9 @@ public class SpendingTrackerActivity extends Activity implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								//
+								if ( checkBoxAutoExit.isChecked()){
+									finish();
+								}
 
 							}
 						});

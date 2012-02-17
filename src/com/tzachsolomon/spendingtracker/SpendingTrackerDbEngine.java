@@ -9,7 +9,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -18,7 +17,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xmlpull.v1.XmlSerializer;
-
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,7 +28,6 @@ import android.os.Environment;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.Xml;
-
 
 public class SpendingTrackerDbEngine {
 
@@ -184,8 +181,8 @@ public class SpendingTrackerDbEngine {
 
 					for (i = 0; i < count; i++) {
 						values[i] = attributes.getValue(i);
-						Log.v(TAG, "Attribute is " + attributes.getQName(i) + " Value is " + values[i]);
-						
+						Log.v(TAG, "Attribute is " + attributes.getQName(i)
+								+ " Value is " + values[i]);
 
 					}
 
@@ -869,19 +866,21 @@ public class SpendingTrackerDbEngine {
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_ROWID + "='"
 				+ i_RowId + "'", null, null, null, null);
 
-		ret = new String[columns.length];
+		if (c.getCount() > 0) {
 
-		iRowID = c.getColumnIndex(KEY_ROWID);
-		iAmount = c.getColumnIndex(KEY_AMOUNT);
-		iCategory = c.getColumnIndex(KEY_CATEGORY);
-		iDate = c.getColumnIndex(KEY_DATE);
+			c.moveToFirst();
+			ret = new String[columns.length];
 
-		c.moveToFirst();
+			iRowID = c.getColumnIndex(KEY_ROWID);
+			iAmount = c.getColumnIndex(KEY_AMOUNT);
+			iCategory = c.getColumnIndex(KEY_CATEGORY);
+			iDate = c.getColumnIndex(KEY_DATE);
 
-		ret[iRowID] = c.getString(iRowID);
-		ret[iAmount] = c.getString(iAmount);
-		ret[iCategory] = c.getString(iCategory);
-		ret[iDate] = c.getString(iDate);
+			ret[iRowID] = c.getString(iRowID);
+			ret[iAmount] = c.getString(iAmount);
+			ret[iCategory] = c.getString(iCategory);
+			ret[iDate] = c.getString(iDate);
+		}
 
 		c.close();
 
@@ -1073,7 +1072,7 @@ public class SpendingTrackerDbEngine {
 		this.deleteTableAndResetId(TABLE_SPENDING);
 
 		for (String[] values : spending) {
-			this.insertNewSpending( values[1], values[3], values[4],values[2]);
+			this.insertNewSpending(values[1], values[3], values[4], values[2]);
 
 		}
 
