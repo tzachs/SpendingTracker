@@ -24,6 +24,7 @@
     <string name="editTextCommentHint">Type comment (optional)</string>
     <string name="editTextDayInMonthHint">Day in the month (as number)</string>
     <string name="editTextRowIdHint">Type row id</string>
+    <string name="editTextSpentEditDateHint">Date</string>
 
     <!-- TEXT VIEWS -->
 
@@ -49,6 +50,7 @@
     <string name="buttonShowWeeklyEntriesText">Show Weekly Entries</string>
     <string name="buttonShowMonthEntriesText">Show Monthly Entries</string>
     <string name="buttonShowReminderEntriesText">Show Reminders</string>
+    <string name="buttonSpentEditUpdateText">Update</string>
 
     <!-- CHECK BOXES -->
 
@@ -73,7 +75,18 @@
     <string name="menuItemReminderDeleteText">Delete</string>
     
     <!--  Alert dialog title -->
-    <string name="alertDialgTitleViewEntriesSpent">Edit entry</string>
+    <string name="alertDialogViewEntriesSpentTitle">Edit entry</string>
+    <string name="alertDialogViewEntriesSpentPositive">Edit</string>
+    <string name="alertDialogViewEntriesSpentNegative">Cancel</string>
+    <string name="alertDialogTitleDeleteReminder">Delete reminder</string>
+    <string name="alertDialogExportDatabaseTitle">Export database</string>
+    <string name="alertDialogExportDatabaseMessage">Are you sure you want to export?\nThis will delete the current file</string>
+    <string name="alertDialogExportDatabasePositive">Export</string>
+    <string name="alertDialogExportDatabaseNegative">Cancel</string>
+    <string name="alertDialogImportDatabaseTitle">Import database</string>
+    <string name="alertDialogImportDatabaseMessage">Are you sure you want to import?\nThis will delete the current database</string>
+    <string name="alertDialogImportDatabasePositive">Import</string>
+    <string name="alertDialogImportDatabaseNegative">Cancel</string>
     
     <!-- TABS -->
     

@@ -8,7 +8,7 @@
         android:id="@+id/textViewSpentEditAmount"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Amount" />
+        android:text="@string/textViewEntriesSpentAmountText" />
 
     <EditText
         android:id="@+id/editTextSpentEditAmount"
@@ -26,12 +26,13 @@
         android:id="@+id/editTextSpentEditDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/editTextSpentEditDateHint"
          />
 
     <Button
         android:id="@+id/buttonSpentEditUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update" />
+        android:text="@string/buttonSpentEditUpdateText" />
     
 </LinearLayout>

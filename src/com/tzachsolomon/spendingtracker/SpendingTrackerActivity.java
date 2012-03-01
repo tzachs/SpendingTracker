@@ -56,7 +56,7 @@ public class SpendingTrackerActivity extends Activity implements
 	// TOOD: notification wakes from sleep
 	// TODO: export to Google Document
 	// TODO: delete entry by id
-	// TODO: merge view today / weekly / monthly to one class
+	// TODO: add scroll to view entries
 	/** Called when the activity is first created. */
 	private static final String TAG = SpendingTrackerActivity.class
 			.getSimpleName();
@@ -214,7 +214,7 @@ public class SpendingTrackerActivity extends Activity implements
 			if (isReminder) {
 
 				final CheckBox checkBoxAutoExit = new CheckBox(this);
-				checkBoxAutoExit.setText("Auto exit");
+				checkBoxAutoExit.setText("Auto close");
 				checkBoxAutoExit.setChecked(true);
 
 				final String amount = extras

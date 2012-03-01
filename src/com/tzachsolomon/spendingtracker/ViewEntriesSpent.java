@@ -153,10 +153,10 @@ public class ViewEntriesSpent extends Activity {
 		//
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-		alertDialog.setTitle("Import database");
+		alertDialog.setTitle(getString(R.string.alertDialogImportDatabaseTitle));
 		alertDialog
-				.setMessage("Are you sure want to import?\nThis will erase entire DB!!!");
-		alertDialog.setPositiveButton("Import",
+				.setMessage(getString(R.string.alertDialogImportDatabaseMessage));
+		alertDialog.setPositiveButton(getString(R.string.alertDialogImportDatabasePositive),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -167,7 +167,7 @@ public class ViewEntriesSpent extends Activity {
 					}
 
 				});
-		alertDialog.setNegativeButton("Cancel",
+		alertDialog.setNegativeButton(getString(R.string.alertDialogImportDatabaseNegative),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -215,10 +215,12 @@ public class ViewEntriesSpent extends Activity {
 		//
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-		alertDialog.setTitle("Export database");
+		alertDialog.setTitle(getString(R.string.alertDialogExportDatabaseTitle));
+				
 		alertDialog
-				.setMessage("Are you sure want to export?\nThis will overwrite current file!!!");
-		alertDialog.setPositiveButton("Export",
+				.setMessage(getString(R.string.alertDialogExportDatabaseMessage));
+						
+		alertDialog.setPositiveButton(getString(R.string.alertDialogExportDatabasePositive),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -229,7 +231,7 @@ public class ViewEntriesSpent extends Activity {
 					}
 
 				});
-		alertDialog.setNegativeButton("Cancel",
+		alertDialog.setNegativeButton(getString(R.string.alertDialogExportDatabaseNegative),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -258,15 +260,15 @@ public class ViewEntriesSpent extends Activity {
 		
 		alertDialog.setView(editTextRowId);
 		
-		alertDialog.setTitle(getString(R.string.alertDialgTitleViewEntriesSpent));
+		alertDialog.setTitle(getString(R.string.alertDialogViewEntriesSpentTitle));
 		
 
-		alertDialog.setPositiveButton("Edit",
+		alertDialog.setPositiveButton(getString(R.string.alertDialogViewEntriesSpentPositive),
 				new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
+						// 
 						Intent intent = new Intent(ViewEntriesSpent.this,
 								EditEntrySpent.class);
 
@@ -277,7 +279,7 @@ public class ViewEntriesSpent extends Activity {
 
 					}
 				});
-		alertDialog.setNegativeButton("Cancel",
+		alertDialog.setNegativeButton(getString(R.string.alertDialogViewEntriesSpentNegative),
 				new DialogInterface.OnClickListener() {
 
 					@Override

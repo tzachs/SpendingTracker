@@ -138,7 +138,7 @@ public class SpendingTrackerDbEngine {
 
 		@Override
 		public void endDocument() throws SAXException {
-			// TODO Auto-generated method stub
+			// 
 			super.endDocument();
 		}
 
@@ -209,14 +209,14 @@ public class SpendingTrackerDbEngine {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			// TODO Auto-generated method stub
+			// 
 			super.endElement(uri, localName, qName);
 		}
 
 		@Override
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
-			// TODO Auto-generated method stub
+			// 
 			super.characters(ch, start, length);
 		}
 
@@ -344,8 +344,8 @@ public class SpendingTrackerDbEngine {
 
 	public String getSpentToday() {
 		Calendar now = Calendar.getInstance();
-		int todayInMonth;
-		String todayInMonthString;
+		int todayInMonth, thisYear, thisMonth;
+		String todayInMonthString, thisYearString, thisMonthString;
 		Cursor c;
 		int iColDate, iColAmount;
 
@@ -354,6 +354,13 @@ public class SpendingTrackerDbEngine {
 		now.setTimeInMillis(System.currentTimeMillis());
 
 		todayInMonth = now.get(Calendar.DAY_OF_MONTH);
+		
+		// getting current month and year
+		thisYear = now.get(Calendar.YEAR);
+		thisMonth = now.get(Calendar.MONTH) + 1;
+
+		thisYearString = Integer.toString(thisYear);
+		thisMonthString = (thisMonth < 10 ? "0" : "") + thisMonth;
 
 		this.open();
 
@@ -364,7 +371,8 @@ public class SpendingTrackerDbEngine {
 		Log.v(TAG, "checking for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE
-				+ " LIKE '%_____" + todayInMonthString + "T%'", null, null,
+				+ " LIKE '%" + thisYearString + thisMonthString
+				+ todayInMonthString + "T%'", null, null,
 				null, null);
 
 		iColDate = c.getColumnIndex(KEY_DATE);
@@ -594,8 +602,8 @@ public class SpendingTrackerDbEngine {
 	public String[][] getSpentTodayEntries() {
 
 		Calendar now = Calendar.getInstance();
-		int todayInMonth;
-		String todayInMonthString;
+		int todayInMonth, thisYear, thisMonth;
+		String todayInMonthString, thisYearString, thisMonthString;
 		Cursor c;
 		int i = 0;
 		int iRowID, iAmount, iCategory;
@@ -605,6 +613,13 @@ public class SpendingTrackerDbEngine {
 		now.setTimeInMillis(System.currentTimeMillis());
 
 		todayInMonth = now.get(Calendar.DAY_OF_MONTH);
+		
+		// getting current month and year
+		thisYear = now.get(Calendar.YEAR);
+		thisMonth = now.get(Calendar.MONTH) + 1;
+
+		thisYearString = Integer.toString(thisYear);
+		thisMonthString = (thisMonth < 10 ? "0" : "") + thisMonth;
 
 		this.open();
 
@@ -614,7 +629,7 @@ public class SpendingTrackerDbEngine {
 		Log.v(TAG, "getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE
-				+ " LIKE '%_____" + todayInMonthString + "T%'", null, null,
+				+ " LIKE '%" + thisYearString + thisMonthString + todayInMonthString + "T%'", null, null,
 				null, null);
 
 		// setting the 2 dimensional array

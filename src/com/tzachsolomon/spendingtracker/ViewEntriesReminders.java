@@ -110,7 +110,7 @@ public class ViewEntriesReminders extends Activity {
 
 		editTextRowId.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-		alertDialog.setTitle("Delete Reminder");
+		alertDialog.setTitle(getString(R.string.alertDialogTitleDeleteReminder));
 		alertDialog.setView(editTextRowId);
 		alertDialog.setPositiveButton("Delete",
 				new DialogInterface.OnClickListener() {
