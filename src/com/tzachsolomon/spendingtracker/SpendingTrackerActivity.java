@@ -853,6 +853,8 @@ public class SpendingTrackerActivity extends Activity implements
 
 		switch (item.getItemId()) {
 		case R.id.menuAbout:
+			menuAbout_Clicked();
+			
 
 			break;
 
@@ -862,16 +864,33 @@ public class SpendingTrackerActivity extends Activity implements
 			break;
 
 		case R.id.menuPrefernces:
-			Intent pref = new Intent(
-					"com.tzachsolomon.spendingtracker.PREFERENCES");
-
-			startActivity(pref);
+			menuPrefernces_Clicked();
+			
 		default:
 			ret = super.onOptionsItemSelected(item);
 		}
 
 		return ret;
 
+	}
+
+	private void menuPrefernces_Clicked() {
+		// 
+		Intent pref = new Intent(
+		"com.tzachsolomon.spendingtracker.PREFERENCES");
+
+		startActivity(pref);
+		
+	}
+
+	private void menuAbout_Clicked() {
+		// 
+		Intent intent = new Intent(this,About.class);
+		
+		startActivity(intent);
+		
+		
+		
 	}
 
 	private void updateMonthSpent() {

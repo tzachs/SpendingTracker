@@ -21,7 +21,6 @@ public class SpendingTrackerService extends Service {
 
 	private static final String TAG = SpendingTrackerService.class
 			.getSimpleName();
-	
 
 	private Calendar m_Calendar;
 	private Intent m_Intent;
@@ -35,7 +34,7 @@ public class SpendingTrackerService extends Service {
 		//
 		super.onCreate();
 
-		Log.i(TAG, "Service creating");
+		Log.i(TAG, "Service onCreate");
 
 		initializeVariables();
 
@@ -50,7 +49,8 @@ public class SpendingTrackerService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		//
-		Log.d(TAG, "Service onStart");
+		Log.i(TAG, "Service onStart");
+		
 
 		super.onStart(intent, startId);
 	}
@@ -66,6 +66,7 @@ public class SpendingTrackerService extends Service {
 		//
 		super.onDestroy();
 
+		
 		Log.i(TAG, "Destroying service");
 
 	}

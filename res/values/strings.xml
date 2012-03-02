@@ -41,6 +41,7 @@
     <string name="textViewEntriesRemindersHourText">Hour</string>
     <string name="textViewEntriesRemindersMinText">Min</string>
     <string name="textViewEntriesRemindersDayText">Day</string>
+    <string name="textViewAboutVersion">Current Version: </string>
 
     <!-- BUTTONS -->
 
