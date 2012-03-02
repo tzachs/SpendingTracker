@@ -53,10 +53,11 @@ import android.widget.Toast;
 public class SpendingTrackerActivity extends Activity implements
 		OnClickListener, OnTabChangeListener, OnCheckedChangeListener {
 
-	// TOOD: notification wakes from sleep
-	// TODO: export to Google Document
+ 	// TODO: export to Google Document
 	// TODO: delete entry by id
-	// TODO: add scroll to view entries
+	// TODO: reminder by location
+	// TODO: add option to place tab on bottom instead of up
+
 	/** Called when the activity is first created. */
 	private static final String TAG = SpendingTrackerActivity.class
 			.getSimpleName();
@@ -600,7 +601,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void buttonShowMonthEntries_Clicked() {
 		//
 		Intent i = new Intent(this, ViewEntriesSpent.class);
-		i.putExtra("TYPE", "Month");
+		i.putExtra("TYPE", ViewEntriesSpent.TYPE_MONTH);
 		startActivity(i);
 
 	}
@@ -642,7 +643,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void buttonShowWeeklyEntries_Clicked() {
 		//
 		Intent i = new Intent(this, ViewEntriesSpent.class);
-		i.putExtra("TYPE", "Week");
+		i.putExtra("TYPE", ViewEntriesSpent.TYPE_WEEK);
 		startActivity(i);
 
 	}
@@ -658,7 +659,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void bShowTodayEnteriesClick() {
 		//
 		Intent i = new Intent(this, ViewEntriesSpent.class);
-		i.putExtra("TYPE", "Today");
+		i.putExtra("TYPE", ViewEntriesSpent.TYPE_TODAY);
 		startActivity(i);
 
 	}

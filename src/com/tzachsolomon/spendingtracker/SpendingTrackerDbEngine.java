@@ -138,7 +138,7 @@ public class SpendingTrackerDbEngine {
 
 		@Override
 		public void endDocument() throws SAXException {
-			// 
+			//
 			super.endDocument();
 		}
 
@@ -209,14 +209,14 @@ public class SpendingTrackerDbEngine {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			// 
+			//
 			super.endElement(uri, localName, qName);
 		}
 
 		@Override
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
-			// 
+			//
 			super.characters(ch, start, length);
 		}
 
@@ -342,7 +342,13 @@ public class SpendingTrackerDbEngine {
 
 	}
 
+	/**
+	 * Function calculate total spent today and return as string
+	 * 
+	 * @return Total spent today
+	 */
 	public String getSpentToday() {
+
 		Calendar now = Calendar.getInstance();
 		int todayInMonth, thisYear, thisMonth;
 		String todayInMonthString, thisYearString, thisMonthString;
@@ -354,7 +360,7 @@ public class SpendingTrackerDbEngine {
 		now.setTimeInMillis(System.currentTimeMillis());
 
 		todayInMonth = now.get(Calendar.DAY_OF_MONTH);
-		
+
 		// getting current month and year
 		thisYear = now.get(Calendar.YEAR);
 		thisMonth = now.get(Calendar.MONTH) + 1;
@@ -370,10 +376,9 @@ public class SpendingTrackerDbEngine {
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
 		Log.v(TAG, "checking for day " + todayInMonthString);
 
-		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE
-				+ " LIKE '%" + thisYearString + thisMonthString
-				+ todayInMonthString + "T%'", null, null,
-				null, null);
+		c = ourDatabase.query(TABLE_SPENDING, columns,
+				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
+						+ todayInMonthString + "T%'", null, null, null, null);
 
 		iColDate = c.getColumnIndex(KEY_DATE);
 		iColAmount = c.getColumnIndex(KEY_AMOUNT);
@@ -599,9 +604,18 @@ public class SpendingTrackerDbEngine {
 		return ret;
 	}
 
-	public String[][] getSpentTodayEntries() {
+	/**
+	 * Function return the all the entries spent on specific day using
+	 * i_Calendar as a point of reference
+	 * 
+	 * @param i_Calendar
+	 *            - If null, function uses now as date reference, else uses the
+	 *            i_Calendar as a reference point
+	 * @return All the entries spent in a specific day
+	 */
+	public String[][] getSpentDailyEntries(Calendar i_Calendar) {
 
-		Calendar now = Calendar.getInstance();
+		Calendar now;
 		int todayInMonth, thisYear, thisMonth;
 		String todayInMonthString, thisYearString, thisMonthString;
 		Cursor c;
@@ -610,10 +624,15 @@ public class SpendingTrackerDbEngine {
 
 		String[][] ret = null;
 
-		now.setTimeInMillis(System.currentTimeMillis());
+		if (i_Calendar == null) {
+			now = Calendar.getInstance();
+			now.setTimeInMillis(System.currentTimeMillis());
+		} else {
+			now = i_Calendar;
+		}
 
 		todayInMonth = now.get(Calendar.DAY_OF_MONTH);
-		
+
 		// getting current month and year
 		thisYear = now.get(Calendar.YEAR);
 		thisMonth = now.get(Calendar.MONTH) + 1;
@@ -628,9 +647,9 @@ public class SpendingTrackerDbEngine {
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
 		Log.v(TAG, "getting all entries for day " + todayInMonthString);
 
-		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE
-				+ " LIKE '%" + thisYearString + thisMonthString + todayInMonthString + "T%'", null, null,
-				null, null);
+		c = ourDatabase.query(TABLE_SPENDING, columns,
+				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
+						+ todayInMonthString + "T%'", null, null, null, null);
 
 		// setting the 2 dimensional array
 		ret = new String[c.getCount()][columns.length];
@@ -659,9 +678,20 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public String[][] getSpentThisWeekEnteries(int i_FirstDayOfWeek) {
+	/**
+	 * Function return the all the entries spent on specific Week using
+	 * i_Calendar as a point of reference
+	 * 
+	 * @param i_Calendar
+	 *            - If null, function uses now as date reference, else uses the
+	 *            i_Calendar as a reference point
+	 * @return All the entries spent in a specific Week
+	 */
 
-		Calendar now = Calendar.getInstance();
+	public String[][] getSpentThisWeekEnteries(int i_FirstDayOfWeek,
+			Calendar i_Calendar) {
+
+		Calendar now;
 		int todayInMonth, today, thisYear, thisMonth;
 		String todayInMonthString, thisYearString, thisMonthString;
 
@@ -672,7 +702,12 @@ public class SpendingTrackerDbEngine {
 
 		String[][] ret = null;
 
-		now.setTimeInMillis(System.currentTimeMillis());
+		if (i_Calendar == null) {
+			now = Calendar.getInstance();
+			now.setTimeInMillis(System.currentTimeMillis());
+		} else {
+			now = i_Calendar;
+		}
 
 		// getting current month and year
 		thisYear = now.get(Calendar.YEAR);
@@ -749,9 +784,9 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public String[][] getSpentThisMonthEnteries() {
+	public String[][] getSpentThisMonthEnteries(Calendar i_Calendar) {
 
-		Calendar now = Calendar.getInstance();
+		Calendar now;
 		int month;
 		String monthString;
 
@@ -760,8 +795,16 @@ public class SpendingTrackerDbEngine {
 		int iRowID, iAmount, iCategory, iDate;
 
 		String[][] ret = null;
-
-		now.setTimeInMillis(System.currentTimeMillis());
+		
+		if ( i_Calendar == null ){
+			now = Calendar.getInstance();
+			now.setTimeInMillis(System.currentTimeMillis());
+		}
+		else {
+			now = i_Calendar;
+		}
+		
+		Log.i(TAG, "Getting month entries using " + now.toString());
 
 		month = now.get(Calendar.MONTH) + 1;
 
