@@ -54,9 +54,14 @@ public class SpendingTrackerActivity extends Activity implements
 		OnClickListener, OnTabChangeListener, OnCheckedChangeListener {
 
  	// TODO: export to Google Document
-	// TODO: delete entry by id
+	// TODO: delete spent entry by id
 	// TODO: reminder by location
 	// TODO: add option to place tab on bottom instead of up
+	// TODO: Notification after updating record
+	// TODO: add colors to categories
+	// TODO: sort categories by name
+	// TODO: Sort entries by name / date / row id
+	// 
 
 	/** Called when the activity is first created. */
 	private static final String TAG = SpendingTrackerActivity.class

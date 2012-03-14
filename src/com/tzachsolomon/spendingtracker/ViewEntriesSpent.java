@@ -42,6 +42,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 	private final static String XMLFILE = "spendingTracker.xml";
 
 	private TableLayout tlEntries;
+	private TextView textViewSpendingRefrenceDate;
 
 	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
 	private int m_Type;
@@ -102,10 +103,12 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 			break;
 
 		case TYPE_WEEK:
-			data = m_SpendingTrackerDbEngine.getSpentThisWeekEnteries(1, m_Calendar);
+			data = m_SpendingTrackerDbEngine.getSpentThisWeekEnteries(1,
+					m_Calendar);
 			break;
 		case TYPE_MONTH:
-			data = m_SpendingTrackerDbEngine.getSpentThisMonthEnteries(m_Calendar);
+			data = m_SpendingTrackerDbEngine
+					.getSpentThisMonthEnteries(m_Calendar);
 			break;
 
 		default:
@@ -378,6 +381,9 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 	private void initializeVariables() {
 		// initialize members
 		tlEntries = (TableLayout) findViewById(R.id.tableLayoutEnteriesSpent);
+		textViewSpendingRefrenceDate = (TextView) findViewById(R.id.textViewSpendingRefrenceDate);
+		
+		showRefrenceDate();
 
 		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
 
@@ -394,56 +400,65 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 			float velocityY) {
 		//
 		float direction = e1.getX() - e2.getX();
-		if (direction > 0) {
-			// move right
-			screenSlide(1);
-		} else {
-			// move left
-			screenSlide(-1);
+		float distance = Math.abs(direction);
 
+		Log.d(TAG, "velocityX " + velocityX);
+		Log.d(TAG, "distance " + distance);
+
+		// checking if the user swipe from left to right or right to left
+		if (Math.abs(velocityX) > 100 && distance> 100){
+
+			if (direction > 0) {
+				// move right
+				screenSlide(1);
+			} else {
+				// move left
+				screenSlide(-1);
+
+			}
 		}
-
 		return true;
 	}
 
-	/** Function will add according to m_Type it is currently displaying 
+	/**
+	 * Function will add according to m_Type it is currently displaying
 	 * 
-	 * @param i_Add - 1 add 1 day / week / month, -1 subtract 1 day / week / month
+	 * @param i_Add
+	 *            - 1 add 1 day / week / month, -1 subtract 1 day / week / month
 	 */
 	private void screenSlide(int i_Add) {
 		//
-		
+
 		switch (m_Type) {
 		case TYPE_TODAY:
 			m_Calendar.add(Calendar.DAY_OF_YEAR, i_Add);
 			break;
-			
+
 		case TYPE_WEEK:
-			
-			m_Calendar.add(Calendar.WEEK_OF_YEAR,i_Add);
+
+			m_Calendar.add(Calendar.WEEK_OF_YEAR, i_Add);
 			break;
-			
+
 		case TYPE_MONTH:
-			
-			m_Calendar.add(Calendar.MONTH,i_Add);
-			
+
+			m_Calendar.add(Calendar.MONTH, i_Add);
+
 			break;
 
 		default:
 			break;
 
 		}
-		
+
 		showRefrenceDate();
 		updateTableLayout();
-		
 
 	}
 
 	private void showRefrenceDate() {
-		// 
+		//
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("Current refrence date is (YYYY/MM/DD): \n");
 		sb.append(m_Calendar.get(Calendar.YEAR));
 		sb.append("/");
@@ -451,7 +466,9 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		sb.append("/");
 		sb.append(m_Calendar.get(Calendar.DAY_OF_MONTH));
 		
-		Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
+		textViewSpendingRefrenceDate.setText(sb.toString());
+
+		//Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
