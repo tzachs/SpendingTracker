@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tzachsolomon.spendingtracker"
-    android:versionCode="16"
-    android:versionName="0.16.2012.03.16" >
+    android:versionCode="17"
+    android:versionName="0.17.2012.03.16" >
 
     <uses-sdk android:minSdkVersion="8" />
 

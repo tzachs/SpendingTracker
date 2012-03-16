@@ -89,6 +89,8 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 		String newDate = editTextSpentEditDate.getText().toString();
 		m_SpendingTrackerDbEngine.updateSpentByRowId(m_RowId, newAmount,
 				newDate);
+		
+		Toast.makeText(this, getString(R.string.entryUpdated), Toast.LENGTH_LONG).show();
 
 	}
 

@@ -68,6 +68,8 @@ public class SpendingTrackerDbEngine {
 	private final Context ourContext;
 	private SQLiteDatabase ourDatabase;
 
+	private String m_SortByKey;
+
 	private static class DbHelper extends SQLiteOpenHelper {
 
 		public DbHelper(Context context) {
@@ -240,6 +242,7 @@ public class SpendingTrackerDbEngine {
 
 	public SpendingTrackerDbEngine(Context i_Context) {
 		ourContext = i_Context;
+		m_SortByKey = SpendingTrackerDbEngine.KEY_ROWID;
 	}
 
 	public SpendingTrackerDbEngine open() throws SQLException {
@@ -649,7 +652,7 @@ public class SpendingTrackerDbEngine {
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
-						+ todayInMonthString + "T%'", null, null, null, null);
+						+ todayInMonthString + "T%'", null, null, null, m_SortByKey);
 
 		// setting the 2 dimensional array
 		ret = new String[c.getCount()][columns.length];
@@ -752,7 +755,7 @@ public class SpendingTrackerDbEngine {
 		Log.v(TAG, "getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, filter.toString(), null,
-				null, null, null);
+				null, null, m_SortByKey);
 
 		// setting the 2 dimensional array
 		ret = new String[c.getCount()][columns.length];
@@ -818,7 +821,7 @@ public class SpendingTrackerDbEngine {
 		Log.v(TAG, "checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
-				+ monthString + "__T%'", null, null, null, null);
+				+ monthString + "__T%'", null, null, null, m_SortByKey);
 
 		// Setting the 2 dimensional array
 		ret = new String[c.getCount()][columns.length];
@@ -1183,6 +1186,12 @@ public class SpendingTrackerDbEngine {
 
 		this.close();
 
+		
+	}
+
+	public void setSortBy(String i_Key) {
+		// 
+		m_SortByKey = i_Key;
 		
 	}
 }

@@ -54,9 +54,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.spending_entries);
-
-		m_Calendar = Calendar.getInstance();
-		m_Calendar.setTimeInMillis(System.currentTimeMillis());
+		
 		initializeVariables();
 
 		try {
@@ -99,6 +97,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		switch (m_Type) {
 
 		case TYPE_TODAY:
+			
 			data = m_SpendingTrackerDbEngine.getSpentDailyEntries(m_Calendar);
 			break;
 
@@ -134,13 +133,18 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		//
 		MenuItem menuItemSpentExport = menu.findItem(R.id.menuItemSpentExport);
 		MenuItem menuItemSpentImport = menu.findItem(R.id.menuItemSpentImport);
+		MenuItem menuItemSpentDatabase = menu.findItem(R.id.menuItemSpentDatabase);
+		
 
 		if (m_Type == TYPE_MONTH) {
 			menuItemSpentExport.setVisible(true);
 			menuItemSpentImport.setVisible(true);
+			menuItemSpentDatabase.setVisible(true);
+			
 		} else {
 			menuItemSpentExport.setVisible(false);
 			menuItemSpentImport.setVisible(false);
+			menuItemSpentDatabase.setVisible(false);
 		}
 
 		return super.onPrepareOptionsMenu(menu);
@@ -151,6 +155,22 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		//
 		boolean ret = false;
 		switch (item.getItemId()) {
+		
+		case R.id.menuItemSpentSortAmount:
+			menuItemSpentSortAmount_Clicked();
+			break;
+			
+		case R.id.menuItemSpentSortCategory:
+			menuItemSpentSortCategory_Clicked();
+			break;
+		
+		case R.id.menuItemSpentSortDate:
+			menuItemSpentSortDate_Clicked();
+			break;
+			
+		case R.id.menuItemSpentSortId:
+			menuItemSpentSortId_Clicked();
+			break;
 
 		case R.id.menuItemSpentDelete:
 			menuItemSpentDelete_Clicked();
@@ -178,6 +198,31 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 		}
 		return ret;
+	}
+
+	private void menuItemSpentSortCategory_Clicked() {
+		// 
+		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_CATEGORY);
+		updateTableLayout();
+	}
+
+	private void menuItemSpentSortAmount_Clicked() {
+		// 
+		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_AMOUNT);
+		updateTableLayout();
+	}
+
+	private void menuItemSpentSortDate_Clicked() {
+		// 
+		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_DATE);
+		updateTableLayout();
+		
+	}
+
+	private void menuItemSpentSortId_Clicked() {
+		// 
+		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_ROWID);
+		updateTableLayout();
 	}
 
 	private void menuItemSpentImport_Clicked() {
@@ -307,6 +352,8 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 						
 						m_SpendingTrackerDbEngine.deleteSpentEntryByRowId(rowId);
 						
+						Toast.makeText(ViewEntriesSpent.this, getString(R.string.entryDeleted), Toast.LENGTH_SHORT).show();
+						
 						updateTableLayout();
 						
 					}
@@ -421,12 +468,17 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	private void initializeVariables() {
 		// initialize members
+		
+		m_Calendar = Calendar.getInstance();
+		m_Calendar.setTimeInMillis(System.currentTimeMillis());
+		
 		tlEntries = (TableLayout) findViewById(R.id.tableLayoutEnteriesSpent);
 		textViewSpendingRefrenceDate = (TextView) findViewById(R.id.textViewSpendingRefrenceDate);
 		
 		showRefrenceDate();
 
 		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_DATE);
 
 	}
 

@@ -2,28 +2,61 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menuItemSpentDelete"
-        android:alphabeticShortcut="d"
-        android:numericShortcut="1"
-        android:title="Delete"/>
+        android:id="@+id/group_spent_sort"
+        android:title="Sort">
+        <menu>
+            <item
+                android:id="@+id/menuItemSpentSortDate"
+                android:title="Sort By Date"/>
+            <item
+                android:id="@+id/menuItemSpentSortCategory"
+                android:title="Sort By Category"/>
+            <item
+                android:id="@+id/menuItemSpentSortAmount"
+                android:title="Sort By Amount"/>
+            <item
+                android:id="@+id/menuItemSpentSortId"
+                android:title="Sort By ID"/>
+            
+        </menu>
+    </item>
     <item
-        android:id="@+id/menuItemSpentEdit"
-        android:alphabeticShortcut="e"
-        android:numericShortcut="2"
-        android:title="Edit"/>
-    
+        android:id="@+id/group_spent_entries"
+        android:title="Entries">
+        <menu>
+            <item
+                android:id="@+id/menuItemSpentDelete"
+                android:alphabeticShortcut="d"
+                android:numericShortcut="1"
+                android:title="Delete"/>
+            <item
+                android:id="@+id/menuItemSpentEdit"
+                android:alphabeticShortcut="e"
+                android:numericShortcut="2"
+                android:title="Edit"/>
+        </menu>
+    </item>
+    <group
+        android:id="@+id/menuSpentGroupDatabase"
+         >
     <item
-        android:visible="false"
-        android:id="@+id/menuItemSpentExport"
-        android:alphabeticShortcut="x"
-        android:numericShortcut="3"
-        android:title="Export"/>
-    
-    <item
-        android:visible="false"
-        android:id="@+id/menuItemSpentImport"
-        android:alphabeticShortcut="i"
-        android:numericShortcut="4"
-        android:title="Import"/>
+        android:id="@+id/menuItemSpentDatabase"
+        android:title="Database">
+        <menu>
+        <item
+            android:id="@+id/menuItemSpentExport"
+            android:alphabeticShortcut="x"
+            android:numericShortcut="3"
+            android:title="Export"
+            android:visible="false"/>
+        <item
+            android:id="@+id/menuItemSpentImport"
+            android:alphabeticShortcut="i"
+            android:numericShortcut="4"
+            android:title="Import"
+            android:visible="false"/>
+        </menu>
+    </item>
+    </group>
 
 </menu>

@@ -42,14 +42,22 @@ public final class R {
         public static final int editTextQuickAddAmount=0x7f08000d;
         public static final int editTextSpentEditAmount=0x7f080003;
         public static final int editTextSpentEditDate=0x7f080005;
+        public static final int group_spent_entries=0x7f08003e;
+        public static final int group_spent_sort=0x7f080039;
         public static final int menuAbout=0x7f080035;
         public static final int menuExit=0x7f080037;
         public static final int menuItemReminderDelete=0x7f080038;
-        public static final int menuItemSpentDelete=0x7f080039;
-        public static final int menuItemSpentEdit=0x7f08003a;
-        public static final int menuItemSpentExport=0x7f08003b;
-        public static final int menuItemSpentImport=0x7f08003c;
+        public static final int menuItemSpentDatabase=0x7f080042;
+        public static final int menuItemSpentDelete=0x7f08003f;
+        public static final int menuItemSpentEdit=0x7f080040;
+        public static final int menuItemSpentExport=0x7f080043;
+        public static final int menuItemSpentImport=0x7f080044;
+        public static final int menuItemSpentSortAmount=0x7f08003c;
+        public static final int menuItemSpentSortCategory=0x7f08003b;
+        public static final int menuItemSpentSortDate=0x7f08003a;
+        public static final int menuItemSpentSortId=0x7f08003d;
         public static final int menuPrefernces=0x7f080036;
+        public static final int menuSpentGroupDatabase=0x7f080041;
         public static final int radioButtonEveryday=0x7f08001b;
         public static final int radioButtonMonthly=0x7f08001d;
         public static final int radioButtonWeekly=0x7f08001c;
@@ -153,6 +161,7 @@ public final class R {
         public static final int editTextRowIdHint=0x7f050010;
         public static final int editTextSpentEditDateHint=0x7f050011;
         public static final int entryDeleted=0x7f050045;
+        public static final int entryUpdated=0x7f050046;
         /**  Menu Items 
          */
         public static final int menuItemReminderDeleteText=0x7f050036;
@@ -164,11 +173,11 @@ public final class R {
         public static final int spinnerPrompt=0x7f050001;
         public static final int stringDidYouSpend=0x7f050008;
         public static final int stringDidYouSpendOn=0x7f050009;
-        public static final int tabEntriesText=0x7f050048;
+        public static final int tabEntriesText=0x7f050049;
         /**  TABS 
          */
-        public static final int tabGeneralText=0x7f050046;
-        public static final int tabRemindersText=0x7f050047;
+        public static final int tabGeneralText=0x7f050047;
+        public static final int tabRemindersText=0x7f050048;
         public static final int textViewAboutVersion=0x7f05001f;
         public static final int textViewAddEntryText=0x7f050003;
         public static final int textViewEntriesRemindersDayText=0x7f05001e;

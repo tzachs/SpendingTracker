@@ -92,6 +92,7 @@
     <string name="alertDialogImportDatabaseNegative">Cancel</string>
     
     <string name="entryDeleted">Entry Deleted</string>
+    <string name="entryUpdated">Entry Updated</string>
     
     <!-- TABS -->
     

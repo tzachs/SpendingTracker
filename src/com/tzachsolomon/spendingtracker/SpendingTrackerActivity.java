@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -42,8 +43,10 @@ import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+
 import android.widget.Spinner;
 import android.widget.TabHost;
+
 import android.widget.TimePicker;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
@@ -53,22 +56,19 @@ import android.widget.Toast;
 public class SpendingTrackerActivity extends Activity implements
 		OnClickListener, OnTabChangeListener, OnCheckedChangeListener {
 
- 	// TODO: export to Google Document
-	// TODO: delete spent entry by id
+	// TODO: export to Google Document
 	// TODO: reminder by location
 	// TODO: add option to place tab on bottom instead of up
-	// TODO: Notification after updating record
-	// TODO: add colors to categories
-	// 
-	// TODO: Sort entries by name / date / row id
-	// 
+ 	// TODO: add colors to categories
+ 
 
 	/** Called when the activity is first created. */
 	private static final String TAG = SpendingTrackerActivity.class
 			.getSimpleName();
 
-	private TabHost thMain;
+	private TabHost tabHostMain;
 	private TabSpec tabSpec;
+	
 	private EditText editTextQuickAddAmount;
 	private EditText editTextComment;
 	private EditText etDayInMonthReminder;
@@ -115,12 +115,6 @@ public class SpendingTrackerActivity extends Activity implements
 
 		// waiting for the debugger to attach in order to the debug the service
 		// android.os.Debug.waitForDebugger();
-
-		// starting the service to make sure the service will not stopped in
-		// case
-		// the service is unbinded
-		// service will later be checked again by onStart to see if it needs to
-		// be stopped
 
 		m_AlarmSender = PendingIntent.getService(SpendingTrackerActivity.this,
 				0, new Intent(SpendingTrackerActivity.this,
@@ -414,13 +408,13 @@ public class SpendingTrackerActivity extends Activity implements
 		TextView tabContent;
 
 		// setting up the tabs
-		thMain = (TabHost) findViewById(R.id.tabhostMain);
-		thMain.setup();
+		tabHostMain = (TabHost) findViewById(R.id.tabhostMain);
+		tabHostMain.setup();
 
-		thMain.setOnTabChangedListener(this);
+		tabHostMain.setOnTabChangedListener(this);
 
 		// setup general tab
-		tabSpec = thMain.newTabSpec(TAB_TAG_GENERAL);
+		tabSpec = tabHostMain.newTabSpec(TAB_TAG_GENERAL);
 		tabSpec.setContent(R.id.tabGeneral);
 		tabContent = new TextView(this);
 		tabContent.setText(getString(R.string.tabGeneralText));
@@ -433,11 +427,10 @@ public class SpendingTrackerActivity extends Activity implements
 
 		tabSpec.setIndicator(tabContent);
 
-		thMain.addTab(tabSpec);
-		
+		tabHostMain.addTab(tabSpec);
 
 		// setup Reminders tab
-		tabSpec = thMain.newTabSpec(TAB_TAG_REMINDERS);
+		tabSpec = tabHostMain.newTabSpec(TAB_TAG_REMINDERS);
 		tabSpec.setContent(R.id.tabReminders);
 
 		tabContent = new TextView(this);
@@ -451,10 +444,10 @@ public class SpendingTrackerActivity extends Activity implements
 
 		tabSpec.setIndicator(tabContent);
 
-		thMain.addTab(tabSpec);
+		tabHostMain.addTab(tabSpec);
 
 		// setup Entries tab
-		tabSpec = thMain.newTabSpec(TAB_TAG_ENTRIES);
+		tabSpec = tabHostMain.newTabSpec(TAB_TAG_ENTRIES);
 		tabSpec.setContent(R.id.tabEntries);
 		tabContent = new TextView(this);
 		tabContent.setText(getString(R.string.tabEntriesText));
@@ -467,7 +460,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 		tabSpec.setIndicator(tabContent);
 
-		thMain.addTab(tabSpec);
+		tabHostMain.addTab(tabSpec);
 
 	}
 
@@ -706,7 +699,7 @@ public class SpendingTrackerActivity extends Activity implements
 				// change to tab reminders
 				if (checkBoxAutoAddReminder.isChecked()) {
 
-					thMain.setCurrentTabByTag(TAB_TAG_REMINDERS);
+					tabHostMain.setCurrentTabByTag(TAB_TAG_REMINDERS);
 				} else {
 					// initialize edit text
 					editTextQuickAddAmount.setText("");
@@ -860,7 +853,6 @@ public class SpendingTrackerActivity extends Activity implements
 		switch (item.getItemId()) {
 		case R.id.menuAbout:
 			menuAbout_Clicked();
-			
 
 			break;
 
@@ -871,7 +863,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 		case R.id.menuPrefernces:
 			menuPrefernces_Clicked();
-			
+
 		default:
 			ret = super.onOptionsItemSelected(item);
 		}
@@ -881,22 +873,19 @@ public class SpendingTrackerActivity extends Activity implements
 	}
 
 	private void menuPrefernces_Clicked() {
-		// 
-		Intent pref = new Intent(
-		"com.tzachsolomon.spendingtracker.PREFERENCES");
+		//
+		Intent pref = new Intent("com.tzachsolomon.spendingtracker.PREFERENCES");
 
 		startActivity(pref);
-		
+
 	}
 
 	private void menuAbout_Clicked() {
-		// 
-		Intent intent = new Intent(this,About.class);
-		
+		//
+		Intent intent = new Intent(this, About.class);
+
 		startActivity(intent);
-		
-		
-		
+
 	}
 
 	private void updateMonthSpent() {
