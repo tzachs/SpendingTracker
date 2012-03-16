@@ -13,17 +13,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:padding="5dp"
-            android:tabStripEnabled="false"
             android:orientation="horizontal"
-             />
+            android:padding="5dp"
+            android:tabStripEnabled="false" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" 
-            android:layout_below="@android:id/tabs"
-            >
+            android:layout_height="fill_parent"
+            android:layout_below="@android:id/tabs" >
 
             <LinearLayout
                 android:id="@+id/tabGeneral"
@@ -124,45 +122,88 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <Button
-                    android:id="@+id/buttonShowTodayEntries"
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:text="@string/buttonShowTodayEntriesText" />
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0" >
 
-                <Button
-                    android:id="@+id/buttonShowWeeklyEntries"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_margin="10dp"
-                    android:text="@string/buttonShowWeeklyEntriesText" />
+                    <Button
+                        android:id="@+id/buttonShowTodayEntries"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.75"
+                        android:text="@string/buttonShowTodayEntriesText" />
+                </LinearLayout>
 
-                <Button
-                    android:id="@+id/buttonShowMonthEntries"
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_margin="10dp"
-                    android:text="@string/buttonShowMonthEntriesText" />
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0" >
 
-                <Button
-                    android:id="@+id/buttonShowReminderEntries"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_margin="10dp"
-                    android:text="@string/buttonShowReminderEntriesText" />
+                    <Button
+                        android:id="@+id/buttonShowWeeklyEntries"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.75"
+                        android:text="@string/buttonShowWeeklyEntriesText" />
+                </LinearLayout>
 
-                <Button
-                    android:id="@+id/buttonDeleteAllEnteries"
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_margin="10dp"
-                    android:text="@string/buttonDeleteAllEnteriesText" />
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0" >
+
+                    <Button
+                        android:id="@+id/buttonShowMonthEntries"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        
+                        android:layout_weight="0.75"
+                        android:layout_margin="10dp"
+                        android:text="@string/buttonShowMonthEntriesText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0" >
+
+                    <Button
+                        android:id="@+id/buttonShowReminderEntries"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        
+                        android:layout_weight="0.75"
+                        android:layout_margin="10dp"
+                        android:text="@string/buttonShowReminderEntriesText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0" >
+
+                    <Button
+                        android:id="@+id/buttonDeleteAllEnteries"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        
+                        android:layout_weight="0.75"
+                        android:layout_margin="10dp"
+                        android:text="@string/buttonDeleteAllEnteriesText" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- TAB REMINDERS -->

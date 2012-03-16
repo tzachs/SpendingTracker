@@ -527,7 +527,7 @@ public class SpendingTrackerDbEngine {
 
 		this.open();
 		Cursor cursor = ourDatabase.query(TABLE_CATEGORIES,
-				new String[] { KEY_CATEGORY }, null, null, null, null, null);
+				new String[] { KEY_CATEGORY }, null, null, null, null, KEY_CATEGORY);
 
 		ret = new String[cursor.getCount()];
 
@@ -1170,5 +1170,19 @@ public class SpendingTrackerDbEngine {
 
 		this.close();
 
+	}
+
+	public void deleteSpentEntryByRowId(String i_ReminderId) {
+		// 
+		this.open();
+		int ret;
+
+		ret = ourDatabase.delete(TABLE_SPENDING, KEY_ROWID + "='"
+				+ i_ReminderId + "'", null);
+		Log.v(TAG, "Number of rows affected is " + Integer.toString(ret));
+
+		this.close();
+
+		
 	}
 }

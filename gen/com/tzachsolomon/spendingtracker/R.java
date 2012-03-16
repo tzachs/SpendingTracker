@@ -98,20 +98,22 @@ public final class R {
     public static final class string {
         public static final int addCategoryMessage=0x7f050006;
         public static final int addCategoryTitle=0x7f050005;
-        public static final int alertDialogExportDatabaseMessage=0x7f05003c;
-        public static final int alertDialogExportDatabaseNegative=0x7f05003e;
-        public static final int alertDialogExportDatabasePositive=0x7f05003d;
-        public static final int alertDialogExportDatabaseTitle=0x7f05003b;
-        public static final int alertDialogImportDatabaseMessage=0x7f050040;
-        public static final int alertDialogImportDatabaseNegative=0x7f050042;
-        public static final int alertDialogImportDatabasePositive=0x7f050041;
-        public static final int alertDialogImportDatabaseTitle=0x7f05003f;
-        public static final int alertDialogTitleDeleteReminder=0x7f05003a;
-        public static final int alertDialogViewEntriesSpentNegative=0x7f050039;
-        public static final int alertDialogViewEntriesSpentPositive=0x7f050038;
+        public static final int alertDialogExportDatabaseMessage=0x7f05003e;
+        public static final int alertDialogExportDatabaseNegative=0x7f050040;
+        public static final int alertDialogExportDatabasePositive=0x7f05003f;
+        public static final int alertDialogExportDatabaseTitle=0x7f05003d;
+        public static final int alertDialogImportDatabaseMessage=0x7f050042;
+        public static final int alertDialogImportDatabaseNegative=0x7f050044;
+        public static final int alertDialogImportDatabasePositive=0x7f050043;
+        public static final int alertDialogImportDatabaseTitle=0x7f050041;
+        public static final int alertDialogTitleDeleteReminder=0x7f05003c;
+        public static final int alertDialogViewEntriesSpentNegative=0x7f05003b;
+        public static final int alertDialogViewEntriesSpentPositiveDelete=0x7f05003a;
+        public static final int alertDialogViewEntriesSpentPositiveEdit=0x7f050039;
+        public static final int alertDialogViewEntriesSpentTitleDelete=0x7f050038;
         /**   Alert dialog title 
          */
-        public static final int alertDialogViewEntriesSpentTitle=0x7f050037;
+        public static final int alertDialogViewEntriesSpentTitleEdit=0x7f050037;
         public static final int app_name=0x7f050000;
         /**  BUTTONS 
          */
@@ -150,6 +152,7 @@ public final class R {
         public static final int editTextQuickAddAmountHint=0x7f05000d;
         public static final int editTextRowIdHint=0x7f050010;
         public static final int editTextSpentEditDateHint=0x7f050011;
+        public static final int entryDeleted=0x7f050045;
         /**  Menu Items 
          */
         public static final int menuItemReminderDeleteText=0x7f050036;
@@ -161,11 +164,11 @@ public final class R {
         public static final int spinnerPrompt=0x7f050001;
         public static final int stringDidYouSpend=0x7f050008;
         public static final int stringDidYouSpendOn=0x7f050009;
-        public static final int tabEntriesText=0x7f050045;
+        public static final int tabEntriesText=0x7f050048;
         /**  TABS 
          */
-        public static final int tabGeneralText=0x7f050043;
-        public static final int tabRemindersText=0x7f050044;
+        public static final int tabGeneralText=0x7f050046;
+        public static final int tabRemindersText=0x7f050047;
         public static final int textViewAboutVersion=0x7f05001f;
         public static final int textViewAddEntryText=0x7f050003;
         public static final int textViewEntriesRemindersDayText=0x7f05001e;

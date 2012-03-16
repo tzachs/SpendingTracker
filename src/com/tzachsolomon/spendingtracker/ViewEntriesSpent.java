@@ -284,6 +284,47 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	private void menuItemSpentDelete_Clicked() {
 		//
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		final EditText editTextRowId = new EditText(this);
+
+		editTextRowId.setInputType(InputType.TYPE_CLASS_NUMBER);
+		editTextRowId.setHint(getString(R.string.editTextRowIdHint));
+
+		alertDialog.setView(editTextRowId);
+
+		alertDialog
+				.setTitle(getString(R.string.alertDialogViewEntriesSpentTitleDelete));
+
+		alertDialog.setPositiveButton(
+				getString(R.string.alertDialogViewEntriesSpentPositiveDelete),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//
+						String rowId = editTextRowId.getText()
+						.toString();
+						
+						m_SpendingTrackerDbEngine.deleteSpentEntryByRowId(rowId);
+						
+						updateTableLayout();
+						
+					}
+				});
+		alertDialog.setNegativeButton(
+				getString(R.string.alertDialogViewEntriesSpentNegative),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//
+
+					}
+				});
+
+		alertDialog.show();
+
+		
 
 	}
 
@@ -298,10 +339,10 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		alertDialog.setView(editTextRowId);
 
 		alertDialog
-				.setTitle(getString(R.string.alertDialogViewEntriesSpentTitle));
+				.setTitle(getString(R.string.alertDialogViewEntriesSpentTitleEdit));
 
 		alertDialog.setPositiveButton(
-				getString(R.string.alertDialogViewEntriesSpentPositive),
+				getString(R.string.alertDialogViewEntriesSpentPositiveEdit),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -391,7 +432,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return true;
 	}
 
@@ -486,31 +527,31 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	@Override
 	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 
 	}
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return true;
 	}
 
 	@Override
 	public boolean onDoubleTap(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	@Override
 	public boolean onDoubleTapEvent(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	@Override
 	public boolean onSingleTapConfirmed(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 

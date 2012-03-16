@@ -21,7 +21,7 @@ public class About extends Activity{
 		try {
 			version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
 		textViewVersion.setText(getString(R.string.textViewAboutVersion) + version);

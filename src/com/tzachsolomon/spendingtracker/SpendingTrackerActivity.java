@@ -59,7 +59,7 @@ public class SpendingTrackerActivity extends Activity implements
 	// TODO: add option to place tab on bottom instead of up
 	// TODO: Notification after updating record
 	// TODO: add colors to categories
-	// TODO: sort categories by name
+	// 
 	// TODO: Sort entries by name / date / row id
 	// 
 

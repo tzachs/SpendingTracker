@@ -76,8 +76,10 @@
     <string name="menuItemReminderDeleteText">Delete</string>
     
     <!--  Alert dialog title -->
-    <string name="alertDialogViewEntriesSpentTitle">Edit entry</string>
-    <string name="alertDialogViewEntriesSpentPositive">Edit</string>
+    <string name="alertDialogViewEntriesSpentTitleEdit">Edit entry</string>
+    <string name="alertDialogViewEntriesSpentTitleDelete">Delete entry</string>
+    <string name="alertDialogViewEntriesSpentPositiveEdit">Edit</string>
+    <string name="alertDialogViewEntriesSpentPositiveDelete">Delete</string>
     <string name="alertDialogViewEntriesSpentNegative">Cancel</string>
     <string name="alertDialogTitleDeleteReminder">Delete reminder</string>
     <string name="alertDialogExportDatabaseTitle">Export database</string>
@@ -88,6 +90,8 @@
     <string name="alertDialogImportDatabaseMessage">Are you sure you want to import?\nThis will delete the current database</string>
     <string name="alertDialogImportDatabasePositive">Import</string>
     <string name="alertDialogImportDatabaseNegative">Cancel</string>
+    
+    <string name="entryDeleted">Entry Deleted</string>
     
     <!-- TABS -->
     
