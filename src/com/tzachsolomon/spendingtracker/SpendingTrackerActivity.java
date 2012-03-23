@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
 
-
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -63,6 +61,8 @@ public class SpendingTrackerActivity extends Activity implements
 	// TODO: reminder by location
 	// TODO: add option to place tab on bottom instead of up
  	// TODO: add colors to categories
+	// TODO: add graphs
+	// TODO: add statistics
  
 
 	/** Called when the activity is first created. */
@@ -88,6 +88,12 @@ public class SpendingTrackerActivity extends Activity implements
 	private TextView textViewSpentToday;
 	private TextView textViewSpentWeek;
 	private TextView textViewSpentMonth;
+	
+	private TextView textViewTabTextGeneral;
+	private TextView textViewTabTextReminders;
+	private TextView textViewTabTextEntries;
+
+	
 
 	private Spinner spinnerCategories;
 	private TimePicker timePickerDay;
@@ -157,6 +163,11 @@ public class SpendingTrackerActivity extends Activity implements
 		textViewSpentToday.setText(getString(R.string.textViewSpentTodayText));
 		textViewSpentWeek.setText(getString(R.string.textViewSpentWeekText));
 		
+		textViewTabTextEntries.setText(getString(R.string.textViewTabTextEntries));
+		textViewTabTextGeneral.setText(getString(R.string.textViewTabTextGeneral));
+		textViewTabTextReminders.setText(getString(R.string.textViewTabTextReminders));
+		
+		
 		editTextComment.setHint(getString(R.string.editTextCommentHint));
 		editTextDayInMonthReminder.setHint(getString(R.string.editTextDayInMonthHint));
 		editTextQuickAddAmount.setHint(getString(R.string.editTextQuickAddAmountHint));
@@ -178,11 +189,6 @@ public class SpendingTrackerActivity extends Activity implements
 		checkBoxThursday.setText(getString(R.string.checkBoxThursdayText));
 		checkBoxTuesday.setText(getString(R.string.checkBoxTuesdayText));
 		checkBoxWednesday.setText(getString(R.string.checkBoxWednesdayText));
-		
-	
-		
-		
-		
 		
 		
 		
@@ -283,7 +289,7 @@ public class SpendingTrackerActivity extends Activity implements
 			if (isReminder) {
 
 				final CheckBox checkBoxAutoExit = new CheckBox(this);
-				checkBoxAutoExit.setText("Auto close");
+				checkBoxAutoExit.setText(getString(R.string.checkBoxAutoExitText));
 				checkBoxAutoExit.setChecked(true);
 
 				final String amount = extras
@@ -310,12 +316,12 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(' ');
 				sb.append("?");
 
-				alertDialog.setTitle("Spent money?");
+				alertDialog.setTitle(getString(R.string.spentMoneyDialogTitleText));
 
 				alertDialog.setMessage(sb.toString());
 				alertDialog.setView(checkBoxAutoExit);
 
-				alertDialog.setPositiveButton("Yes",
+				alertDialog.setPositiveButton(getString(R.string.dialogPositiveYes),
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -332,7 +338,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 							}
 						});
-				alertDialog.setNegativeButton("No",
+				alertDialog.setNegativeButton(getString(R.string.dialogPositiveNo),
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -474,7 +480,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void initTabs() {
 
 		Resources resources = getResources();
-		TextView tabContent;
+		
 
 		// setting up the tabs
 		tabHostMain = (TabHost) findViewById(R.id.tabhostMain);
@@ -485,16 +491,16 @@ public class SpendingTrackerActivity extends Activity implements
 		// setup general tab
 		tabSpec = tabHostMain.newTabSpec(TAB_TAG_GENERAL);
 		tabSpec.setContent(R.id.tabGeneral);
-		tabContent = new TextView(this);
-		tabContent.setText(getString(R.string.tabGeneralText));
+		textViewTabTextGeneral = new TextView(this);
+		textViewTabTextGeneral.setText(getString(R.string.textViewTabTextGeneral));
 
-		tabContent.setBackgroundDrawable(resources
+		textViewTabTextGeneral.setBackgroundDrawable(resources
 				.getDrawable(R.drawable.custom_tab));
-		tabContent.setLayoutParams(new ViewGroup.LayoutParams(
+		textViewTabTextGeneral.setLayoutParams(new ViewGroup.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		tabSpec.setIndicator(tabContent);
+		tabSpec.setIndicator(textViewTabTextGeneral);
 
 		tabHostMain.addTab(tabSpec);
 
@@ -502,32 +508,32 @@ public class SpendingTrackerActivity extends Activity implements
 		tabSpec = tabHostMain.newTabSpec(TAB_TAG_REMINDERS);
 		tabSpec.setContent(R.id.tabReminders);
 
-		tabContent = new TextView(this);
-		tabContent.setText(getString(R.string.tabRemindersText));
+		textViewTabTextReminders = new TextView(this);
+		textViewTabTextReminders.setText(getString(R.string.textViewTabTextReminders));
 
-		tabContent.setBackgroundDrawable(resources
+		textViewTabTextReminders.setBackgroundDrawable(resources
 				.getDrawable(R.drawable.custom_tab));
-		tabContent.setLayoutParams(new ViewGroup.LayoutParams(
+		textViewTabTextReminders.setLayoutParams(new ViewGroup.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		tabSpec.setIndicator(tabContent);
+		tabSpec.setIndicator(textViewTabTextReminders);
 
 		tabHostMain.addTab(tabSpec);
 
 		// setup Entries tab
 		tabSpec = tabHostMain.newTabSpec(TAB_TAG_ENTRIES);
 		tabSpec.setContent(R.id.tabEntries);
-		tabContent = new TextView(this);
-		tabContent.setText(getString(R.string.tabEntriesText));
+		textViewTabTextEntries = new TextView(this);
+		textViewTabTextEntries.setText(getString(R.string.textViewTabTextEntries));
 
-		tabContent.setBackgroundDrawable(resources
+		textViewTabTextEntries.setBackgroundDrawable(resources
 				.getDrawable(R.drawable.custom_tab));
-		tabContent.setLayoutParams(new ViewGroup.LayoutParams(
+		textViewTabTextEntries.setLayoutParams(new ViewGroup.LayoutParams(
 				ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		tabSpec.setIndicator(tabContent);
+		tabSpec.setIndicator(textViewTabTextEntries);
 
 		tabHostMain.addTab(tabSpec);
 
@@ -677,9 +683,9 @@ public class SpendingTrackerActivity extends Activity implements
 		//
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-		alertDialog.setTitle("Delete all entries");
-		alertDialog.setMessage("Are you sure you want to delete all entries?");
-		alertDialog.setPositiveButton("Yes",
+		alertDialog.setTitle(getString(R.string.dialogTitleDeleteAllEntries));
+		alertDialog.setMessage(getString(R.string.dialogMessageDeleteAllEntries));
+		alertDialog.setPositiveButton(getString(R.string.dialogPositiveYes),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -693,7 +699,7 @@ public class SpendingTrackerActivity extends Activity implements
 						initSpinnerCategories();
 					}
 				});
-		alertDialog.setNegativeButton("No",
+		alertDialog.setNegativeButton(getString(R.string.dialogPositiveNo),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -755,7 +761,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 				// showing message to user that entry was added
 				if (m_SharedPreferences.getBoolean("cbShowEntryAdded", true)) {
-					Toast.makeText(SpendingTrackerActivity.this, "Entry added",
+					Toast.makeText(SpendingTrackerActivity.this, getString(R.string.toastMessageEntryAdded),
 							Toast.LENGTH_SHORT).show();
 				}
 
@@ -777,13 +783,13 @@ public class SpendingTrackerActivity extends Activity implements
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				Log.e(TAG, "Error adding entry");
+				Log.e(TAG, getString(R.string.dialogTitleErrorAddingEntryToUser));
 			}
 		} else {
 			Dialog d = new Dialog(this);
-			d.setTitle("Error adding entry");
+			d.setTitle(getString(R.string.dialogTitleErrorAddingEntryToUser));
 			TextView message = new TextView(this);
-			message.setText("Either amount is not filled or category is not chosen!");
+			message.setText(getString(R.string.dialogMessageErrorAddingSpentEntryToUser));
 			d.setContentView(message);
 			d.show();
 
@@ -810,7 +816,7 @@ public class SpendingTrackerActivity extends Activity implements
 					SpendingTrackerDbEngine.TYPE_REMINDER_DAY_DONT_CARE,
 					amount, m_CategorySelected);
 
-			sb.append("Added Everyday reminder at " + currentHour + ":"
+			sb.append(getString(R.string.toastMessageAddedEverydayReminder) + currentHour + ":"
 					+ currentMinute);
 
 			break;
@@ -822,7 +828,7 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_SUNDAY, amount,
 						m_CategorySelected);
-				sb.append(" Sunday");
+				sb.append(getString(R.string.checkBoxSundayText));
 			}
 			if (checkBoxMonday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
@@ -830,7 +836,7 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_MONDAY, amount,
 						m_CategorySelected);
-				sb.append(" Monday");
+				sb.append(getString(R.string.checkBoxMondayText));
 			}
 			if (checkBoxTuesday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
@@ -838,7 +844,7 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_TUESDAY, amount,
 						m_CategorySelected);
-				sb.append(" Tuesday");
+				sb.append(getString(R.string.checkBoxTuesdayText));
 			}
 			if (checkBoxWednesday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
@@ -846,7 +852,7 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEDNESDAY,
 						amount, m_CategorySelected);
-				sb.append(" Wednesday");
+				sb.append(getString(R.string.checkBoxWednesdayText));
 			}
 			if (checkBoxThursday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
@@ -854,7 +860,7 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_THURSDAY, amount,
 						m_CategorySelected);
-				sb.append(" Thursday");
+				sb.append(getString(R.string.checkBoxThursdayText));
 			}
 			if (checkBoxFriday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
@@ -862,7 +868,7 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_FRIDAY, amount,
 						m_CategorySelected);
-				sb.append(" Friday");
+				sb.append(getString(R.string.checkBoxFridayText));
 			}
 			if (checkBoxSaturday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
@@ -870,11 +876,11 @@ public class SpendingTrackerActivity extends Activity implements
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_SATURDAY, amount,
 						m_CategorySelected);
-				sb.append(" Saturday");
+				sb.append(getString(R.string.checkBoxSaturdayText));
 			}
 			if (sb.length() > 0) {
-				sb.insert(0, "Added weekly reminder on ");
-				sb.append(" with time " + currentHour + ":" + currentMinute);
+				sb.insert(0, getString(R.string.toastMessageAddedWeeklyReminderOn));
+				sb.append(getString(R.string.toastMessageWithTime) + currentHour + ":" + currentMinute);
 
 			}
 
@@ -888,7 +894,7 @@ public class SpendingTrackerActivity extends Activity implements
 					SpendingTrackerDbEngine.TYPE_REMINDER_MONTHLY, currentHour,
 					currentMinute, editTextDayInMonthReminder.getText().toString(),
 					amount, m_CategorySelected);
-			sb.append("Added Monthly reminder at " + currentHour + ":"
+			sb.append(getString(R.string.toastMessageAddedMonthlyReminder) + currentHour + ":"
 					+ currentMinute);
 			break;
 		default:

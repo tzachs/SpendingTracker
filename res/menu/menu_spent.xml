@@ -25,6 +25,14 @@
         android:title="Entries">
         <menu>
             <item
+                android:id="@+id/menuItemSpentStatistics"
+                android:alphabeticShortcut="s"
+                android:numericShortcut="3"
+                android:title="@string/menuItemSpentStatisticsTitle"
+                
+                
+                />
+            <item
                 android:id="@+id/menuItemSpentDelete"
                 android:alphabeticShortcut="d"
                 android:numericShortcut="1"

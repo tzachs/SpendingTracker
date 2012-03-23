@@ -14,6 +14,9 @@
 	    
     <string name="spinnerPrompt">Choose a category</string>
     
+    <!-- Dialog -->
+    <string name="spentMoneyDialogTitleText">Spent money?</string>
+    
  
     <string name="addCategoryTitle">Add a category</string>
     <string name="addCategoryMessage">Enter the name of the category</string>
@@ -67,6 +70,7 @@
 
     <!-- CHECK BOXES -->
 
+	<string name="checkBoxAutoExitText">Auto close</string>
     <string name="checkBoxAutoAddReminderText">Auto add reminder</string>
     <string name="checkBoxSaturdayText">Saturday</string>
     <string name="checkBoxSaturdayHint">7</string>
@@ -86,6 +90,7 @@
     <!-- Menu Items -->
 
     <string name="menuItemReminderDeleteText">Delete</string>
+    <string name="menuItemSpentStatisticsTitle">Statistics</string>
     
     <!--  Alert dialog title -->
     <string name="alertDialogViewEntriesSpentTitleEdit">Edit entry</string>
@@ -108,8 +113,24 @@
     
     <!-- TABS -->
     
-    <string name="tabGeneralText">General</string>
-    <string name="tabRemindersText">Reminders</string>
-    <string name="tabEntriesText">Entries</string>
+    <string name="textViewTabTextGeneral">General</string>
+    <string name="textViewTabTextReminders">Reminders</string>
+    <string name="textViewTabTextEntries">Entries</string>
+    
+    <string name="dialogPositiveYes">Yes</string>
+    <string name="dialogPositiveNo">No</string>
+    <string name="dialogTitleDeleteAllEntries">Delete all entries</string>
+    <string name="dialogMessageDeleteAllEntries">Are you sure you want to delete all entries?</string>
+    <string name="toastMessageEntryAdded">Entry added</string>
+    <string name="dialogMessageErrorAddingSpentEntryToUser">Either amount is not filled or category is not chosen!</string>
+    <string name="dialogTitleErrorAddingEntryToUser">Error adding entry</string>
+    <string name="toastMessageAddedEverydayReminder">"Added Everyday reminder at "</string>
+    <string name="toastMessageAddedWeeklyReminderOn">"Added weekly reminder on "</string>
+    <string name="toastMessageWithTime">" with time "</string>
+    <string name="toastMessageAddedMonthlyReminder">"Added Monthly reminder at "</string>
+    <string name="dialogTitleSpentStatistics">Spent Statistics</string>
+    
+    
+    
 
 </resources>

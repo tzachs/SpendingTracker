@@ -1,9 +1,12 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +50,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
 	private int m_Type;
 	private Calendar m_Calendar;
+	private String[][] m_Data;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.spending_entries);
-		
+
 		initializeVariables();
 
 		try {
@@ -92,21 +96,19 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	private void updateTableLayout() {
 
-		String[][] data = null;
-
 		switch (m_Type) {
 
 		case TYPE_TODAY:
-			
-			data = m_SpendingTrackerDbEngine.getSpentDailyEntries(m_Calendar);
+
+			m_Data = m_SpendingTrackerDbEngine.getSpentDailyEntries(m_Calendar);
 			break;
 
 		case TYPE_WEEK:
-			data = m_SpendingTrackerDbEngine.getSpentThisWeekEnteries(1,
+			m_Data = m_SpendingTrackerDbEngine.getSpentThisWeekEnteries(1,
 					m_Calendar);
 			break;
 		case TYPE_MONTH:
-			data = m_SpendingTrackerDbEngine
+			m_Data = m_SpendingTrackerDbEngine
 					.getSpentThisMonthEnteries(m_Calendar);
 			break;
 
@@ -114,7 +116,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 			break;
 		}
 
-		PopulateRows(data);
+		PopulateRows(m_Data);
 	}
 
 	@Override
@@ -133,14 +135,14 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		//
 		MenuItem menuItemSpentExport = menu.findItem(R.id.menuItemSpentExport);
 		MenuItem menuItemSpentImport = menu.findItem(R.id.menuItemSpentImport);
-		MenuItem menuItemSpentDatabase = menu.findItem(R.id.menuItemSpentDatabase);
-		
+		MenuItem menuItemSpentDatabase = menu
+				.findItem(R.id.menuItemSpentDatabase);
 
 		if (m_Type == TYPE_MONTH) {
 			menuItemSpentExport.setVisible(true);
 			menuItemSpentImport.setVisible(true);
 			menuItemSpentDatabase.setVisible(true);
-			
+
 		} else {
 			menuItemSpentExport.setVisible(false);
 			menuItemSpentImport.setVisible(false);
@@ -155,19 +157,23 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		//
 		boolean ret = false;
 		switch (item.getItemId()) {
-		
+
+		case R.id.menuItemSpentStatistics:
+			menuItemSpentStatistics_Clicked();
+			break;
+
 		case R.id.menuItemSpentSortAmount:
 			menuItemSpentSortAmount_Clicked();
 			break;
-			
+
 		case R.id.menuItemSpentSortCategory:
 			menuItemSpentSortCategory_Clicked();
 			break;
-		
+
 		case R.id.menuItemSpentSortDate:
 			menuItemSpentSortDate_Clicked();
 			break;
-			
+
 		case R.id.menuItemSpentSortId:
 			menuItemSpentSortId_Clicked();
 			break;
@@ -200,27 +206,86 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		return ret;
 	}
 
+	private void menuItemSpentStatistics_Clicked() {
+		//
+		int rowIndex = m_Data.length - 1;
+		HashMap<String, Float> stats = new HashMap<String, Float>();
+		HashMap<String, Integer> statsCounter = new HashMap<String, Integer>();
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		Log.i(TAG, "number of rows: " + rowIndex);
+
+		while (rowIndex >= 0) {
+
+			// column 2 in m_Data is the category
+			String key = m_Data[rowIndex][2];
+			if (stats.containsKey(key)) {
+				
+				float value = stats.get(key);
+				Log.i(TAG, "value " + value);
+				value += Float.parseFloat(m_Data[rowIndex][1]);
+				
+				stats.put(key, value);
+				statsCounter.put(key, statsCounter.get(key) + 1);
+
+			} else {
+				stats.put(key,
+						Float.parseFloat(m_Data[rowIndex][1]));
+				statsCounter.put(key, 0);
+			}
+
+			rowIndex--;
+			
+
+		}
+		
+		
+		Iterator<String> a = stats.keySet().iterator();
+		
+		while ( a.hasNext() ){
+			String key = (String)a.next();
+			float value = (stats.get(key));
+			stringBuilder.append("Category " + key);
+			
+			stringBuilder.append("\n\tTotal Spent: " + value);
+			stringBuilder.append("\n\tAverage Spent: " + value / (float)statsCounter.get(key));
+			stringBuilder.append("\n\t# of entries: " + statsCounter.get(key));
+			
+		}
+		
+		Dialog d = new Dialog(this);
+		d.setTitle(getString(R.string.dialogTitleSpentStatistics));
+		TextView message = new TextView(this);
+		message.setText(stringBuilder.toString());
+		d.setContentView(message);
+		d.show();
+		
+
+	}
+
 	private void menuItemSpentSortCategory_Clicked() {
-		// 
-		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_CATEGORY);
+		//
+		m_SpendingTrackerDbEngine
+				.setSortBy(SpendingTrackerDbEngine.KEY_CATEGORY);
 		updateTableLayout();
 	}
 
 	private void menuItemSpentSortAmount_Clicked() {
-		// 
+		//
 		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_AMOUNT);
 		updateTableLayout();
 	}
 
 	private void menuItemSpentSortDate_Clicked() {
-		// 
+		//
 		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_DATE);
 		updateTableLayout();
-		
+
 	}
 
 	private void menuItemSpentSortId_Clicked() {
-		// 
+		//
 		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_ROWID);
 		updateTableLayout();
 	}
@@ -347,15 +412,17 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						//
-						String rowId = editTextRowId.getText()
-						.toString();
-						
-						m_SpendingTrackerDbEngine.deleteSpentEntryByRowId(rowId);
-						
-						Toast.makeText(ViewEntriesSpent.this, getString(R.string.entryDeleted), Toast.LENGTH_SHORT).show();
-						
+						String rowId = editTextRowId.getText().toString();
+
+						m_SpendingTrackerDbEngine
+								.deleteSpentEntryByRowId(rowId);
+
+						Toast.makeText(ViewEntriesSpent.this,
+								getString(R.string.entryDeleted),
+								Toast.LENGTH_SHORT).show();
+
 						updateTableLayout();
-						
+
 					}
 				});
 		alertDialog.setNegativeButton(
@@ -370,8 +437,6 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 				});
 
 		alertDialog.show();
-
-		
 
 	}
 
@@ -468,13 +533,13 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	private void initializeVariables() {
 		// initialize members
-		
+
 		m_Calendar = Calendar.getInstance();
 		m_Calendar.setTimeInMillis(System.currentTimeMillis());
-		
+
 		tlEntries = (TableLayout) findViewById(R.id.tableLayoutEnteriesSpent);
 		textViewSpendingRefrenceDate = (TextView) findViewById(R.id.textViewSpendingRefrenceDate);
-		
+
 		showRefrenceDate();
 
 		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
@@ -484,7 +549,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		// 
+		//
 		return true;
 	}
 
@@ -499,7 +564,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		Log.d(TAG, "distance " + distance);
 
 		// checking if the user swipe from left to right or right to left
-		if (Math.abs(velocityX) > 100 && distance> 100){
+		if (Math.abs(velocityX) > 100 && distance > 100) {
 
 			if (direction > 0) {
 				// move right
@@ -558,10 +623,10 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		sb.append(m_Calendar.get(Calendar.MONTH) + 1);
 		sb.append("/");
 		sb.append(m_Calendar.get(Calendar.DAY_OF_MONTH));
-		
+
 		textViewSpendingRefrenceDate.setText(sb.toString());
 
-		//Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
+		// Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -579,31 +644,31 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	@Override
 	public void onShowPress(MotionEvent e) {
-		// 
+		//
 
 	}
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		// 
+		//
 		return true;
 	}
 
 	@Override
 	public boolean onDoubleTap(MotionEvent e) {
-		// 
+		//
 		return false;
 	}
 
 	@Override
 	public boolean onDoubleTapEvent(MotionEvent e) {
-		// 
+		//
 		return false;
 	}
 
 	@Override
 	public boolean onSingleTapConfirmed(MotionEvent e) {
-		// 
+		//
 		return false;
 	}
 
