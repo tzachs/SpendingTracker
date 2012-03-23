@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
 
+
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -17,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 
 import android.os.Bundle;
@@ -71,7 +74,7 @@ public class SpendingTrackerActivity extends Activity implements
 	
 	private EditText editTextQuickAddAmount;
 	private EditText editTextComment;
-	private EditText etDayInMonthReminder;
+	private EditText editTextDayInMonthReminder;
 
 	private Button buttonQuickAddInsert;
 	private Button buttonShowTodayEntries;
@@ -89,8 +92,8 @@ public class SpendingTrackerActivity extends Activity implements
 	private Spinner spinnerCategories;
 	private TimePicker timePickerDay;
 
-	private CheckBox cbSunday, cbMonday, cbTuesday, cbWednesday, cbThursday,
-			cbFriday, cbSaturday;
+	private CheckBox checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday, 
+	checkBoxThursday, checkBoxFriday, checkBoxSaturday;
 	private CheckBox checkBoxAutoAddReminder;
 
 	private RadioGroup radioGroupReminder;
@@ -120,12 +123,73 @@ public class SpendingTrackerActivity extends Activity implements
 				0, new Intent(SpendingTrackerActivity.this,
 						SpendingTrackerService.class), 0);
 
-		initPreferences();
+		
 		initVariables();
 
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel(12021982);
 
+	}
+
+	private void updateLocale() {
+		// 
+		String language = m_SharedPreferences.getString("prefAppLanguage", "English");
+		String languageToLoad = "en" ;
+		
+		if ( language.contentEquals("Italian") ) {
+			
+			languageToLoad = "it";
+			
+		}
+		Locale locale = new Locale(languageToLoad);
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		this.getBaseContext().getResources().updateConfiguration(config, null);
+		
+	}
+	
+	private void updateStringsFromResource () {
+		
+		spinnerCategories.setPrompt(getString(R.string.spinnerPrompt));
+		
+		textViewSpentMonth.setText(getString(R.string.textViewSpentMonthText));
+		textViewSpentToday.setText(getString(R.string.textViewSpentTodayText));
+		textViewSpentWeek.setText(getString(R.string.textViewSpentWeekText));
+		
+		editTextComment.setHint(getString(R.string.editTextCommentHint));
+		editTextDayInMonthReminder.setHint(getString(R.string.editTextDayInMonthHint));
+		editTextQuickAddAmount.setHint(getString(R.string.editTextQuickAddAmountHint));
+		
+		buttonAddReminder.setText(getString(R.string.buttonAddReminderText));
+		buttonCategoriesEdit.setText(getString(R.string.buttonCategoriesEditText));
+		buttonDeleteAllEnteries.setText(getString(R.string.buttonDeleteAllEnteriesText));
+		buttonQuickAddInsert.setText(getString(R.string.buttonQuickAddInsertText));
+		buttonShowMonthEntries.setText(getString(R.string.buttonShowMonthEntriesText));
+		buttonShowReminderEntries.setText(getString(R.string.buttonShowReminderEntriesText));
+		buttonShowTodayEntries.setText(getString(R.string.buttonShowTodayEntriesText));
+		buttonShowWeeklyEntries.setText(getString(R.string.buttonShowWeeklyEntriesText));
+		
+		checkBoxAutoAddReminder.setText(getString(R.string.checkBoxAutoAddReminderText));
+		checkBoxFriday.setText(getString(R.string.checkBoxFridayText));
+		checkBoxMonday.setText(getString(R.string.checkBoxMondayText));
+		checkBoxSaturday.setText(getString(R.string.checkBoxSaturdayText));
+		checkBoxSunday.setText(getString(R.string.checkBoxSundayText));
+		checkBoxThursday.setText(getString(R.string.checkBoxThursdayText));
+		checkBoxTuesday.setText(getString(R.string.checkBoxTuesdayText));
+		checkBoxWednesday.setText(getString(R.string.checkBoxWednesdayText));
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	private void stopAlarmManager() {
@@ -156,6 +220,8 @@ public class SpendingTrackerActivity extends Activity implements
 	private void initPreferences() {
 		m_SharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
+		
+		
 
 	}
 
@@ -163,9 +229,12 @@ public class SpendingTrackerActivity extends Activity implements
 	protected void onResume() {
 
 		super.onResume();
-
+		
+		initPreferences();
+		updateLocale();
+		updateStringsFromResource();
+	
 		checkServiceStatus(false);
-
 		checkPendingReminder();
 
 		updateDaySpent();
@@ -173,7 +242,7 @@ public class SpendingTrackerActivity extends Activity implements
 		updateMonthSpent();
 
 	}
-
+	
 	private void checkPendingReminder() {
 		// Function checks if there is a pending reminder
 		// Currently only support one reminder
@@ -466,8 +535,8 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private void initEditTexts() {
 		//
-		etDayInMonthReminder = (EditText) findViewById(R.id.editTextDayInMonth);
-		etDayInMonthReminder.setVisibility(View.GONE);
+		editTextDayInMonthReminder = (EditText) findViewById(R.id.editTextDayInMonth);
+		editTextDayInMonthReminder.setVisibility(View.GONE);
 		editTextQuickAddAmount = (EditText) findViewById(R.id.editTextQuickAddAmount);
 		editTextComment = (EditText) findViewById(R.id.editTextComment);
 
@@ -478,13 +547,13 @@ public class SpendingTrackerActivity extends Activity implements
 
 		checkBoxAutoAddReminder = (CheckBox) findViewById(R.id.checkBoxAutoAddReminder);
 
-		cbSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
-		cbMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
-		cbTuesday = (CheckBox) findViewById(R.id.checkBoxTuesday);
-		cbWednesday = (CheckBox) findViewById(R.id.checkBoxWednesday);
-		cbThursday = (CheckBox) findViewById(R.id.checkBoxThursday);
-		cbFriday = (CheckBox) findViewById(R.id.checkBoxFriday);
-		cbSaturday = (CheckBox) findViewById(R.id.checkBoxSaturday);
+		checkBoxSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
+		checkBoxMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
+		checkBoxTuesday = (CheckBox) findViewById(R.id.checkBoxTuesday);
+		checkBoxWednesday = (CheckBox) findViewById(R.id.checkBoxWednesday);
+		checkBoxThursday = (CheckBox) findViewById(R.id.checkBoxThursday);
+		checkBoxFriday = (CheckBox) findViewById(R.id.checkBoxFriday);
+		checkBoxSaturday = (CheckBox) findViewById(R.id.checkBoxSaturday);
 
 	}
 
@@ -498,13 +567,13 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private void setCheckboxesVisible(int i_Visibility) {
 		//
-		cbSunday.setVisibility(i_Visibility);
-		cbMonday.setVisibility(i_Visibility);
-		cbTuesday.setVisibility(i_Visibility);
-		cbWednesday.setVisibility(i_Visibility);
-		cbThursday.setVisibility(i_Visibility);
-		cbFriday.setVisibility(i_Visibility);
-		cbSaturday.setVisibility(i_Visibility);
+		checkBoxSunday.setVisibility(i_Visibility);
+		checkBoxMonday.setVisibility(i_Visibility);
+		checkBoxTuesday.setVisibility(i_Visibility);
+		checkBoxWednesday.setVisibility(i_Visibility);
+		checkBoxThursday.setVisibility(i_Visibility);
+		checkBoxFriday.setVisibility(i_Visibility);
+		checkBoxSaturday.setVisibility(i_Visibility);
 
 	}
 
@@ -747,7 +816,7 @@ public class SpendingTrackerActivity extends Activity implements
 			break;
 		case R.id.radioButtonWeekly:
 
-			if (cbSunday.isChecked()) {
+			if (checkBoxSunday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -755,7 +824,7 @@ public class SpendingTrackerActivity extends Activity implements
 						m_CategorySelected);
 				sb.append(" Sunday");
 			}
-			if (cbMonday.isChecked()) {
+			if (checkBoxMonday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -763,7 +832,7 @@ public class SpendingTrackerActivity extends Activity implements
 						m_CategorySelected);
 				sb.append(" Monday");
 			}
-			if (cbTuesday.isChecked()) {
+			if (checkBoxTuesday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -771,7 +840,7 @@ public class SpendingTrackerActivity extends Activity implements
 						m_CategorySelected);
 				sb.append(" Tuesday");
 			}
-			if (cbWednesday.isChecked()) {
+			if (checkBoxWednesday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -779,7 +848,7 @@ public class SpendingTrackerActivity extends Activity implements
 						amount, m_CategorySelected);
 				sb.append(" Wednesday");
 			}
-			if (cbThursday.isChecked()) {
+			if (checkBoxThursday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -787,7 +856,7 @@ public class SpendingTrackerActivity extends Activity implements
 						m_CategorySelected);
 				sb.append(" Thursday");
 			}
-			if (cbFriday.isChecked()) {
+			if (checkBoxFriday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -795,7 +864,7 @@ public class SpendingTrackerActivity extends Activity implements
 						m_CategorySelected);
 				sb.append(" Friday");
 			}
-			if (cbSaturday.isChecked()) {
+			if (checkBoxSaturday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
@@ -817,7 +886,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 			m_SpendingTrackerDbEngine.insertNewReminder(
 					SpendingTrackerDbEngine.TYPE_REMINDER_MONTHLY, currentHour,
-					currentMinute, etDayInMonthReminder.getText().toString(),
+					currentMinute, editTextDayInMonthReminder.getText().toString(),
 					amount, m_CategorySelected);
 			sb.append("Added Monthly reminder at " + currentHour + ":"
 					+ currentMinute);
@@ -862,7 +931,7 @@ public class SpendingTrackerActivity extends Activity implements
 			break;
 
 		case R.id.menuPrefernces:
-			menuPrefernces_Clicked();
+			menuPreferences_Clicked();
 
 		default:
 			ret = super.onOptionsItemSelected(item);
@@ -872,7 +941,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
-	private void menuPrefernces_Clicked() {
+	private void menuPreferences_Clicked() {
 		//
 		Intent pref = new Intent("com.tzachsolomon.spendingtracker.PREFERENCES");
 
@@ -927,20 +996,20 @@ public class SpendingTrackerActivity extends Activity implements
 		switch (checkedId) {
 		case R.id.radioButtonEveryday:
 			setCheckboxesVisible(View.GONE);
-			etDayInMonthReminder.setVisibility(View.GONE);
+			editTextDayInMonthReminder.setVisibility(View.GONE);
 			break;
 
 		case R.id.radioButtonWeekly:
 			setCheckAccordingToDate();
 
 			setCheckboxesVisible(View.VISIBLE);
-			etDayInMonthReminder.setVisibility(View.GONE);
+			editTextDayInMonthReminder.setVisibility(View.GONE);
 
 			break;
 
 		case R.id.radioButtonMonthly:
 			setCheckboxesVisible(View.GONE);
-			etDayInMonthReminder.setVisibility(View.VISIBLE);
+			editTextDayInMonthReminder.setVisibility(View.VISIBLE);
 			break;
 
 		default:
@@ -955,31 +1024,31 @@ public class SpendingTrackerActivity extends Activity implements
 
 		switch (cal.get(Calendar.DAY_OF_WEEK)) {
 		case Calendar.SUNDAY:
-			cbSunday.setChecked(true);
+			checkBoxSunday.setChecked(true);
 			break;
 
 		case Calendar.MONDAY:
-			cbMonday.setChecked(true);
+			checkBoxMonday.setChecked(true);
 			break;
 
 		case Calendar.TUESDAY:
-			cbTuesday.setChecked(true);
+			checkBoxTuesday.setChecked(true);
 			break;
 
 		case Calendar.WEDNESDAY:
-			cbWednesday.setChecked(true);
+			checkBoxWednesday.setChecked(true);
 			break;
 
 		case Calendar.THURSDAY:
-			cbThursday.setChecked(true);
+			checkBoxThursday.setChecked(true);
 			break;
 
 		case Calendar.FRIDAY:
-			cbFriday.setChecked(true);
+			checkBoxFriday.setChecked(true);
 			break;
 
 		case Calendar.SATURDAY:
-			cbSaturday.setChecked(true);
+			checkBoxSaturday.setChecked(true);
 			break;
 
 		default:

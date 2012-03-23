@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <string-array name="arrayLanguagesLabels">
+		<item>English</item>
+		<item>Italiano</item>
+	</string-array>
+	<string-array name="arrayLanguagesValues">
+	    <item>English</item>
+		<item>Italian</item>
+	</string-array>
 
     <string name="app_name">Spending Tracker</string>
+	    
     <string name="spinnerPrompt">Choose a category</string>
-    <string name="buttonCategoriesEditText">Edit</string>
-    <string name="textViewAddEntryText">Add an entry</string>
-    <string name="buttonDeleteCategoryText">Delete</string>
+    
+ 
     <string name="addCategoryTitle">Add a category</string>
     <string name="addCategoryMessage">Enter the name of the category</string>
     <string name="deleteCategoryTitle">Delete category?</string>
@@ -28,6 +37,7 @@
 
     <!-- TEXT VIEWS -->
 
+	<string name="textViewAddEntryText">Add an entry</string>
     <string name="textViewSpentTodayText">Total spent today: </string>
     <string name="textViewSpentWeekText">Total spent this week: </string>
     <string name="textViewSpentMonthText">Total spent this month: </string>
@@ -45,6 +55,8 @@
 
     <!-- BUTTONS -->
 
+	<string name="buttonDeleteCategoryText">Delete</string>
+	<string name="buttonCategoriesEditText">Edit</string>
     <string name="buttonAddReminderText">Add reminder</string>
     <string name="buttonQuickAddInsertText">Add entry</string>
     <string name="buttonShowTodayEntriesText">Show Today Entries</string>

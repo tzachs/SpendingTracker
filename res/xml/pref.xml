@@ -8,6 +8,14 @@
             android:key="cbShowEntryAdded"
             android:summary="Show entry added message"
             android:title="Show entry added" />
+        
+         <ListPreference
+            android:defaultValue="English"
+            android:entries="@array/arrayLanguagesLabels"
+            android:entryValues="@array/arrayLanguagesValues"
+            android:key="prefAppLanguage"
+            android:summary="Allows you to change the language of the application"
+            android:title="Language" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Background services" >
