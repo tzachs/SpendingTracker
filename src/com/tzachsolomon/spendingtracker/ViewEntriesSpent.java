@@ -232,7 +232,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 			} else {
 				stats.put(key,
 						Float.parseFloat(m_Data[rowIndex][1]));
-				statsCounter.put(key, 0);
+				statsCounter.put(key, 1);
 			}
 
 			rowIndex--;
@@ -246,7 +246,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		while ( a.hasNext() ){
 			String key = (String)a.next();
 			float value = (stats.get(key));
-			stringBuilder.append("Category " + key);
+			stringBuilder.append("\nCategory " + key);
 			
 			stringBuilder.append("\n\tTotal Spent: " + value);
 			stringBuilder.append("\n\tAverage Spent: " + value / (float)statsCounter.get(key));
