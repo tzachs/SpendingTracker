@@ -254,12 +254,10 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 			
 		}
 		
-		Dialog d = new Dialog(this);
-		d.setTitle(getString(R.string.dialogTitleSpentStatistics));
-		TextView message = new TextView(this);
-		message.setText(stringBuilder.toString());
-		d.setContentView(message);
-		d.show();
+		Intent intent = new Intent(this, ViewStatistics.class);
+		intent.putExtra("textViewStatistics",stringBuilder.toString());
+		
+		startActivity(intent);
 		
 
 	}

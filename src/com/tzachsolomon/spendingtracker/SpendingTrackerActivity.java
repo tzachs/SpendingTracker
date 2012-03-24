@@ -62,7 +62,7 @@ public class SpendingTrackerActivity extends Activity implements
 	// TODO: add option to place tab on bottom instead of up
  	// TODO: add colors to categories
 	// TODO: add graphs
-	// TODO: add statistics
+ 
  
 
 	/** Called when the activity is first created. */

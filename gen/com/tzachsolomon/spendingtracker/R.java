@@ -46,23 +46,23 @@ public final class R {
         public static final int editTextQuickAddAmount=0x7f09000d;
         public static final int editTextSpentEditAmount=0x7f090003;
         public static final int editTextSpentEditDate=0x7f090005;
-        public static final int group_spent_entries=0x7f09003e;
-        public static final int group_spent_sort=0x7f090039;
-        public static final int menuAbout=0x7f090035;
-        public static final int menuExit=0x7f090037;
-        public static final int menuItemReminderDelete=0x7f090038;
-        public static final int menuItemSpentDatabase=0x7f090043;
-        public static final int menuItemSpentDelete=0x7f090040;
-        public static final int menuItemSpentEdit=0x7f090041;
-        public static final int menuItemSpentExport=0x7f090044;
-        public static final int menuItemSpentImport=0x7f090045;
-        public static final int menuItemSpentSortAmount=0x7f09003c;
-        public static final int menuItemSpentSortCategory=0x7f09003b;
-        public static final int menuItemSpentSortDate=0x7f09003a;
-        public static final int menuItemSpentSortId=0x7f09003d;
-        public static final int menuItemSpentStatistics=0x7f09003f;
-        public static final int menuPrefernces=0x7f090036;
-        public static final int menuSpentGroupDatabase=0x7f090042;
+        public static final int group_spent_entries=0x7f09003f;
+        public static final int group_spent_sort=0x7f09003a;
+        public static final int menuAbout=0x7f090036;
+        public static final int menuExit=0x7f090038;
+        public static final int menuItemReminderDelete=0x7f090039;
+        public static final int menuItemSpentDatabase=0x7f090044;
+        public static final int menuItemSpentDelete=0x7f090041;
+        public static final int menuItemSpentEdit=0x7f090042;
+        public static final int menuItemSpentExport=0x7f090045;
+        public static final int menuItemSpentImport=0x7f090046;
+        public static final int menuItemSpentSortAmount=0x7f09003d;
+        public static final int menuItemSpentSortCategory=0x7f09003c;
+        public static final int menuItemSpentSortDate=0x7f09003b;
+        public static final int menuItemSpentSortId=0x7f09003e;
+        public static final int menuItemSpentStatistics=0x7f090040;
+        public static final int menuPrefernces=0x7f090037;
+        public static final int menuSpentGroupDatabase=0x7f090043;
         public static final int radioButtonEveryday=0x7f09001b;
         public static final int radioButtonMonthly=0x7f09001d;
         public static final int radioButtonWeekly=0x7f09001c;
@@ -92,6 +92,7 @@ public final class R {
         public static final int textViewSpentMonth=0x7f09000b;
         public static final int textViewSpentToday=0x7f090009;
         public static final int textViewSpentWeek=0x7f09000a;
+        public static final int textViewStatistics=0x7f090035;
         public static final int textViewVersion=0x7f090000;
         public static final int timePicker=0x7f090026;
     }
@@ -102,6 +103,7 @@ public final class R {
         public static final int main=0x7f030003;
         public static final int reminders_enteries=0x7f030004;
         public static final int spending_entries=0x7f030005;
+        public static final int statistics=0x7f030006;
     }
     public static final class menu {
         public static final int mainmenu=0x7f080000;
