@@ -130,7 +130,7 @@ public final class R {
   Alert dialog title 
          */
         public static final int alertDialogViewEntriesSpentTitleEdit=0x7f06003a;
-        public static final int app_description=0x7f060059;
+        public static final int app_description=0x7f06005d;
         public static final int app_name=0x7f060000;
         /**  BUTTONS 
          */
@@ -227,6 +227,10 @@ public final class R {
         public static final int toastMessageAddedEverydayReminder=0x7f060054;
         public static final int toastMessageAddedMonthlyReminder=0x7f060057;
         public static final int toastMessageAddedWeeklyReminderOn=0x7f060055;
+        public static final int toastMessageDisabledLocationReminderService=0x7f06005c;
+        public static final int toastMessageDisabledTimeReminderService=0x7f06005a;
+        public static final int toastMessageEnabledLocationReminderService=0x7f06005b;
+        public static final int toastMessageEnabledTimeReminderService=0x7f060059;
         public static final int toastMessageEntryAdded=0x7f060051;
         public static final int toastMessageWithTime=0x7f060056;
     }

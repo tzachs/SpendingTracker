@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -134,6 +135,10 @@ public class SpendingTrackerActivity extends Activity implements
 
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel(12021982);
+		
+		
+		
+		
 
 	}
 
@@ -228,6 +233,9 @@ public class SpendingTrackerActivity extends Activity implements
 				.getDefaultSharedPreferences(getBaseContext());
 		
 		
+		
+		
+		
 
 	}
 
@@ -308,7 +316,14 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(' ');
 				sb.append(amount);
 				sb.append(' ');
-				sb.append(Currency.getInstance(Locale.getDefault()).getSymbol());
+				
+				try {
+					sb.append(Currency.getInstance(Locale.getDefault()).getSymbol());
+				} catch (Exception e) {
+					// 
+					e.printStackTrace();
+				}
+				
 				sb.append(' ');
 				sb.append(getString(R.string.stringDidYouSpendOn));
 				sb.append(' ');
@@ -365,31 +380,67 @@ public class SpendingTrackerActivity extends Activity implements
 	private void checkServiceStatus(boolean i_DisplayToast) {
 		//
 		try {
-			boolean serviceAlwaysOn = m_SharedPreferences.getBoolean(
-					"cbServiceAlwaysOn", true);
+			boolean checkBoxPreferencsReminderService = m_SharedPreferences.getBoolean(
+					"checkBoxPreferencsReminderService", true);
 			StringBuilder sb = new StringBuilder();
 
 			// checking service always should be on and the service is not
 			// running
 			stopAlarmManager();
 
-			if (serviceAlwaysOn) {
-				sb.append("Enabled service");
+			if (checkBoxPreferencsReminderService) {
+				sb.append(getString(R.string.toastMessageEnabledTimeReminderService));
 				startAlarmManager();
 			} else {
-				sb.append("Disabled service");
+				sb.append(getString(R.string.toastMessageDisabledTimeReminderService));
 			}
 
 			if (i_DisplayToast) {
 				Toast.makeText(SpendingTrackerActivity.this, sb.toString(),
 						Toast.LENGTH_LONG).show();
 			}
+			
+			sb.setLength(0);
+			
+			boolean checkBoxPreferencesLocationService = m_SharedPreferences.getBoolean(
+					"checkBoxPreferencesLocationService", false);
+			
+
+			if (checkBoxPreferencesLocationService) {
+				sb.append(getString(R.string.toastMessageEnabledLocationReminderService));
+				startLocationService();
+			} else {
+				sb.append(getString(R.string.toastMessageDisabledLocationReminderService));
+				stopLocationService();
+
+			}
+
+			if (i_DisplayToast) {
+				Toast.makeText(SpendingTrackerActivity.this, sb.toString(),
+						Toast.LENGTH_LONG).show();
+			}
+			
+			
 
 			sb.setLength(0);
 		} catch (Exception e) {
 			Log.d(TAG, e.toString());
 		}
 
+	}
+
+	private void stopLocationService() {
+		// 
+		Intent serviceLocation = new Intent(this,SpendingTrackerLocationService.class);
+		stopService(serviceLocation);
+		
+	}
+
+	private void startLocationService() {
+		// 
+		Intent serviceLocation = new Intent(this,SpendingTrackerLocationService.class);
+		//startService(serviceLocation);
+		
 	}
 
 	private void initVariables() {

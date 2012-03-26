@@ -1,6 +1,7 @@
 package com.tzachsolomon.spendingtracker;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 public class Preferences extends PreferenceActivity{
@@ -10,6 +11,8 @@ public class Preferences extends PreferenceActivity{
 		// 
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.pref);
+		
+		
 	}
 
 }

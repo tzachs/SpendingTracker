@@ -129,6 +129,10 @@
     <string name="toastMessageWithTime">" with time "</string>
     <string name="toastMessageAddedMonthlyReminder">"Added Monthly reminder at "</string>
     <string name="dialogTitleSpentStatistics">Spent Statistics</string>
+    <string name="toastMessageEnabledTimeReminderService">Enabled Time Reminder service</string>
+    <string name="toastMessageDisabledTimeReminderService">Disabled Time Reminder service</string>
+    <string name="toastMessageEnabledLocationReminderService">Enabled Location Reminder service</string>
+    <string name="toastMessageDisabledLocationReminderService">Disabled Location Reminder service</string>
     
     
     

@@ -22,9 +22,16 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="cbServiceAlwaysOn"
-            android:summary="If unchecked service will be stopped on exit, meaning no reminders!"
-            android:title="Service Always On" />
+            android:key="checkBoxPreferencsReminderService"
+            android:summary="Use time reminders"
+            android:title="Time reminders" />
+        <CheckBoxPreference 
+            android:defaultValue="false"
+            android:key="checkBoxPreferencesLocationService"
+            android:summary="Use location for reminders (Still in BETA so it doesn't affect at all)"
+            android:title="Location service"
+            
+            />
         
     </PreferenceCategory>
 
