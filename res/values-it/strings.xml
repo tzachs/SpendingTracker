@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="arrayLanguagesLabels">
+		<item>English</item>
+		<item>Italiano</item>
+	</string-array>
+	<string-array name="arrayLanguagesValues">
+	    <item>English</item>
+		<item>Italian</item>
+	</string-array>
+
+    <string name="app_name">Spending Tracker</string>
+    <string name="app_description">Tieni traccia delle tue spese attraverso un sistema automatico di tracking. 
+        Per esempio, se tu prendi l’autobus ogni giorno per andare al lavoro, inserisci l’ammontare e la categoria, 
+        aggiungi una notifica per ogni giorno, e riceverai notifiche ogniqualvolta raggiungerai la soglia. 
+        Basta che clicchi su “sì” e le spese verranno aggiunte automaticamente, è semplicissimo! :)</string>
+     <string name="spinnerPrompt">Scegli una categoria</string>
+    <string name="buttonCategoriesEditText">Modifica</string>
+    <string name="textViewAddEntryText">Aggiungi un elemento</string>
+    <string name="buttonDeleteCategoryText">Cancella</string>
+    <string name="addCategoryTitle">Aggiungi una categoria</string>
+    <string name="addCategoryMessage">Inserisci il nome della categoria</string>
+    <string name="deleteCategoryTitle">Vuoi cancellare la categoria?</string>
+    <string name="stringDidYouSpend">Hai speso</string>
+    <string name="stringDidYouSpendOn">su</string>
+ 
+    <!-- RADIO BUTTON -->
+ 
+    <string name="radioButtonMonthlyText">Mensilmente</string>
+    <string name="radioButtonWeeklyText">Settimanalmente</string>
+    <string name="radioButtonEverydayText">Quotidianamente</string>
+ 
+    <!-- EDIT TEXT -->
+ 
+    <string name="editTextQuickAddAmountHint">Digita l’ammontare speso</string>
+    <string name="editTextCommentHint">Digita un commento (opzionale)</string>
+    <string name="editTextDayInMonthHint">Giorno nel mese (numero)</string>
+    <string name="editTextRowIdHint">Digita l’ID della riga</string>
+    <string name="editTextSpentEditDateHint">Data</string>
+ 
+    <!-- TEXT VIEWS -->
+ 
+    <string name="textViewSpentTodayText">Totale speso oggi: </string>
+    <string name="textViewSpentWeekText">Totale speso questa settimana: </string>
+    <string name="textViewSpentMonthText">Totale speso questo mese: </string>
+    <string name="buttonDeleteAllEnteriesText">Cancella tutti gli elementi</string>
+    <string name="textViewEntriesSpentRowIdText">ID della riga</string>
+    <string name="textViewEntriesSpentAmountText">Ammontare</string>
+    <string name="textViewEntriesSpentCategoryText">Categoria</string>
+    <string name="textViewEntriesSpentDateText">Data</string>
+    <string name="textViewEntriesRemindersIdText">ID</string>
+    <string name="textViewEntriesRemindersTypeText">Tipo</string>
+    <string name="textViewEntriesRemindersHourText">Ora</string>
+    <string name="textViewEntriesRemindersMinText">Minuto</string>
+    <string name="textViewEntriesRemindersDayText">Giorno</string>
+    <string name="textViewAboutVersion">Versione attuale: </string>
+ 
+    <!-- BUTTONS -->
+ 
+    <string name="buttonAddReminderText">Aggiungi notifica</string>
+    <string name="buttonQuickAddInsertText">Aggiungi elemento</string>
+    <string name="buttonShowTodayEntriesText">Mostra elementi del giorno</string>
+    <string name="buttonShowWeeklyEntriesText">Mostra elementi della settimana</string>
+    <string name="buttonShowMonthEntriesText">Mostra elementi del mese</string>
+    <string name="buttonShowReminderEntriesText">Mostra notifiche</string>
+    <string name="buttonSpentEditUpdateText">Aggiorna</string>
+ 
+    <!-- CHECK BOXES -->
+ 
+ 	<string name="checkBoxAutoExitText">Auto close</string>
+    <string name="checkBoxAutoAddReminderText">Aggiungi notifica automaticamente</string>
+    <string name="checkBoxSaturdayText">Sabato</string>
+    <string name="checkBoxSaturdayHint">7</string>
+    <string name="checkBoxFridayText">Venerdì</string>
+    <string name="checkBoxFridayHint">6</string>
+    <string name="checkBoxThursdayText">Giovedì</string>
+    <string name="checkBoxThursdayHint">5</string>
+    <string name="checkBoxWednesdayText">Mercoledì</string>
+    <string name="checkBoxWednesdayHint">4</string>
+    <string name="checkBoxTuesdayText">Martedì</string>
+    <string name="checkBoxTuesdayHint">3</string>
+    <string name="checkBoxMondayText">Lunedì</string>
+    <string name="checkBoxMondayHint">2</string>
+    <string name="checkBoxSundayText">Domenica</string>
+    <string name="checkBoxSundayHint">1</string>
+ 
+    <!-- Menu Items -->
+ 
+    <string name="menuItemReminderDeleteText">Cancella</string>
+    <string name="menuItemSpentStatisticsTitle">Statistics</string>
+    
+    <!--  Alert dialog title -->
+    <string name="alertDialogViewEntriesSpentTitleEdit">Modifica elemento</string>
+    <string name="alertDialogViewEntriesSpentTitleDelete">Cancella elemento</string>
+    <string name="alertDialogViewEntriesSpentPositiveEdit">Modifica</string>
+    <string name="alertDialogViewEntriesSpentPositiveDelete">Cancella</string>
+    <string name="alertDialogViewEntriesSpentNegative">Cancella</string>
+    <string name="alertDialogTitleDeleteReminder">Elimina notifica</string>
+    <string name="alertDialogExportDatabaseTitle">Esporta il database</string>
+    <string name="alertDialogExportDatabaseMessage">Sei sicuro di volere esportare?\nQuesto cencellerà il file corrente</string>
+    <string name="alertDialogExportDatabasePositive">Esporta</string>
+    <string name="alertDialogExportDatabaseNegative">Cancella</string>
+    <string name="alertDialogImportDatabaseTitle">Importa database</string>
+    <string name="alertDialogImportDatabaseMessage"> Sei sicuro di volere importare?\nQuesto cencellerà il file corrente </string>
+    <string name="alertDialogImportDatabasePositive">Importa</string>
+    <string name="alertDialogImportDatabaseNegative">Cancella</string>
+    
+    <string name="entryDeleted">Elemento cancellato</string>
+    <string name="entryUpdated">Elemento aggiornato</string>
+    
+    <!-- TABS -->
+    
+    <string name="textViewTabTextGeneral">Generale</string>
+    <string name="textViewTabTextReminders">Notifiche</string>
+    <string name="textViewTabTextEntries">Elementi</string>
+    
+    <string name="dialogPositiveYes">Yes</string>
+    <string name="dialogPositiveNo">No</string>
+    <string name="dialogTitleDeleteAllEntries">Delete all entries</string>
+    <string name="dialogMessageDeleteAllEntries">Are you sure you want to delete all entries?</string>
+    <string name="toastMessageEntryAdded">Entry added</string>
+    <string name="dialogMessageErrorAddingSpentEntryToUser">Either amount is not filled or category is not chosen!</string>
+    <string name="dialogTitleErrorAddingEntryToUser">Error adding entry</string>
+    <string name="toastMessageAddedEverydayReminder">"Added Everyday reminder at "</string>
+    <string name="toastMessageAddedWeeklyReminderOn">"Added weekly reminder on "</string>
+    <string name="toastMessageWithTime">" with time "</string>
+    <string name="toastMessageAddedMonthlyReminder">"Added Monthly reminder at "</string>
+    <string name="dialogTitleSpentStatistics">Spent Statistics</string>
+    <string name="spentMoneyDialogTitleText">Spent money?</string>
+    <string name="toastMessageEnabledTimeReminderService">Enabled Time Reminder service</string>
+    <string name="toastMessageDisabledTimeReminderService">Disabled Time Reminder service</string>
+    <string name="toastMessageEnabledLocationReminderService">Enabled Location Reminder service</string>
+    <string name="toastMessageDisabledLocationReminderService">Disabled Location Reminder service</string>
+    <string name="editTextSpentEditTimeHint">Time</string>
+    <string name="textViewEntriesSpentTimeText">Time</string>
+    <string name="toastMessageErrorUpdateRecord">Error updating the record</string>
+    
+    
+</resources>

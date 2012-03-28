@@ -133,6 +133,9 @@
     <string name="toastMessageDisabledTimeReminderService">Disabled Time Reminder service</string>
     <string name="toastMessageEnabledLocationReminderService">Enabled Location Reminder service</string>
     <string name="toastMessageDisabledLocationReminderService">Disabled Location Reminder service</string>
+    <string name="editTextSpentEditTimeHint">Time</string>
+    <string name="textViewEntriesSpentTimeText">Time</string>
+    <string name="toastMessageErrorUpdateRecord">Error updating the record</string>
     
     
     

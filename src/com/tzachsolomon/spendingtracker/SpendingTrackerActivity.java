@@ -23,7 +23,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 
-import android.preference.Preference;
+
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;

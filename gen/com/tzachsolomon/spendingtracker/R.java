@@ -24,77 +24,80 @@ public final class R {
         public static final int notify=0x7f020006;
     }
     public static final class id {
-        public static final int buttonAddReminder=0x7f090027;
-        public static final int buttonCategoriesEdit=0x7f09000f;
-        public static final int buttonDeleteAllEnteries=0x7f090018;
-        public static final int buttonQuickAddInsert=0x7f090012;
-        public static final int buttonShowMonthEntries=0x7f090016;
-        public static final int buttonShowReminderEntries=0x7f090017;
-        public static final int buttonShowTodayEntries=0x7f090014;
-        public static final int buttonShowWeeklyEntries=0x7f090015;
-        public static final int buttonSpentEditUpdate=0x7f090006;
-        public static final int checkBoxAutoAddReminder=0x7f090011;
-        public static final int checkBoxFriday=0x7f090024;
-        public static final int checkBoxMonday=0x7f090020;
-        public static final int checkBoxSaturday=0x7f090025;
-        public static final int checkBoxSunday=0x7f09001f;
-        public static final int checkBoxThursday=0x7f090023;
-        public static final int checkBoxTuesday=0x7f090021;
-        public static final int checkBoxWednesday=0x7f090022;
-        public static final int editTextComment=0x7f090010;
-        public static final int editTextDayInMonth=0x7f09001e;
-        public static final int editTextQuickAddAmount=0x7f09000d;
+        public static final int buttonAddReminder=0x7f09002a;
+        public static final int buttonCategoriesEdit=0x7f090012;
+        public static final int buttonDeleteAllEnteries=0x7f09001b;
+        public static final int buttonQuickAddInsert=0x7f090015;
+        public static final int buttonShowMonthEntries=0x7f090019;
+        public static final int buttonShowReminderEntries=0x7f09001a;
+        public static final int buttonShowTodayEntries=0x7f090017;
+        public static final int buttonShowWeeklyEntries=0x7f090018;
+        public static final int buttonSpentEditUpdate=0x7f09000a;
+        public static final int checkBoxAutoAddReminder=0x7f090014;
+        public static final int checkBoxFriday=0x7f090027;
+        public static final int checkBoxMonday=0x7f090023;
+        public static final int checkBoxSaturday=0x7f090028;
+        public static final int checkBoxSunday=0x7f090022;
+        public static final int checkBoxThursday=0x7f090026;
+        public static final int checkBoxTuesday=0x7f090024;
+        public static final int checkBoxWednesday=0x7f090025;
+        public static final int editTextComment=0x7f090013;
+        public static final int editTextDayInMonth=0x7f090021;
+        public static final int editTextQuickAddAmount=0x7f090011;
         public static final int editTextSpentEditAmount=0x7f090003;
         public static final int editTextSpentEditDate=0x7f090005;
-        public static final int group_spent_entries=0x7f09003f;
-        public static final int group_spent_sort=0x7f09003a;
-        public static final int menuAbout=0x7f090036;
-        public static final int menuExit=0x7f090038;
-        public static final int menuItemReminderDelete=0x7f090039;
-        public static final int menuItemSpentDatabase=0x7f090044;
-        public static final int menuItemSpentDelete=0x7f090041;
-        public static final int menuItemSpentEdit=0x7f090042;
-        public static final int menuItemSpentExport=0x7f090045;
-        public static final int menuItemSpentImport=0x7f090046;
-        public static final int menuItemSpentSortAmount=0x7f09003d;
-        public static final int menuItemSpentSortCategory=0x7f09003c;
-        public static final int menuItemSpentSortDate=0x7f09003b;
-        public static final int menuItemSpentSortId=0x7f09003e;
-        public static final int menuItemSpentStatistics=0x7f090040;
-        public static final int menuPrefernces=0x7f090037;
-        public static final int menuSpentGroupDatabase=0x7f090043;
-        public static final int radioButtonEveryday=0x7f09001b;
-        public static final int radioButtonMonthly=0x7f09001d;
-        public static final int radioButtonWeekly=0x7f09001c;
-        public static final int radioGroupReminders=0x7f09001a;
-        public static final int spinnerCategories=0x7f09000e;
-        public static final int tabEntries=0x7f090013;
-        public static final int tabGeneral=0x7f090008;
-        public static final int tabReminders=0x7f090019;
-        public static final int tabhostMain=0x7f090007;
-        public static final int tableLayoutEnteriesReminders=0x7f090028;
-        public static final int tableLayoutEnteriesSpent=0x7f090032;
-        public static final int tableRowHeaderEnteriesReminders=0x7f090029;
-        public static final int tableRowHeaderEnteriesSpent=0x7f090033;
-        public static final int textViewAddEntry=0x7f09000c;
+        public static final int editTextSpentEditTime=0x7f090007;
+        public static final int group_spent_entries=0x7f090042;
+        public static final int group_spent_sort=0x7f09003d;
+        public static final int menuAbout=0x7f090039;
+        public static final int menuExit=0x7f09003b;
+        public static final int menuItemReminderDelete=0x7f09003c;
+        public static final int menuItemSpentDatabase=0x7f090047;
+        public static final int menuItemSpentDelete=0x7f090044;
+        public static final int menuItemSpentEdit=0x7f090045;
+        public static final int menuItemSpentExport=0x7f090048;
+        public static final int menuItemSpentImport=0x7f090049;
+        public static final int menuItemSpentSortAmount=0x7f090040;
+        public static final int menuItemSpentSortCategory=0x7f09003f;
+        public static final int menuItemSpentSortDate=0x7f09003e;
+        public static final int menuItemSpentSortId=0x7f090041;
+        public static final int menuItemSpentStatistics=0x7f090043;
+        public static final int menuPrefernces=0x7f09003a;
+        public static final int menuSpentGroupDatabase=0x7f090046;
+        public static final int radioButtonEveryday=0x7f09001e;
+        public static final int radioButtonMonthly=0x7f090020;
+        public static final int radioButtonWeekly=0x7f09001f;
+        public static final int radioGroupReminders=0x7f09001d;
+        public static final int spinnerCategories=0x7f090009;
+        public static final int tabEntries=0x7f090016;
+        public static final int tabGeneral=0x7f09000c;
+        public static final int tabReminders=0x7f09001c;
+        public static final int tabhostMain=0x7f09000b;
+        public static final int tableLayoutEnteriesReminders=0x7f09002b;
+        public static final int tableLayoutEnteriesSpent=0x7f090035;
+        public static final int tableRowHeaderEnteriesReminders=0x7f09002c;
+        public static final int tableRowHeaderEnteriesSpent=0x7f090036;
+        public static final int textViewAddEntry=0x7f090010;
         public static final int textViewCategoryName=0x7f090001;
-        public static final int textViewEntriesRemindersAmount=0x7f09002f;
-        public static final int textViewEntriesRemindersCategory=0x7f090030;
-        public static final int textViewEntriesRemindersDay=0x7f09002e;
-        public static final int textViewEntriesRemindersHour=0x7f09002c;
-        public static final int textViewEntriesRemindersId=0x7f09002a;
-        public static final int textViewEntriesRemindersMin=0x7f09002d;
-        public static final int textViewEntriesRemindersType=0x7f09002b;
-        public static final int textViewEntriesSpentRowId=0x7f090034;
-        public static final int textViewSpendingRefrenceDate=0x7f090031;
+        public static final int textViewEntriesRemindersAmount=0x7f090032;
+        public static final int textViewEntriesRemindersCategory=0x7f090033;
+        public static final int textViewEntriesRemindersDay=0x7f090031;
+        public static final int textViewEntriesRemindersHour=0x7f09002f;
+        public static final int textViewEntriesRemindersId=0x7f09002d;
+        public static final int textViewEntriesRemindersMin=0x7f090030;
+        public static final int textViewEntriesRemindersType=0x7f09002e;
+        public static final int textViewEntriesSpentRowId=0x7f090037;
+        public static final int textViewSpendingRefrenceDate=0x7f090034;
         public static final int textViewSpentEditAmount=0x7f090002;
+        public static final int textViewSpentEditCategory=0x7f090008;
         public static final int textViewSpentEditDate=0x7f090004;
-        public static final int textViewSpentMonth=0x7f09000b;
-        public static final int textViewSpentToday=0x7f090009;
-        public static final int textViewSpentWeek=0x7f09000a;
-        public static final int textViewStatistics=0x7f090035;
+        public static final int textViewSpentEditTime=0x7f090006;
+        public static final int textViewSpentMonth=0x7f09000f;
+        public static final int textViewSpentToday=0x7f09000d;
+        public static final int textViewSpentWeek=0x7f09000e;
+        public static final int textViewStatistics=0x7f090038;
         public static final int textViewVersion=0x7f090000;
-        public static final int timePicker=0x7f090026;
+        public static final int timePicker=0x7f090029;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -130,7 +133,7 @@ public final class R {
   Alert dialog title 
          */
         public static final int alertDialogViewEntriesSpentTitleEdit=0x7f06003a;
-        public static final int app_description=0x7f06005d;
+        public static final int app_description=0x7f060060;
         public static final int app_name=0x7f060000;
         /**  BUTTONS 
          */
@@ -181,6 +184,7 @@ public final class R {
         public static final int editTextQuickAddAmountHint=0x7f06000b;
         public static final int editTextRowIdHint=0x7f06000e;
         public static final int editTextSpentEditDateHint=0x7f06000f;
+        public static final int editTextSpentEditTimeHint=0x7f06005d;
         public static final int entryDeleted=0x7f060048;
         public static final int entryUpdated=0x7f060049;
         /**  Menu Items 
@@ -213,6 +217,7 @@ public final class R {
         public static final int textViewEntriesSpentCategoryText=0x7f060017;
         public static final int textViewEntriesSpentDateText=0x7f060018;
         public static final int textViewEntriesSpentRowIdText=0x7f060015;
+        public static final int textViewEntriesSpentTimeText=0x7f06005e;
         public static final int textViewSpentMonthText=0x7f060013;
         /**  TEXT VIEWS 
          */
@@ -232,6 +237,7 @@ public final class R {
         public static final int toastMessageEnabledLocationReminderService=0x7f06005b;
         public static final int toastMessageEnabledTimeReminderService=0x7f060059;
         public static final int toastMessageEntryAdded=0x7f060051;
+        public static final int toastMessageErrorUpdateRecord=0x7f06005f;
         public static final int toastMessageWithTime=0x7f060056;
     }
     public static final class style {

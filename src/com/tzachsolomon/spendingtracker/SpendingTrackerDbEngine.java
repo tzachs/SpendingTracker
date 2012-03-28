@@ -951,13 +951,15 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public void updateSpentByRowId(String m_RowId, String newAmount,
-			String newDate) {
+	public void updateSpentByRowId(String m_RowId, String i_NewAmount,
+			String i_NewDate, String i_NewCategory) {
 		//
 		int ret;
 		ContentValues cv = new ContentValues();
-		cv.put(KEY_AMOUNT, newAmount);
-		cv.put(KEY_DATE, newDate);
+		cv.put(KEY_AMOUNT, i_NewAmount);
+		cv.put(KEY_DATE, i_NewDate);
+		cv.put(KEY_CATEGORY, i_NewCategory);
+		
 
 		this.open();
 
