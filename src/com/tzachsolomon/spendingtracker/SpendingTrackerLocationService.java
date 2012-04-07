@@ -1,5 +1,7 @@
 package com.tzachsolomon.spendingtracker;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
 
@@ -152,6 +154,10 @@ public class SpendingTrackerLocationService extends Service implements
 
 	private void sendNotification(ContentValues i_Data) {
 		//
+		Calendar calendar = Calendar.getInstance();
+		
+		
+		
 		Bundle extras = new Bundle();
 		Intent intent = new Intent(getBaseContext(),
 				SpendingTrackerActivity.class);
@@ -161,10 +167,21 @@ public class SpendingTrackerLocationService extends Service implements
 		String rowId = i_Data.getAsString(SpendingTrackerDbEngine.KEY_ROWID);
 		String locationName = i_Data
 				.getAsString(SpendingTrackerDbEngine.KEY_LOCATION_NAME);
+		int notificationId = 0; 
 
 		if (m_SpendingTrackerDbEngine.isLocationChanged(rowId) == false) {
 			Log.d(TAG, "Already sent a notification once about this location");
 		} else {
+			
+			calendar.setTimeInMillis(System.currentTimeMillis());
+			
+			notificationId += calendar.get(Calendar.SECOND);
+			notificationId += calendar.get(Calendar.MINUTE);
+			notificationId += calendar.get(Calendar.HOUR_OF_DAY);
+			notificationId += calendar.get(Calendar.DAY_OF_MONTH);
+			notificationId += calendar.get(Calendar.MONTH);
+			notificationId += calendar.get(Calendar.YEAR);
+			
 
 			extras.putBoolean("fromNotifaction", true);
 			extras.putString(SpendingTrackerDbEngine.KEY_AMOUNT, amount);
@@ -172,6 +189,7 @@ public class SpendingTrackerLocationService extends Service implements
 			extras.putString(SpendingTrackerDbEngine.KEY_REMINDER_TYPE,
 					SpendingTrackerDbEngine.KEY_REMINDER_TYPE_LOCATION);
 			extras.putString(SpendingTrackerDbEngine.KEY_REMINDER_ID, rowId);
+			extras.putInt("notificationId", notificationId);
 
 			intent.putExtras(extras);
 
@@ -235,10 +253,10 @@ public class SpendingTrackerLocationService extends Service implements
 			if (enableVibrate) {
 				m_Notification.defaults |= Notification.DEFAULT_VIBRATE;
 			}
+			
+			
 
-			m_SpendingTrackerDbEngine.insertNewPendingLocationReminder(rowId);
-
-			m_NotificationManager.notify(12021982, m_Notification);
+			m_NotificationManager.notify(notificationId, m_Notification);
 		}
 
 	}

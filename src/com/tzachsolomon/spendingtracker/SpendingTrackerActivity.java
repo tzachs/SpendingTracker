@@ -144,6 +144,8 @@ public class SpendingTrackerActivity extends Activity implements
 	private PendingIntent m_LocationAlarmSender;
 
 	private boolean m_DebugMode;
+	
+	NotificationManager nm;
 
 	private BroadcastReceiver m_BroadcastReceiverLocationUpdate;
 
@@ -168,8 +170,8 @@ public class SpendingTrackerActivity extends Activity implements
 
 		initVariables();
 
-		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancel(12021982);
+		nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		
 
 	}
 
@@ -387,6 +389,12 @@ public class SpendingTrackerActivity extends Activity implements
 			}
 
 			if (isReminder) {
+				
+				int notificationId = extras.getInt("notificationId");
+				
+				// Cancel notification
+				nm.cancel(notificationId);
+				nm.cancel(12021982);
 
 				final CheckBox checkBoxAutoExit = new CheckBox(this);
 				checkBoxAutoExit

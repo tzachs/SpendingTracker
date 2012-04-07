@@ -144,6 +144,7 @@ public class SpendingTrackerDbEngine {
 			Log.d(TAG, sqlQuery);
 
 			db.execSQL(sqlQuery);
+			
 		}
 
 		private void createTableRemindersQueue(SQLiteDatabase db) {
@@ -156,6 +157,14 @@ public class SpendingTrackerDbEngine {
 					+ KEY_REMINDER_ID + " TEXT NOT NULL " + ");";
 
 			db.execSQL(sqlQuery);
+			
+			ContentValues cv = new ContentValues();
+			
+			cv.put(KEY_REMINDER_TYPE, "-1");
+			cv.put(KEY_REMINDER_STATUS, "-1");
+			cv.put(KEY_REMINDER_ID, "-1");
+			
+			db.insert(TABLE_REMINDERS_QUEUE, null, cv);
 
 		}
 
@@ -175,11 +184,10 @@ public class SpendingTrackerDbEngine {
 
 			Log.v(TAG, DATABASE_NAME + "is upgraded from version " + oldVersion
 					+ " to version " + newVersion);
-
-			//db.delete(TABLE_LOCATION_REMINDERS, null, null);
-			//db.execSQL("DROP TABLE " + TABLE_LOCATION_REMINDERS);
-
+			
 			createTableLocationReminders(db);
+
+			db.execSQL("DROP TABLE " + TABLE_REMINDERS_QUEUE);
 			createTableRemindersQueue(db);
 
 		}
@@ -1364,36 +1372,38 @@ public class SpendingTrackerDbEngine {
 
 	public boolean isLocationChanged(String rowId) {
 
-		// Checking if the location by rowId is the last in the list.
-		// If so than the location didn't change
-		// return true if changed, false if didn't change
+		// Checking if the current location is last one found
+		// If the location is new the first id in TABLE_REMINDERS_QUERE will not be equal to rowId
 		boolean ret = false;
 		Cursor c;
+		StringBuilder filter = new StringBuilder();
+		
+		filter.append(KEY_ROWID);
+		filter.append("='1'");
+		filter.append(" AND ");
+		filter.append(KEY_REMINDER_ID);
+		filter.append("='");
+		filter.append(rowId);
+		filter.append("'");
+		
 
 		this.open();
 		// getting the last row and checking if it is our rowId
-		c = ourDatabase.query(TABLE_REMINDERS_QUEUE, null, null,
-				null, null, null, KEY_ROWID + " desc","1");
+		c = ourDatabase.query(TABLE_REMINDERS_QUEUE, null, filter.toString(),
+				null, null, null, null,null);
 
 		try {
-
-			// checking if empty data base
+			// If no row was found than this is the first time we are at this location
 			if ( c.getCount() == 0 ){
-				// this is an empty data base meaning the entry isn't there thus ret must be true
+				// updating last location 
+				ContentValues cv = new ContentValues();
+				
+				cv.put(KEY_REMINDER_ID, rowId);
+				
+				ourDatabase.update(TABLE_REMINDERS_QUEUE, cv,KEY_ROWID + "='1'", null);
 				ret = true;
 			}
-			// else check if the we got only 1 record
-			else if (c.getCount() == 1) {
-				c.moveToFirst();
-				
-				// if the row id is like ours than the location didn't change
-				if (!c.getString(c.getColumnIndex(KEY_REMINDER_ID))
-						.contentEquals(rowId)) {
-					ret = true;
-				}
-
-			}
-			c.close();
+ 
 		} catch (Exception e) {
 			//
 			Log.d(TAG, e.getMessage().toString());
@@ -1402,25 +1412,6 @@ public class SpendingTrackerDbEngine {
 		
 		c.close();
 
-		this.close();
-
-		return ret;
-
-	}
-
-	public long insertNewPendingLocationReminder(String rowId) {
-		//
-		long ret;
-
-		ContentValues cv = new ContentValues();
-
-		cv.put(KEY_REMINDER_ID, rowId);
-		cv.put(KEY_REMINDER_TYPE, KEY_REMINDER_TYPE_LOCATION);
-		cv.put(KEY_REMINDER_STATUS, KEY_REMINDER_STATUS_PENDING);
-
-		this.open();
-
-		ret = ourDatabase.insert(TABLE_REMINDERS_QUEUE, null, cv);
 		this.close();
 
 		return ret;
@@ -1501,6 +1492,20 @@ public class SpendingTrackerDbEngine {
 	public void deleteAllSentNotifications() {
 		// 
 		deleteTableAndResetId(TABLE_REMINDERS_QUEUE);
+		
+		// Resetting last known location
+		ContentValues cv = new ContentValues();
+		
+		cv.put(KEY_REMINDER_TYPE, "-1");
+		cv.put(KEY_REMINDER_STATUS, "-1");
+		cv.put(KEY_REMINDER_ID, "-1");
+		
+		this.open();
+		
+		ourDatabase.insert(TABLE_REMINDERS_QUEUE, null, cv);
+		
+		this.close();
+		
 		
 	}
 
