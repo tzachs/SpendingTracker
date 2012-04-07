@@ -12,17 +12,21 @@ import android.app.PendingIntent;
 
 import android.app.Dialog;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
+import android.location.Location;
+import android.location.LocationListener;
+
 import android.os.Bundle;
 import android.os.SystemClock;
-
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -32,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -45,7 +48,6 @@ import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-
 import android.widget.Spinner;
 import android.widget.TabHost;
 
@@ -55,16 +57,17 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class SpendingTrackerActivity extends Activity implements
-		OnClickListener, OnTabChangeListener, OnCheckedChangeListener {
+		OnClickListener, OnTabChangeListener, OnCheckedChangeListener,
+		LocationListener {
 
 	// TODO: export to Google Document
 	// TODO: reminder by location
 	// TODO: add option to place tab on bottom instead of up
- 	// TODO: add colors to categories
+	// TODO: add colors to categories
 	// TODO: add graphs
- 
- 
+	// TODO: auto export database (auto backup)
 
 	/** Called when the activity is first created. */
 	private static final String TAG = SpendingTrackerActivity.class
@@ -72,42 +75,64 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private TabHost tabHostMain;
 	private TabSpec tabSpec;
-	
+
 	private EditText editTextQuickAddAmount;
 	private EditText editTextComment;
 	private EditText editTextDayInMonthReminder;
+	private EditText editTextLocationName;
 
 	private Button buttonQuickAddInsert;
 	private Button buttonShowTodayEntries;
 	private Button buttonShowWeeklyEntries;
 	private Button buttonShowMonthEntries;
-	private Button buttonShowReminderEntries;
-	private Button buttonAddReminder;
+	private Button buttonShowTimeReminderEntries;
+	private Button buttonShowLocationReminderEntries;
+	private Button buttonAddTimeReminder;
+	private Button buttonAddLocationReminder;
 	private Button buttonCategoriesEdit;
 	private Button buttonDeleteAllEnteries;
 
 	private TextView textViewSpentToday;
 	private TextView textViewSpentWeek;
 	private TextView textViewSpentMonth;
-	
+
 	private TextView textViewTabTextGeneral;
-	private TextView textViewTabTextReminders;
+	private TextView textViewTabTextTimeReminders;
+	private TextView textViewTabTextLocationReminders;
 	private TextView textViewTabTextEntries;
 
+	private TextView textViewAccuracyLabel;
+	private TextView textViewAccuracyText;
+	private TextView textViewAltitudeLabel;
+	private TextView textViewAltitudeText;
+	private TextView textViewBearingLabel;
+	private TextView textViewBearingText;
+	private TextView textViewLatitudeLabel;
+	private TextView textViewLatitudeText;
+	private TextView textViewLongitudeLabel;
+	private TextView textViewLongitudeText;
+	private TextView textViewProviderLabel;
+	private TextView textViewProviderText;
+	private TextView textViewSpeedLabel;
+	private TextView textViewSpeedText;
+	private TextView textViewTimeLabel;
 	
+	private TextView textViewTimeText;
 
 	private Spinner spinnerCategories;
 	private TimePicker timePickerDay;
 
-	private CheckBox checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday, 
-	checkBoxThursday, checkBoxFriday, checkBoxSaturday;
+	private CheckBox checkBoxSunday, checkBoxMonday, checkBoxTuesday,
+			checkBoxWednesday, checkBoxThursday, checkBoxFriday,
+			checkBoxSaturday;
 	private CheckBox checkBoxAutoAddReminder;
 
 	private RadioGroup radioGroupReminder;
 
 	private final String TAB_TAG_GENERAL = "tagGeneral";
 	private final String TAB_TAG_ENTRIES = "tagEntries";
-	private final String TAB_TAG_REMINDERS = "tagReminders";
+	private final String TAB_TAG_TIME_REMINDERS = "tagTimeReminders";
+	private final String TAB_TAG_LOCATION_REMINDERS = "tagLocationReminders";
 
 	private SharedPreferences m_SharedPreferences;
 
@@ -115,7 +140,12 @@ public class SpendingTrackerActivity extends Activity implements
 	private String m_CategorySelected;
 	private String[] m_Categories;
 
-	private PendingIntent m_AlarmSender;
+	private PendingIntent m_TimeAlarmSender;
+	private PendingIntent m_LocationAlarmSender;
+
+	private boolean m_DebugMode;
+
+	private BroadcastReceiver m_BroadcastReceiverLocationUpdate;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -126,67 +156,99 @@ public class SpendingTrackerActivity extends Activity implements
 		// waiting for the debugger to attach in order to the debug the service
 		// android.os.Debug.waitForDebugger();
 
-		m_AlarmSender = PendingIntent.getService(SpendingTrackerActivity.this,
-				0, new Intent(SpendingTrackerActivity.this,
-						SpendingTrackerService.class), 0);
+		m_TimeAlarmSender = PendingIntent.getService(
+				SpendingTrackerActivity.this, 0, new Intent(
+						SpendingTrackerActivity.this,
+						SpendingTrackerTimeService.class), 0);
+		m_LocationAlarmSender = PendingIntent.getService(
+				SpendingTrackerActivity.this, 0, new Intent(
+						SpendingTrackerActivity.this,
+						SpendingTrackerLocationService.class), 0);
+		initPreferences();
 
-		
 		initVariables();
 
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel(12021982);
-		
-		
-		
-		
 
 	}
 
 	private void updateLocale() {
-		// 
-		String language = m_SharedPreferences.getString("prefAppLanguage", "English");
-		String languageToLoad = "en" ;
-		
-		if ( language.contentEquals("Italian") ) {
-			
+		//
+		String language = m_SharedPreferences.getString("prefAppLanguage",
+				"English");
+		String languageToLoad = "en";
+
+		if (language.contentEquals("Italian")) {
+
 			languageToLoad = "it";
-			
+
 		}
 		Locale locale = new Locale(languageToLoad);
 		Locale.setDefault(locale);
 		Configuration config = new Configuration();
 		config.locale = locale;
 		this.getBaseContext().getResources().updateConfiguration(config, null);
-		
+
 	}
-	
-	private void updateStringsFromResource () {
-		
+
+	private void updateStringsFromResource() {
+
 		spinnerCategories.setPrompt(getString(R.string.spinnerPrompt));
-		
+
 		textViewSpentMonth.setText(getString(R.string.textViewSpentMonthText));
 		textViewSpentToday.setText(getString(R.string.textViewSpentTodayText));
 		textViewSpentWeek.setText(getString(R.string.textViewSpentWeekText));
-		
-		textViewTabTextEntries.setText(getString(R.string.textViewTabTextEntries));
-		textViewTabTextGeneral.setText(getString(R.string.textViewTabTextGeneral));
-		textViewTabTextReminders.setText(getString(R.string.textViewTabTextReminders));
-		
-		
+
+		textViewTabTextEntries
+				.setText(getString(R.string.textViewTabTextEntries));
+		textViewTabTextGeneral
+				.setText(getString(R.string.textViewTabTextGeneral));
+		textViewTabTextTimeReminders
+				.setText(getString(R.string.textViewTabTextTimeReminders));
+		textViewTabTextLocationReminders
+				.setText(getString(R.string.textViewTabTextLocationReminders));
+		textViewAccuracyLabel
+				.setText(getString(R.string.textViewAccuracyLabel));
+		textViewAltitudeLabel
+				.setText(getString(R.string.textViewAltitudeLabel));
+		textViewBearingLabel.setText(getString(R.string.textViewBearingLabel));
+		textViewLatitudeLabel
+				.setText(getString(R.string.textViewLatitudeLabel));
+		textViewLongitudeLabel
+				.setText(getString(R.string.textViewLongitudeLabel));
+		textViewProviderLabel
+				.setText(getString(R.string.textViewProviderLabel));
+		textViewSpeedLabel.setText(getString(R.string.textViewSpeedLabel));
+		textViewTimeLabel.setText(getString(R.string.textViewTimeLabel));
+
 		editTextComment.setHint(getString(R.string.editTextCommentHint));
-		editTextDayInMonthReminder.setHint(getString(R.string.editTextDayInMonthHint));
-		editTextQuickAddAmount.setHint(getString(R.string.editTextQuickAddAmountHint));
-		
-		buttonAddReminder.setText(getString(R.string.buttonAddReminderText));
-		buttonCategoriesEdit.setText(getString(R.string.buttonCategoriesEditText));
-		buttonDeleteAllEnteries.setText(getString(R.string.buttonDeleteAllEnteriesText));
-		buttonQuickAddInsert.setText(getString(R.string.buttonQuickAddInsertText));
-		buttonShowMonthEntries.setText(getString(R.string.buttonShowMonthEntriesText));
-		buttonShowReminderEntries.setText(getString(R.string.buttonShowReminderEntriesText));
-		buttonShowTodayEntries.setText(getString(R.string.buttonShowTodayEntriesText));
-		buttonShowWeeklyEntries.setText(getString(R.string.buttonShowWeeklyEntriesText));
-		
-		checkBoxAutoAddReminder.setText(getString(R.string.checkBoxAutoAddReminderText));
+		editTextDayInMonthReminder
+				.setHint(getString(R.string.editTextDayInMonthHint));
+		editTextQuickAddAmount
+				.setHint(getString(R.string.editTextQuickAddAmountHint));
+
+		buttonAddTimeReminder
+				.setText(getString(R.string.buttonAddReminderText));
+		buttonAddLocationReminder
+				.setText(getString(R.string.buttonAddReminderText));
+		buttonCategoriesEdit
+				.setText(getString(R.string.buttonCategoriesEditText));
+		buttonDeleteAllEnteries
+				.setText(getString(R.string.buttonDeleteAllEnteriesText));
+		buttonQuickAddInsert
+				.setText(getString(R.string.buttonQuickAddInsertText));
+		buttonShowMonthEntries
+				.setText(getString(R.string.buttonShowMonthEntriesText));
+		buttonShowTimeReminderEntries
+				.setText(getString(R.string.buttonShowTimeReminderEntriesText));
+		buttonShowTodayEntries
+				.setText(getString(R.string.buttonShowTodayEntriesText));
+		buttonShowWeeklyEntries
+				.setText(getString(R.string.buttonShowWeeklyEntriesText));
+
+		checkBoxAutoAddReminder
+				.setText(getString(R.string.checkBoxAutoAddReminderText));
 		checkBoxFriday.setText(getString(R.string.checkBoxFridayText));
 		checkBoxMonday.setText(getString(R.string.checkBoxMondayText));
 		checkBoxSaturday.setText(getString(R.string.checkBoxSaturdayText));
@@ -194,29 +256,29 @@ public class SpendingTrackerActivity extends Activity implements
 		checkBoxThursday.setText(getString(R.string.checkBoxThursdayText));
 		checkBoxTuesday.setText(getString(R.string.checkBoxTuesdayText));
 		checkBoxWednesday.setText(getString(R.string.checkBoxWednesdayText));
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
-	private void stopAlarmManager() {
+	private void cancelTimeAlarmManager() {
 		//
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-		am.cancel(m_AlarmSender);
+		am.cancel(m_TimeAlarmSender);
 	}
 
-	private void startAlarmManager() {
+	private void cancelLocationAlarmManager() {
+		//
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.cancel(m_LocationAlarmSender);
+	}
+
+	private void startTimeAlarmManager() {
 		//
 		Calendar firstTime = Calendar.getInstance();
 		firstTime.setTimeInMillis(SystemClock.elapsedRealtime());
 
 		int secondsToAdd = 60 - firstTime.get(Calendar.SECOND);
 
-		Log.v(TAG, "Starting service using alarm manager in " + secondsToAdd
+		Log.v(TAG, "Starting Time service using alarm manager in " + secondsToAdd
 				+ " Seconds");
 
 		firstTime.add(Calendar.SECOND, secondsToAdd);
@@ -224,18 +286,28 @@ public class SpendingTrackerActivity extends Activity implements
 		// Schedule the alarm!
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-				firstTime.getTimeInMillis(), 60000, m_AlarmSender);
+				firstTime.getTimeInMillis(), 60000, m_TimeAlarmSender);
+
+	}
+
+	private void startLocationAlarmManager() {
+		//
+		Calendar firstTime = Calendar.getInstance();
+		firstTime.setTimeInMillis(SystemClock.elapsedRealtime());
+
+		// Schedule the alarm!
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+				firstTime.getTimeInMillis(), 60000, m_LocationAlarmSender);
 
 	}
 
 	private void initPreferences() {
 		m_SharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
-		
-		
-		
-		
-		
+
+		m_DebugMode = m_SharedPreferences.getBoolean("checkBoxPreferenceDebug",
+				false);
 
 	}
 
@@ -243,12 +315,14 @@ public class SpendingTrackerActivity extends Activity implements
 	protected void onResume() {
 
 		super.onResume();
-		
+
 		initPreferences();
+		startLocationService();
+		
 		updateLocale();
 		updateStringsFromResource();
-	
-		checkServiceStatus(false);
+
+		checkServiceStatus();
 		checkPendingReminder();
 
 		updateDaySpent();
@@ -256,7 +330,17 @@ public class SpendingTrackerActivity extends Activity implements
 		updateMonthSpent();
 
 	}
-	
+
+	@Override
+	protected void onPause() {
+		//
+		super.onPause();
+
+		unregisterReceiver(m_BroadcastReceiverLocationUpdate);
+		stopLocationService();
+		
+		}
+
 	private void checkPendingReminder() {
 		// Function checks if there is a pending reminder
 		// Currently only support one reminder
@@ -292,12 +376,21 @@ public class SpendingTrackerActivity extends Activity implements
 				getIntent().removeExtra(
 						SpendingTrackerDbEngine.TYPE_REMINDER_MONTHLY);
 				isReminder = true;
+			} else if (extras
+					.containsKey(SpendingTrackerDbEngine.KEY_REMINDER_TYPE)) {
+				Log.d(TAG, "Starting from location reminder");
+				isReminder = true;
+				String rowId = extras
+						.getString(SpendingTrackerDbEngine.KEY_REMINDER_ID);
+				m_SpendingTrackerDbEngine
+						.changeLocationReminderToPressed(rowId);
 			}
 
 			if (isReminder) {
 
 				final CheckBox checkBoxAutoExit = new CheckBox(this);
-				checkBoxAutoExit.setText(getString(R.string.checkBoxAutoExitText));
+				checkBoxAutoExit
+						.setText(getString(R.string.checkBoxAutoExitText));
 				checkBoxAutoExit.setChecked(true);
 
 				final String amount = extras
@@ -316,14 +409,19 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(' ');
 				sb.append(amount);
 				sb.append(' ');
-				
+
 				try {
-					sb.append(Currency.getInstance(Locale.getDefault()).getSymbol());
+					sb.append(Currency.getInstance(Locale.getDefault())
+							.getSymbol());
 				} catch (Exception e) {
-					// 
+					//
+					if (m_DebugMode) {
+						Toast.makeText(this, e.getMessage().toString(),
+								Toast.LENGTH_SHORT).show();
+					}
 					e.printStackTrace();
 				}
-				
+
 				sb.append(' ');
 				sb.append(getString(R.string.stringDidYouSpendOn));
 				sb.append(' ');
@@ -331,12 +429,14 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(' ');
 				sb.append("?");
 
-				alertDialog.setTitle(getString(R.string.spentMoneyDialogTitleText));
+				alertDialog
+						.setTitle(getString(R.string.spentMoneyDialogTitleText));
 
 				alertDialog.setMessage(sb.toString());
 				alertDialog.setView(checkBoxAutoExit);
 
-				alertDialog.setPositiveButton(getString(R.string.dialogPositiveYes),
+				alertDialog.setPositiveButton(
+						getString(R.string.dialogPositiveYes),
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -353,7 +453,8 @@ public class SpendingTrackerActivity extends Activity implements
 
 							}
 						});
-				alertDialog.setNegativeButton(getString(R.string.dialogPositiveNo),
+				alertDialog.setNegativeButton(
+						getString(R.string.dialogPositiveNo),
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -377,70 +478,30 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
-	private void checkServiceStatus(boolean i_DisplayToast) {
+	private void checkServiceStatus() {
 		//
 		try {
-			boolean checkBoxPreferencsReminderService = m_SharedPreferences.getBoolean(
-					"checkBoxPreferencsReminderService", true);
-			StringBuilder sb = new StringBuilder();
+			boolean checkBoxPreferencsReminderService = m_SharedPreferences
+					.getBoolean("checkBoxPreferencsReminderService", true);
 
 			// checking service always should be on and the service is not
 			// running
-			stopAlarmManager();
+			cancelTimeAlarmManager();
 
 			if (checkBoxPreferencsReminderService) {
-				sb.append(getString(R.string.toastMessageEnabledTimeReminderService));
-				startAlarmManager();
-			} else {
-				sb.append(getString(R.string.toastMessageDisabledTimeReminderService));
-			}
 
-			if (i_DisplayToast) {
-				Toast.makeText(SpendingTrackerActivity.this, sb.toString(),
-						Toast.LENGTH_LONG).show();
+				startTimeAlarmManager();
 			}
 			
-			sb.setLength(0);
-			
-			boolean checkBoxPreferencesLocationService = m_SharedPreferences.getBoolean(
-					"checkBoxPreferencesLocationService", false);
-			
 
-			if (checkBoxPreferencesLocationService) {
-				sb.append(getString(R.string.toastMessageEnabledLocationReminderService));
-				startLocationService();
-			} else {
-				sb.append(getString(R.string.toastMessageDisabledLocationReminderService));
-				stopLocationService();
-
-			}
-
-			if (i_DisplayToast) {
-				Toast.makeText(SpendingTrackerActivity.this, sb.toString(),
-						Toast.LENGTH_LONG).show();
-			}
-			
-			
-
-			sb.setLength(0);
 		} catch (Exception e) {
+			if (m_DebugMode) {
+				Toast.makeText(this, e.getMessage().toString(),
+						Toast.LENGTH_SHORT).show();
+			}
 			Log.d(TAG, e.toString());
 		}
 
-	}
-
-	private void stopLocationService() {
-		// 
-		Intent serviceLocation = new Intent(this,SpendingTrackerLocationService.class);
-		stopService(serviceLocation);
-		
-	}
-
-	private void startLocationService() {
-		// 
-		Intent serviceLocation = new Intent(this,SpendingTrackerLocationService.class);
-		//startService(serviceLocation);
-		
 	}
 
 	private void initVariables() {
@@ -483,8 +544,11 @@ public class SpendingTrackerActivity extends Activity implements
 					});
 
 		} catch (Exception e) {
-			Toast.makeText(this, "Error initializing variables!!!",
-					Toast.LENGTH_LONG).show();
+			if (m_DebugMode) {
+				Toast.makeText(this, e.getMessage().toString(),
+						Toast.LENGTH_SHORT).show();
+			}
+
 			Log.e(TAG, e.toString());
 		}
 
@@ -502,6 +566,30 @@ public class SpendingTrackerActivity extends Activity implements
 		textViewSpentWeek = (TextView) findViewById(R.id.textViewSpentWeek);
 		textViewSpentMonth = (TextView) findViewById(R.id.textViewSpentMonth);
 
+		textViewAccuracyText = (TextView) findViewById(R.id.textViewAccuracyText);
+		textViewAccuracyLabel = (TextView) findViewById(R.id.textViewAccuracyLabel);
+
+		textViewAltitudeText = (TextView) findViewById(R.id.textViewAltitudeText);
+		textViewAltitudeLabel = (TextView) findViewById(R.id.textViewAltitudeLabel);
+
+		textViewBearingText = (TextView) findViewById(R.id.textViewBearingText);
+		textViewBearingLabel = (TextView) findViewById(R.id.textViewBearingLabel);
+
+		textViewLatitudeText = (TextView) findViewById(R.id.textViewLatitudeText);
+		textViewLatitudeLabel = (TextView) findViewById(R.id.textViewLatitudeLabel);
+
+		textViewLongitudeText = (TextView) findViewById(R.id.textViewLongitudeText);
+		textViewLongitudeLabel = (TextView) findViewById(R.id.textViewLongitudeLabel);
+
+		textViewProviderText = (TextView) findViewById(R.id.textViewProviderText);
+		textViewProviderLabel = (TextView) findViewById(R.id.textViewProviderLabel);
+
+		textViewSpeedText = (TextView) findViewById(R.id.textViewSpeedText);
+		textViewSpeedLabel = (TextView) findViewById(R.id.textViewSpeedLabel);
+
+		textViewTimeText = (TextView) findViewById(R.id.textViewTimeText);
+		textViewTimeLabel = (TextView) findViewById(R.id.textViewTimeLabel);
+
 	}
 
 	private void initButtons() {
@@ -510,18 +598,22 @@ public class SpendingTrackerActivity extends Activity implements
 
 		buttonShowTodayEntries = (Button) findViewById(R.id.buttonShowTodayEntries);
 		buttonShowMonthEntries = (Button) findViewById(R.id.buttonShowMonthEntries);
-		buttonShowReminderEntries = (Button) findViewById(R.id.buttonShowReminderEntries);
+		buttonShowTimeReminderEntries = (Button) findViewById(R.id.buttonShowTimeReminderEntries);
+		buttonShowLocationReminderEntries = (Button) findViewById(R.id.buttonShowLocationReminderEntries);
 		buttonShowWeeklyEntries = (Button) findViewById(R.id.buttonShowWeeklyEntries);
 
-		buttonAddReminder = (Button) findViewById(R.id.buttonAddReminder);
+		buttonAddTimeReminder = (Button) findViewById(R.id.buttonAddTimeReminder);
+		buttonAddLocationReminder = (Button) findViewById(R.id.buttonAddLocationReminder);
 		buttonCategoriesEdit = (Button) findViewById(R.id.buttonCategoriesEdit);
 		buttonDeleteAllEnteries = (Button) findViewById(R.id.buttonDeleteAllEnteries);
 
 		buttonQuickAddInsert.setOnClickListener(this);
 		buttonShowTodayEntries.setOnClickListener(this);
-		buttonAddReminder.setOnClickListener(this);
+		buttonAddTimeReminder.setOnClickListener(this);
+		buttonAddLocationReminder.setOnClickListener(this);
 		buttonShowWeeklyEntries.setOnClickListener(this);
-		buttonShowReminderEntries.setOnClickListener(this);
+		buttonShowTimeReminderEntries.setOnClickListener(this);
+		buttonShowLocationReminderEntries.setOnClickListener(this);
 		buttonShowMonthEntries.setOnClickListener(this);
 		buttonCategoriesEdit.setOnClickListener(this);
 		buttonDeleteAllEnteries.setOnClickListener(this);
@@ -531,7 +623,6 @@ public class SpendingTrackerActivity extends Activity implements
 	private void initTabs() {
 
 		Resources resources = getResources();
-		
 
 		// setting up the tabs
 		tabHostMain = (TabHost) findViewById(R.id.tabhostMain);
@@ -543,7 +634,8 @@ public class SpendingTrackerActivity extends Activity implements
 		tabSpec = tabHostMain.newTabSpec(TAB_TAG_GENERAL);
 		tabSpec.setContent(R.id.tabGeneral);
 		textViewTabTextGeneral = new TextView(this);
-		textViewTabTextGeneral.setText(getString(R.string.textViewTabTextGeneral));
+		textViewTabTextGeneral
+				.setText(getString(R.string.textViewTabTextGeneral));
 
 		textViewTabTextGeneral.setBackgroundDrawable(resources
 				.getDrawable(R.drawable.custom_tab));
@@ -555,20 +647,41 @@ public class SpendingTrackerActivity extends Activity implements
 
 		tabHostMain.addTab(tabSpec);
 
-		// setup Reminders tab
-		tabSpec = tabHostMain.newTabSpec(TAB_TAG_REMINDERS);
+		// setup Time Reminders tab
+		tabSpec = tabHostMain.newTabSpec(TAB_TAG_TIME_REMINDERS);
 		tabSpec.setContent(R.id.tabReminders);
 
-		textViewTabTextReminders = new TextView(this);
-		textViewTabTextReminders.setText(getString(R.string.textViewTabTextReminders));
+		textViewTabTextTimeReminders = new TextView(this);
+		textViewTabTextTimeReminders
+				.setText(getString(R.string.textViewTabTextTimeReminders));
 
-		textViewTabTextReminders.setBackgroundDrawable(resources
+		textViewTabTextTimeReminders.setBackgroundDrawable(resources
 				.getDrawable(R.drawable.custom_tab));
-		textViewTabTextReminders.setLayoutParams(new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT));
+		textViewTabTextTimeReminders
+				.setLayoutParams(new ViewGroup.LayoutParams(
+						ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		tabSpec.setIndicator(textViewTabTextReminders);
+		tabSpec.setIndicator(textViewTabTextTimeReminders);
+
+		tabHostMain.addTab(tabSpec);
+
+		// setup Location Reminders tab
+		tabSpec = tabHostMain.newTabSpec(TAB_TAG_LOCATION_REMINDERS);
+		tabSpec.setContent(R.id.tabLocationReminders);
+
+		textViewTabTextLocationReminders = new TextView(this);
+		textViewTabTextLocationReminders
+				.setText(getString(R.string.textViewTabTextLocationReminders));
+
+		textViewTabTextLocationReminders.setBackgroundDrawable(resources
+				.getDrawable(R.drawable.custom_tab));
+		textViewTabTextLocationReminders
+				.setLayoutParams(new ViewGroup.LayoutParams(
+						ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		tabSpec.setIndicator(textViewTabTextLocationReminders);
 
 		tabHostMain.addTab(tabSpec);
 
@@ -576,7 +689,8 @@ public class SpendingTrackerActivity extends Activity implements
 		tabSpec = tabHostMain.newTabSpec(TAB_TAG_ENTRIES);
 		tabSpec.setContent(R.id.tabEntries);
 		textViewTabTextEntries = new TextView(this);
-		textViewTabTextEntries.setText(getString(R.string.textViewTabTextEntries));
+		textViewTabTextEntries
+				.setText(getString(R.string.textViewTabTextEntries));
 
 		textViewTabTextEntries.setBackgroundDrawable(resources
 				.getDrawable(R.drawable.custom_tab));
@@ -596,6 +710,7 @@ public class SpendingTrackerActivity extends Activity implements
 		editTextDayInMonthReminder.setVisibility(View.GONE);
 		editTextQuickAddAmount = (EditText) findViewById(R.id.editTextQuickAddAmount);
 		editTextComment = (EditText) findViewById(R.id.editTextComment);
+		editTextLocationName = (EditText) findViewById(R.id.editTextLocationName);
 
 	}
 
@@ -640,7 +755,85 @@ public class SpendingTrackerActivity extends Activity implements
 		super.onStart();
 
 		initSpinnerCategories();
+
 	}
+
+	/**
+	 * Function will start the location service and cancel the location alarm
+	 * manager in order prevent from the alarm manager to stop the location
+	 * service
+	 * 
+	 */
+	private void startLocationService() {
+		//
+
+		boolean checkBoxPreferencesLocationService = m_SharedPreferences
+				.getBoolean("checkBoxPreferencesLocationService", false);
+
+		// checking the location service option is enabled
+		if (checkBoxPreferencesLocationService) {
+			// the location service is enabled, thus disabling the alarm
+			// location manager
+			cancelLocationAlarmManager();
+
+			Intent service = new Intent(this,
+					SpendingTrackerLocationService.class);
+
+			startService(service);
+
+		}
+
+		IntentFilter iFilter = new IntentFilter(
+				SpendingTrackerLocationService.ACTION_FILTER);
+
+		m_BroadcastReceiverLocationUpdate = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				//
+				Location location = (Location) intent.getExtras().get(
+						"location");
+				if ( m_DebugMode ){
+					Toast.makeText(SpendingTrackerActivity.this, "Location updated", Toast.LENGTH_SHORT).show();
+				}
+				updateLocationTextViews(location);
+
+			}
+		};
+
+		registerReceiver(m_BroadcastReceiverLocationUpdate, iFilter);
+
+	}
+	
+	/**
+	 * Function will start the location service and cancel the location alarm
+	 * manager in order prevent from the alarm manager to stop the location
+	 * service
+	 * 
+	 */
+	private void stopLocationService() {
+		//
+
+		boolean checkBoxPreferencesLocationService = m_SharedPreferences
+				.getBoolean("checkBoxPreferencesLocationService", false);
+
+		// checking the location service option is enabled
+		if (checkBoxPreferencesLocationService) {
+			// the location service is enabled, thus disabling the alarm
+			// location manager
+			Intent service = new Intent(this,
+					SpendingTrackerLocationService.class);
+
+			stopService(service);
+			
+			startLocationAlarmManager();
+			
+
+		}
+
+	}
+	
+	
 
 	@Override
 	protected void onDestroy() {
@@ -672,6 +865,11 @@ public class SpendingTrackerActivity extends Activity implements
 			spinnerCategories.setAdapter(spinnerArrayAdapter);
 
 		} catch (Exception e) {
+			if (m_DebugMode) {
+				Toast.makeText(this, e.getMessage().toString(),
+						Toast.LENGTH_SHORT).show();
+			}
+
 			e.printStackTrace();
 			Log.d(TAG, e.toString());
 		}
@@ -687,17 +885,23 @@ public class SpendingTrackerActivity extends Activity implements
 			buttonCategoriesEdit();
 			break;
 
-		case R.id.buttonShowReminderEntries:
-			buttonShowReminderEnteries_Clicked();
+		case R.id.buttonShowTimeReminderEntries:
+			buttonShowTimeReminderEnteries_Clicked();
+			break;
+		case R.id.buttonShowLocationReminderEntries:
+			buttonShowLocationReminderEnteries_Clicked();
 			break;
 		// User wants to add entry to database
 		case R.id.buttonQuickAddInsert:
 			buttonAddEntry_Clicked();
-
 			break;
 
-		case R.id.buttonAddReminder:
-			buttonAddReminderToDatabase_Clicked();
+		case R.id.buttonAddTimeReminder:
+			buttonAddTimeReminderToDatabase_Clicked();
+			break;
+
+		case R.id.buttonAddLocationReminder:
+			buttonAddLocationReminder_Clicked();
 			break;
 
 		case R.id.buttonShowMonthEntries:
@@ -722,6 +926,44 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
+	private void buttonShowLocationReminderEnteries_Clicked() {
+		//
+		Intent i = new Intent(this, ViewEntriesRemindersLocation.class);
+
+		startActivity(i);
+
+	}
+
+	private void buttonAddLocationReminder_Clicked() {
+		//
+		String amount = editTextQuickAddAmount.getText().toString();
+		String locationName = editTextLocationName.getText().toString();
+
+		if (locationName.length() > 0) {
+
+			if (amount.length() == 0) {
+				amount = "-1";
+
+			}
+
+			m_SpendingTrackerDbEngine.insertNewLocationReminder(
+					textViewAccuracyText.getText().toString(),
+					textViewAltitudeText.getText().toString(),
+					textViewBearingText.getText().toString(),
+					textViewLatitudeText.getText().toString(),
+					textViewLongitudeText.getText().toString(),
+					textViewProviderText.getText().toString(),
+					textViewSpeedText.getText().toString(), textViewTimeText
+							.getText().toString(), amount, m_CategorySelected,
+					locationName);
+
+		} else {
+			Toast.makeText(this, "You must enter location name",
+					Toast.LENGTH_SHORT).show();
+		}
+
+	}
+
 	private void buttonShowMonthEntries_Clicked() {
 		//
 		Intent i = new Intent(this, ViewEntriesSpent.class);
@@ -735,7 +977,8 @@ public class SpendingTrackerActivity extends Activity implements
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
 		alertDialog.setTitle(getString(R.string.dialogTitleDeleteAllEntries));
-		alertDialog.setMessage(getString(R.string.dialogMessageDeleteAllEntries));
+		alertDialog
+				.setMessage(getString(R.string.dialogMessageDeleteAllEntries));
 		alertDialog.setPositiveButton(getString(R.string.dialogPositiveYes),
 				new DialogInterface.OnClickListener() {
 
@@ -788,7 +1031,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
-	private void buttonShowReminderEnteries_Clicked() {
+	private void buttonShowTimeReminderEnteries_Clicked() {
 		//
 		Intent i = new Intent(this, ViewEntriesReminders.class);
 
@@ -812,7 +1055,8 @@ public class SpendingTrackerActivity extends Activity implements
 
 				// showing message to user that entry was added
 				if (m_SharedPreferences.getBoolean("cbShowEntryAdded", true)) {
-					Toast.makeText(SpendingTrackerActivity.this, getString(R.string.toastMessageEntryAdded),
+					Toast.makeText(SpendingTrackerActivity.this,
+							getString(R.string.toastMessageEntryAdded),
 							Toast.LENGTH_SHORT).show();
 				}
 
@@ -825,7 +1069,7 @@ public class SpendingTrackerActivity extends Activity implements
 				// change to tab reminders
 				if (checkBoxAutoAddReminder.isChecked()) {
 
-					tabHostMain.setCurrentTabByTag(TAB_TAG_REMINDERS);
+					tabHostMain.setCurrentTabByTag(TAB_TAG_TIME_REMINDERS);
 				} else {
 					// initialize edit text
 					editTextQuickAddAmount.setText("");
@@ -833,8 +1077,13 @@ public class SpendingTrackerActivity extends Activity implements
 				}
 
 			} catch (Exception e) {
+				if (m_DebugMode) {
+					Toast.makeText(this, e.getMessage().toString(),
+							Toast.LENGTH_SHORT).show();
+				}
 				e.printStackTrace();
-				Log.e(TAG, getString(R.string.dialogTitleErrorAddingEntryToUser));
+				Log.e(TAG,
+						getString(R.string.dialogTitleErrorAddingEntryToUser));
 			}
 		} else {
 			Dialog d = new Dialog(this);
@@ -847,7 +1096,7 @@ public class SpendingTrackerActivity extends Activity implements
 		}
 	}
 
-	private void buttonAddReminderToDatabase_Clicked() {
+	private void buttonAddTimeReminderToDatabase_Clicked() {
 		// Functions adds the reminder to the database
 		String currentHour = timePickerDay.getCurrentHour().toString();
 		String currentMinute = timePickerDay.getCurrentMinute().toString();
@@ -861,20 +1110,20 @@ public class SpendingTrackerActivity extends Activity implements
 		switch (radioGroupReminder.getCheckedRadioButtonId()) {
 		case R.id.radioButtonEveryday:
 			//
-			m_SpendingTrackerDbEngine.insertNewReminder(
+			m_SpendingTrackerDbEngine.insertNewTimeReminder(
 					SpendingTrackerDbEngine.TYPE_REMINDER_EVERYDAY,
 					currentHour, currentMinute,
 					SpendingTrackerDbEngine.TYPE_REMINDER_DAY_DONT_CARE,
 					amount, m_CategorySelected);
 
-			sb.append(getString(R.string.toastMessageAddedEverydayReminder) + currentHour + ":"
-					+ currentMinute);
+			sb.append(getString(R.string.toastMessageAddedEverydayReminder)
+					+ currentHour + ":" + currentMinute);
 
 			break;
 		case R.id.radioButtonWeekly:
 
 			if (checkBoxSunday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_SUNDAY, amount,
@@ -882,7 +1131,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxSundayText));
 			}
 			if (checkBoxMonday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_MONDAY, amount,
@@ -890,7 +1139,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxMondayText));
 			}
 			if (checkBoxTuesday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_TUESDAY, amount,
@@ -898,7 +1147,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxTuesdayText));
 			}
 			if (checkBoxWednesday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEDNESDAY,
@@ -906,7 +1155,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxWednesdayText));
 			}
 			if (checkBoxThursday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_THURSDAY, amount,
@@ -914,7 +1163,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxThursdayText));
 			}
 			if (checkBoxFriday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_FRIDAY, amount,
@@ -922,7 +1171,7 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxFridayText));
 			}
 			if (checkBoxSaturday.isChecked()) {
-				m_SpendingTrackerDbEngine.insertNewReminder(
+				m_SpendingTrackerDbEngine.insertNewTimeReminder(
 						SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY,
 						currentHour, currentMinute,
 						SpendingTrackerDbEngine.TYPE_REMINDER_SATURDAY, amount,
@@ -930,8 +1179,10 @@ public class SpendingTrackerActivity extends Activity implements
 				sb.append(getString(R.string.checkBoxSaturdayText));
 			}
 			if (sb.length() > 0) {
-				sb.insert(0, getString(R.string.toastMessageAddedWeeklyReminderOn));
-				sb.append(getString(R.string.toastMessageWithTime) + currentHour + ":" + currentMinute);
+				sb.insert(0,
+						getString(R.string.toastMessageAddedWeeklyReminderOn));
+				sb.append(getString(R.string.toastMessageWithTime)
+						+ currentHour + ":" + currentMinute);
 
 			}
 
@@ -941,12 +1192,12 @@ public class SpendingTrackerActivity extends Activity implements
 
 		case R.id.radioButtonMonthly:
 
-			m_SpendingTrackerDbEngine.insertNewReminder(
+			m_SpendingTrackerDbEngine.insertNewTimeReminder(
 					SpendingTrackerDbEngine.TYPE_REMINDER_MONTHLY, currentHour,
-					currentMinute, editTextDayInMonthReminder.getText().toString(),
-					amount, m_CategorySelected);
-			sb.append(getString(R.string.toastMessageAddedMonthlyReminder) + currentHour + ":"
-					+ currentMinute);
+					currentMinute, editTextDayInMonthReminder.getText()
+							.toString(), amount, m_CategorySelected);
+			sb.append(getString(R.string.toastMessageAddedMonthlyReminder)
+					+ currentHour + ":" + currentMinute);
 			break;
 		default:
 
@@ -957,6 +1208,11 @@ public class SpendingTrackerActivity extends Activity implements
 			Log.i(TAG, sb.toString());
 			Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
 		} else {
+			if (m_DebugMode) {
+				Toast.makeText(this,
+						"error occoured during addReminderToDatabase",
+						Toast.LENGTH_LONG).show();
+			}
 			Log.i(TAG, "error occoured during addReminderToDatabase");
 		}
 	}
@@ -1035,14 +1291,38 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
+	private void updateLocationTextViews(Location location) {
+
+		if (location != null) {
+
+			textViewAccuracyText
+					.setText(String.valueOf(location.getAccuracy()));
+			textViewAltitudeText
+					.setText(String.valueOf(location.getAltitude()));
+			textViewBearingText.setText(String.valueOf(location.getBearing()));
+			textViewLatitudeText
+					.setText(String.valueOf(location.getLatitude()));
+			textViewLongitudeText.setText(String.valueOf(location
+					.getLongitude()));
+			textViewProviderText
+					.setText(String.valueOf(location.getProvider()));
+			textViewSpeedText.setText(String.valueOf(location.getSpeed()));
+			textViewTimeText.setText(String.valueOf(String.valueOf(location
+					.getTime())));
+
+		}
+	}
+
 	@Override
 	public void onTabChanged(String tabId) {
 		//
-		if (TAB_TAG_REMINDERS.contentEquals(tabId)) {
+		if (TAB_TAG_TIME_REMINDERS.contentEquals(tabId)) {
 			timePickerDay.setCurrentHour(Calendar.getInstance().get(
 					Calendar.HOUR_OF_DAY));
 			timePickerDay.setCurrentMinute(Calendar.getInstance().get(
 					Calendar.MINUTE));
+		} else if (TAB_TAG_LOCATION_REMINDERS.contentEquals(tabId)) {
+
 		}
 
 	}
@@ -1111,6 +1391,31 @@ public class SpendingTrackerActivity extends Activity implements
 		default:
 			break;
 		}
+
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		//
+		updateLocationTextViews(location);
+
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
 
 	}
 }

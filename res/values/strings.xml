@@ -58,14 +58,15 @@
 
     <!-- BUTTONS -->
 
-	<string name="buttonDeleteCategoryText">Delete</string>
+	
 	<string name="buttonCategoriesEditText">Edit</string>
     <string name="buttonAddReminderText">Add reminder</string>
     <string name="buttonQuickAddInsertText">Add entry</string>
     <string name="buttonShowTodayEntriesText">Show Today Entries</string>
     <string name="buttonShowWeeklyEntriesText">Show Weekly Entries</string>
     <string name="buttonShowMonthEntriesText">Show Monthly Entries</string>
-    <string name="buttonShowReminderEntriesText">Show Reminders</string>
+    <string name="buttonShowTimeReminderEntriesText">Show Time Reminders</string>
+    <string name="buttonShowLocationReminderEntriesText">Show Location Reminders</string>
     <string name="buttonSpentEditUpdateText">Update</string>
 
     <!-- CHECK BOXES -->
@@ -114,7 +115,8 @@
     <!-- TABS -->
     
     <string name="textViewTabTextGeneral">General</string>
-    <string name="textViewTabTextReminders">Reminders</string>
+    <string name="textViewTabTextTimeReminders">Time</string>
+    <string name="textViewTabTextLocationReminders">Location</string>
     <string name="textViewTabTextEntries">Entries</string>
     
     <string name="dialogPositiveYes">Yes</string>
@@ -128,7 +130,7 @@
     <string name="toastMessageAddedWeeklyReminderOn">"Added weekly reminder on "</string>
     <string name="toastMessageWithTime">" with time "</string>
     <string name="toastMessageAddedMonthlyReminder">"Added Monthly reminder at "</string>
-    <string name="dialogTitleSpentStatistics">Spent Statistics</string>
+    
     <string name="toastMessageEnabledTimeReminderService">Enabled Time Reminder service</string>
     <string name="toastMessageDisabledTimeReminderService">Disabled Time Reminder service</string>
     <string name="toastMessageEnabledLocationReminderService">Enabled Location Reminder service</string>
@@ -136,6 +138,17 @@
     <string name="editTextSpentEditTimeHint">Time</string>
     <string name="textViewEntriesSpentTimeText">Time</string>
     <string name="toastMessageErrorUpdateRecord">Error updating the record</string>
+    <string name="textViewAccuracyLabel">Accuracy</string>
+    <string name="textViewAltitudeLabel">Altitude</string>
+    <string name="textViewBearingLabel">Bearing</string>
+    <string name="textViewLatitudeLabel">Latitude</string>
+    <string name="textViewLongitudeLabel">Longitude</string>
+    <string name="textViewProviderLabel">Provider</string>
+    <string name="textViewSpeedLabel">Speed</string>
+    <string name="textViewTimeLabel">Time</string>
+    <string name="textViewEntriesRemindersLocationNameText">Location</string>
+    <string name="editTextLocationNameHint">Short description of the location</string>
+    
     
     
     

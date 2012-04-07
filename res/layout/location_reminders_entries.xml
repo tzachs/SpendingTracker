@@ -3,10 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+    <Button 
+        android:id="@+id/buttonDeleteSentLocationNotifications"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete sent notifications"
+        android:visibility="gone"
+        />
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:fillViewport="true" >
 
         <TableLayout
             android:id="@+id/tableLayoutEnteriesReminders"
@@ -14,7 +23,7 @@
             android:layout_height="wrap_content" >
 
             <TableRow
-                android:id="@+id/tableRowHeaderEnteriesReminders"
+                android:id="@+id/tableRowLocationHeaderEnteriesReminders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -26,32 +35,11 @@
                     android:text="@string/textViewEntriesRemindersIdText" />
 
                 <TextView
-                    android:id="@+id/textViewEntriesRemindersType"
+                    android:id="@+id/textViewEntriesRemindersLocationName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:text="@string/textViewEntriesRemindersTypeText" />
-
-                <TextView
-                    android:id="@+id/textViewEntriesRemindersHour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:text="@string/textViewEntriesRemindersHourText" />
-
-                <TextView
-                    android:id="@+id/textViewEntriesRemindersMin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:text="@string/textViewEntriesRemindersMinText" />
-
-                <TextView
-                    android:id="@+id/textViewEntriesRemindersDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:text="@string/textViewEntriesRemindersDayText" />
+                    android:layout_weight="40"
+                    android:text="@string/textViewEntriesRemindersLocationNameText" />
 
                 <TextView
                     android:id="@+id/textViewEntriesRemindersAmount"

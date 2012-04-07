@@ -57,12 +57,32 @@ public class SpendingTrackerDbEngine {
 	public static final String KEY_MINUTE = "colMinute";
 	public static final String KEY_DAY = "colDay";
 
+	public static final String KEY_ACCURACY = "colAccuracy";
+	public static final String KEY_ALTITUDE = "colAltitude";
+	public static final String KEY_BEARING = "colBearing";
+	public static final String KEY_LATITUDE = "colLatitude";
+	public static final String KEY_LONGITUDE = "colLongitude";
+	public static final String KEY_PROVIDER = "colProvider";
+	public static final String KEY_SPEED = "colSpeed";
+	public static final String KEY_TIME = "colTime";
+	public static final String KEY_LOCATION_NAME = "colLocationName";
+
+	public static final String KEY_REMINDER_ID = "colReminderId";
+	public static final String KEY_REMINDER_TYPE = "colReminderType";
+	public static final String KEY_REMINDER_TYPE_LOCATION = "location";
+	public static final String KEY_REMINDER_STATUS = "colReminderStatus";
+	public static final String KEY_REMINDER_STATUS_PENDING = "pending";
+	public static final String KEY_REMINDER_STATUS_PRESSED = "pressed";
+	
+
 	private static final String DATABASE_NAME = "SpendingTrackerDb";
 	private static final String TABLE_SPENDING = "tblSpending";
 	private static final String TABLE_CATEGORIES = "tblCategories";
 	private static final String TABLE_REMINDERS = "tblReminders";
+	private static final String TABLE_LOCATION_REMINDERS = "tblLocations";
+	private static final String TABLE_REMINDERS_QUEUE = "tblRemindersQueue";
 
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	private DbHelper ourHelper;
 	private final Context ourContext;
@@ -77,17 +97,23 @@ public class SpendingTrackerDbEngine {
 
 		}
 
-		@Override
-		public void onCreate(SQLiteDatabase db) {
+		private void createTableSpending(SQLiteDatabase db) {
 			db.execSQL("CREATE TABLE " + TABLE_SPENDING + " (" + KEY_ROWID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_AMOUNT
 					+ " TEXT NOT NULL, " + KEY_DATE + " TEXT NOT NULL,"
 					+ KEY_CATEGORY + " TEXT NOT NULL, " + KEY_COMMENT
 					+ " TEXT " + ");");
+		}
+
+		private void createTableCategories(SQLiteDatabase db) {
 
 			db.execSQL("CREATE TABLE " + TABLE_CATEGORIES + " (" + KEY_ROWID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_CATEGORY
 					+ " TEXT NOT NULL, " + KEY_COMMENT + " TEXT " + ");");
+
+		}
+
+		private void createTableTimeReminders(SQLiteDatabase db) {
 
 			db.execSQL("CREATE TABLE " + TABLE_REMINDERS + " (" + KEY_ROWID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TYPE
@@ -100,19 +126,63 @@ public class SpendingTrackerDbEngine {
 
 		}
 
+		private void createTableLocationReminders(SQLiteDatabase db) {
+
+			String sqlQuery = "CREATE TABLE IF NOT EXISTS "
+					+ TABLE_LOCATION_REMINDERS + " (" + KEY_ROWID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ACCURACY
+					+ " TEXT NOT NULL, " + KEY_ALTITUDE + " TEXT NOT NULL, "
+					+ KEY_BEARING + " TEXT NOT NULL, " + KEY_LATITUDE
+					+ " TEXT NOT NULL, " + KEY_LONGITUDE + " TEXT NOT NULL, "
+					+ KEY_PROVIDER + " TEXT NOT NULL, " + KEY_SPEED
+					+ " TEXT NOT NULL, " + KEY_TIME + " TEXT NOT NULL, "
+					+ KEY_LOCATION_NAME + " TEXT NOT NULL, "
+					+ KEY_AMOUNT + " TEXT NOT NULL, " + KEY_CATEGORY
+					+ " TEXT NOT NULL " + ");";
+
+			Log.d(TAG, "Executing the following queries: ");
+			Log.d(TAG, sqlQuery);
+
+			db.execSQL(sqlQuery);
+		}
+
+		private void createTableRemindersQueue(SQLiteDatabase db) {
+
+			String sqlQuery = "CREATE TABLE IF NOT EXISTS "
+					+ TABLE_REMINDERS_QUEUE + " (" + KEY_ROWID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ KEY_REMINDER_TYPE + " TEXT NOT NULL, "
+					+ KEY_REMINDER_STATUS + " TEXT NOT NULL, "
+					+ KEY_REMINDER_ID + " TEXT NOT NULL " + ");";
+
+			db.execSQL(sqlQuery);
+
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+
+			createTableSpending(db);
+			createTableCategories(db);
+			createTableTimeReminders(db);
+			createTableLocationReminders(db);
+			createTableRemindersQueue(db);
+
+		}
+
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
 			Log.v(TAG, DATABASE_NAME + "is upgraded from version " + oldVersion
 					+ " to version " + newVersion);
 
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPENDING);
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
+			//db.delete(TABLE_LOCATION_REMINDERS, null, null);
+			//db.execSQL("DROP TABLE " + TABLE_LOCATION_REMINDERS);
 
-			onCreate(db);
+			createTableLocationReminders(db);
+			createTableRemindersQueue(db);
+
 		}
-
 	}
 
 	public class XmlImportDataHandler extends DefaultHandler {
@@ -320,7 +390,7 @@ public class SpendingTrackerDbEngine {
 		return ret;
 	}
 
-	public long insertNewReminder(String i_Type, String i_Hour,
+	public long insertNewTimeReminder(String i_Type, String i_Hour,
 			String i_Minute, String i_Day, String i_Amount, String i_Category) {
 
 		ContentValues cv = new ContentValues();
@@ -530,7 +600,8 @@ public class SpendingTrackerDbEngine {
 
 		this.open();
 		Cursor cursor = ourDatabase.query(TABLE_CATEGORIES,
-				new String[] { KEY_CATEGORY }, null, null, null, null, KEY_CATEGORY);
+				new String[] { KEY_CATEGORY }, null, null, null, null,
+				KEY_CATEGORY);
 
 		ret = new String[cursor.getCount()];
 
@@ -652,7 +723,8 @@ public class SpendingTrackerDbEngine {
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
-						+ todayInMonthString + "T%'", null, null, null, m_SortByKey);
+						+ todayInMonthString + "T%'", null, null, null,
+				m_SortByKey);
 
 		// setting the 2 dimensional array
 		ret = new String[c.getCount()][columns.length];
@@ -798,15 +870,14 @@ public class SpendingTrackerDbEngine {
 		int iRowID, iAmount, iCategory, iDate;
 
 		String[][] ret = null;
-		
-		if ( i_Calendar == null ){
+
+		if (i_Calendar == null) {
 			now = Calendar.getInstance();
 			now.setTimeInMillis(System.currentTimeMillis());
-		}
-		else {
+		} else {
 			now = i_Calendar;
 		}
-		
+
 		Log.i(TAG, "Getting month entries using " + now.toString());
 
 		month = now.get(Calendar.MONTH) + 1;
@@ -853,7 +924,7 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public String[][] getReminders() {
+	public String[][] getTimeReminders() {
 		//
 		String[][] ret = null;
 		String[] columns = new String[] { KEY_ROWID, KEY_TYPE, KEY_HOUR,
@@ -896,6 +967,72 @@ public class SpendingTrackerDbEngine {
 		this.close();
 
 		return ret;
+	}
+
+	public ContentValues[] getLocationReminders() {
+
+		ContentValues[] ret = null;
+
+		String[] columns = new String[] { KEY_ROWID, KEY_ACCURACY,
+				KEY_ALTITUDE, KEY_BEARING, KEY_LATITUDE, KEY_LONGITUDE,
+				KEY_PROVIDER, KEY_SPEED, KEY_TIME, KEY_AMOUNT, KEY_CATEGORY, KEY_LOCATION_NAME };
+
+		this.open();
+
+		Cursor c = ourDatabase.query(TABLE_LOCATION_REMINDERS, columns, null,
+				null, null, null, null);
+
+		// setting 2 dimensional array
+		ret = new ContentValues[c.getCount()];
+
+		int iRowID = c.getColumnIndex(KEY_ROWID);
+		int iKEY_ACCURACY = c.getColumnIndex(KEY_ACCURACY);
+		int iKEY_ALTITUDE = c.getColumnIndex(KEY_ALTITUDE);
+		int iKEY_BEARING = c.getColumnIndex(KEY_BEARING);
+		int iKEY_LATITUDE = c.getColumnIndex(KEY_LATITUDE);
+		int iKEY_LONGITUDE = c.getColumnIndex(KEY_LONGITUDE);
+		int iKEY_PROVIDER = c.getColumnIndex(KEY_PROVIDER);
+		int iKEY_SPEED = c.getColumnIndex(KEY_SPEED);
+		int iKEY_TIME = c.getColumnIndex(KEY_TIME);
+		int iKEY_LOCATION_NAME = c.getColumnIndex(KEY_LOCATION_NAME);
+
+		int iAmount = c.getColumnIndex(KEY_AMOUNT);
+		int iCategory = c.getColumnIndex(KEY_CATEGORY);
+
+		int i = 0;
+
+		try {
+
+			for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+
+				ret[i] = new ContentValues();
+
+				ret[i].put(KEY_ROWID, c.getString(iRowID));
+				ret[i].put(KEY_ACCURACY, c.getString(iKEY_ACCURACY));
+				ret[i].put(KEY_ALTITUDE, c.getString(iKEY_ALTITUDE));
+				ret[i].put(KEY_BEARING, c.getString(iKEY_BEARING));
+				ret[i].put(KEY_LATITUDE, c.getString(iKEY_LATITUDE));
+				ret[i].put(KEY_LONGITUDE, c.getString(iKEY_LONGITUDE));
+				ret[i].put(KEY_PROVIDER, c.getString(iKEY_PROVIDER));
+				ret[i].put(KEY_SPEED, c.getString(iKEY_SPEED));
+				ret[i].put(KEY_TIME, c.getString(iKEY_TIME));
+				ret[i].put(KEY_AMOUNT, c.getString(iAmount));
+				ret[i].put(KEY_CATEGORY, c.getString(iCategory));
+				ret[i].put(KEY_LOCATION_NAME, c.getString(iKEY_LOCATION_NAME));
+
+				i++;
+
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage().toString());
+		}
+
+		c.close();
+
+		this.close();
+
+		return ret;
+
 	}
 
 	public void deleteReminderById(String i_ReminderId) {
@@ -959,7 +1096,6 @@ public class SpendingTrackerDbEngine {
 		cv.put(KEY_AMOUNT, i_NewAmount);
 		cv.put(KEY_DATE, i_NewDate);
 		cv.put(KEY_CATEGORY, i_NewCategory);
-		
 
 		this.open();
 
@@ -1145,8 +1281,8 @@ public class SpendingTrackerDbEngine {
 		this.deleteTableAndResetId(TABLE_REMINDERS);
 
 		for (String[] values : reminders) {
-			this.insertNewReminder(values[1], values[2], values[3], values[4],
-					values[5], values[6]);
+			this.insertNewTimeReminder(values[1], values[2], values[3],
+					values[4], values[5], values[6]);
 
 		}
 
@@ -1178,7 +1314,7 @@ public class SpendingTrackerDbEngine {
 	}
 
 	public void deleteSpentEntryByRowId(String i_ReminderId) {
-		// 
+		//
 		this.open();
 		int ret;
 
@@ -1188,12 +1324,184 @@ public class SpendingTrackerDbEngine {
 
 		this.close();
 
-		
 	}
 
 	public void setSortBy(String i_Key) {
-		// 
+		//
 		m_SortByKey = i_Key;
+
+	}
+
+	public long insertNewLocationReminder(String i_Accuracy, String i_Altitude,
+			String i_Bearing, String i_Latitude, String i_Longitude,
+			String i_Provider, String i_Speed, String i_Time, String i_Amount,
+			String i_Category, String i_LocationName) {
+		//
+		long ret;
+		ContentValues cv = new ContentValues();
+
+		cv.put(KEY_ACCURACY, i_Accuracy);
+		cv.put(KEY_ALTITUDE, i_Altitude);
+		cv.put(KEY_BEARING, i_Bearing);
+		cv.put(KEY_LATITUDE, i_Latitude);
+		cv.put(KEY_LONGITUDE, i_Longitude);
+		cv.put(KEY_PROVIDER, i_Provider);
+		cv.put(KEY_SPEED, i_Speed);
+		cv.put(KEY_TIME, i_Time);
+		cv.put(KEY_AMOUNT, i_Amount);
+		cv.put(KEY_CATEGORY, i_Category);
+		cv.put(KEY_LOCATION_NAME, i_LocationName);
+
+		this.open();
+
+		ret = ourDatabase.insert(TABLE_LOCATION_REMINDERS, null, cv);
+
+		this.close();
+
+		return ret;
+
+	}
+
+	public boolean isLocationChanged(String rowId) {
+
+		// Checking if the location by rowId is the last in the list.
+		// If so than the location didn't change
+		// return true if changed, false if didn't change
+		boolean ret = false;
+		Cursor c;
+
+		this.open();
+		// getting the last row and checking if it is our rowId
+		c = ourDatabase.query(TABLE_REMINDERS_QUEUE, null, null,
+				null, null, null, KEY_ROWID + " desc","1");
+
+		try {
+
+			// checking if empty data base
+			if ( c.getCount() == 0 ){
+				// this is an empty data base meaning the entry isn't there thus ret must be true
+				ret = true;
+			}
+			// else check if the we got only 1 record
+			else if (c.getCount() == 1) {
+				c.moveToFirst();
+				
+				// if the row id is like ours than the location didn't change
+				if (!c.getString(c.getColumnIndex(KEY_REMINDER_ID))
+						.contentEquals(rowId)) {
+					ret = true;
+				}
+
+			}
+			c.close();
+		} catch (Exception e) {
+			//
+			Log.d(TAG, e.getMessage().toString());
+			
+		}
+		
+		c.close();
+
+		this.close();
+
+		return ret;
+
+	}
+
+	public long insertNewPendingLocationReminder(String rowId) {
+		//
+		long ret;
+
+		ContentValues cv = new ContentValues();
+
+		cv.put(KEY_REMINDER_ID, rowId);
+		cv.put(KEY_REMINDER_TYPE, KEY_REMINDER_TYPE_LOCATION);
+		cv.put(KEY_REMINDER_STATUS, KEY_REMINDER_STATUS_PENDING);
+
+		this.open();
+
+		ret = ourDatabase.insert(TABLE_REMINDERS_QUEUE, null, cv);
+		this.close();
+
+		return ret;
+
+	}
+
+	public int changeLocationReminderToPressed(String rowId) {
+
+		this.open();
+		int ret;
+
+		ContentValues cv = new ContentValues();
+
+		cv.put(KEY_REMINDER_STATUS, KEY_REMINDER_STATUS_PRESSED);
+
+		ret = ourDatabase.update(TABLE_REMINDERS_QUEUE, cv, KEY_REMINDER_ID
+				+ "='" + rowId + "'", null);
+
+		this.close();
+
+		return ret;
+
+	}
+
+	public String[][] getLocationRemindersAsStrings() {
+		
+		
+		String[][] ret = null;
+		String[] columns = new String[] { KEY_ROWID, KEY_LOCATION_NAME, KEY_AMOUNT, KEY_CATEGORY };
+
+		this.open();
+
+		Cursor c = ourDatabase.query(TABLE_LOCATION_REMINDERS, columns, null, null,
+				null, null, null);
+
+		// setting 2 dimensional array
+		ret = new String[c.getCount()][columns.length];
+
+		int iRowID = c.getColumnIndex(KEY_ROWID);
+		int iLocationName = c.getColumnIndex(KEY_LOCATION_NAME);
+		int iAmount = c.getColumnIndex(KEY_AMOUNT);
+		int iCategory = c.getColumnIndex(KEY_CATEGORY);
+
+		int i = 0;
+
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+
+			ret[i][iRowID] = c.getString(iRowID);
+			ret[i][iLocationName] = c.getString(iLocationName);
+			ret[i][iAmount] = c.getString(iAmount);
+			ret[i][iCategory] = c.getString(iCategory);
+
+			i++;
+
+		}
+
+		c.close();
+
+		this.close();
+
+		return ret;
 		
 	}
+
+	public void deleteLocationReminderById(String i_ReminderId) {
+		// 
+		this.open();
+		int ret;
+
+		ret = ourDatabase.delete(TABLE_LOCATION_REMINDERS, KEY_ROWID + "='"
+				+ i_ReminderId + "'", null);
+		Log.v(TAG, "Number of rows affected is " + Integer.toString(ret));
+
+		this.close();
+		
+	}
+
+	public void deleteAllSentNotifications() {
+		// 
+		deleteTableAndResetId(TABLE_REMINDERS_QUEUE);
+		
+	}
+
 }

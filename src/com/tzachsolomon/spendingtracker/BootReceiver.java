@@ -9,7 +9,8 @@ public class BootReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// 
-		Intent serviceIntent = new Intent(SpendingTrackerService.class.getName());
+		
+		Intent serviceIntent = new Intent(SpendingTrackerTimeService.class.getName());
 		context.startService(serviceIntent);
 		
 	}

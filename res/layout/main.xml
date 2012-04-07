@@ -13,7 +13,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            
             android:orientation="horizontal"
             android:padding="5dp"
             android:tabStripEnabled="false" />
@@ -75,9 +74,8 @@
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" 
-                        android:weightSum="1.0"
-                        >
+                        android:orientation="horizontal"
+                        android:weightSum="1.0" >
 
                         <Spinner
                             android:id="@+id/spinnerCategories"
@@ -144,7 +142,7 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:orientation="horizontal"
                     android:weightSum="1.0" >
 
@@ -168,9 +166,8 @@
                         android:id="@+id/buttonShowMonthEntries"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        
-                        android:layout_weight="0.75"
                         android:layout_margin="10dp"
+                        android:layout_weight="0.75"
                         android:text="@string/buttonShowMonthEntriesText" />
                 </LinearLayout>
 
@@ -182,19 +179,34 @@
                     android:weightSum="1.0" >
 
                     <Button
-                        android:id="@+id/buttonShowReminderEntries"
+                        android:id="@+id/buttonShowTimeReminderEntries"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        
-                        android:layout_weight="0.75"
                         android:layout_margin="10dp"
-                        android:text="@string/buttonShowReminderEntriesText" />
+                        android:layout_weight="0.75"
+                        android:text="@string/buttonShowTimeReminderEntriesText" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0" >
+
+                    <Button
+                        android:id="@+id/buttonShowLocationReminderEntries"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.75"
+                        android:text="@string/buttonShowLocationReminderEntriesText" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="1.0" >
 
@@ -202,14 +214,13 @@
                         android:id="@+id/buttonDeleteAllEnteries"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        
-                        android:layout_weight="0.75"
                         android:layout_margin="10dp"
+                        android:layout_weight="1"
                         android:text="@string/buttonDeleteAllEnteriesText" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- TAB REMINDERS -->
+            <!-- TAB TIME REMINDERS -->
 
             <LinearLayout
                 android:id="@+id/tabReminders"
@@ -321,7 +332,183 @@
                     android:layout_gravity="center" />
 
                 <Button
-                    android:id="@+id/buttonAddReminder"
+                    android:id="@+id/buttonAddTimeReminder"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/buttonAddReminderText" />
+            </LinearLayout>
+
+            <!-- Location Reminders -->
+
+            <LinearLayout
+                android:id="@+id/tabLocationReminders"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewAccuracyLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp" />
+
+                    <TextView
+                        android:id="@+id/textViewAccuracyText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewAccuracyLabel" 
+                        android:layout_margin="4dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewAltitudeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp"/>
+
+                    <TextView
+                        android:id="@+id/textViewAltitudeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp" 
+                        android:layout_toRightOf="@id/textViewAltitudeLabel" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewBearingLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp"/>
+
+                    <TextView
+                        android:id="@+id/textViewBearingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewBearingLabel"
+                        android:layout_margin="4dp"  />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewLatitudeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp"/>
+
+                    <TextView
+                        android:id="@+id/textViewLatitudeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewLatitudeLabel" 
+                        android:layout_margin="4dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewLongitudeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp" />
+
+                    <TextView
+                        android:id="@+id/textViewLongitudeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewLongitudeLabel" 
+                        android:layout_margin="4dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewProviderLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp" />
+
+                    <TextView
+                        android:id="@+id/textViewProviderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewProviderLabel" 
+                        android:layout_margin="4dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewSpeedLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp" />
+
+                    <TextView
+                        android:id="@+id/textViewSpeedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/textViewSpeedLabel" 
+                        android:layout_margin="4dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textViewTimeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_margin="4dp" />
+
+                    <TextView
+                        android:id="@+id/textViewTimeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewTimeLabel"
+                        android:layout_margin="4dp"  />
+                </RelativeLayout>
+                
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+                    
+                    <EditText
+                        android:id="@+id/editTextLocationName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textViewTimeLabel"
+                        android:layout_margin="4dp" 
+                        android:hint="@string/editTextLocationNameHint"
+                         />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/buttonAddLocationReminder"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"

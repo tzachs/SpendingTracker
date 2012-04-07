@@ -2,6 +2,7 @@ package com.tzachsolomon.spendingtracker;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class ViewStatistics extends Activity {
@@ -14,6 +15,8 @@ public class ViewStatistics extends Activity {
 		// 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.statistics);
+		
+		Log.v(TAG, "View statistics onCreate");
 		
 		textViewStatistics = (TextView)findViewById(R.id.textViewStatistics);
 		

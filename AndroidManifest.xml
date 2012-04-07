@@ -4,12 +4,13 @@
     android:versionCode="23"
     android:versionName="0.23.2012.03.28" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="8"  />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    
 
     <application
         android:icon="@drawable/appicon"
@@ -70,6 +71,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name=".ViewEntriesRemindersLocation"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name=".ViewEntriesMonth"
             android:label="@string/app_name" >
         </activity>
@@ -83,8 +88,8 @@
         </activity>
 
         <service
-            android:name=".SpendingTrackerService"
-            android:process=":remote" >
+            android:name=".SpendingTrackerTimeService"
+            android:process=":SpendingTrackerTimeService" >
         </service>
         <service 
             android:name="SpendingTrackerLocationService"

@@ -2,14 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="UI and notifications" >
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="cbShowEntryAdded"
             android:summary="Show entry added message"
             android:title="Show entry added" />
-        
-         <ListPreference
+
+        <ListPreference
             android:defaultValue="English"
             android:entries="@array/arrayLanguagesLabels"
             android:entryValues="@array/arrayLanguagesValues"
@@ -17,45 +16,52 @@
             android:summary="Allows you to change the language of the application"
             android:title="Language" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="Background services" >
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="checkBoxPreferencsReminderService"
             android:summary="Use time reminders"
             android:title="Time reminders" />
-        <CheckBoxPreference 
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="checkBoxPreferencesLocationService"
-            android:summary="Use location for reminders (Still in BETA so it doesn't affect at all)"
-            android:title="Location service"
-            
-            />
-        
+            android:summary="Use location for reminders (Still in BETA so it doesn&apos;t affect at all)"
+            android:title="Location service" />
     </PreferenceCategory>
-
+    <PreferenceCategory
+        android:key="preferenceCategoryLocationAdvanced"
+        android:title="Location Service Advanced Configuration" >
+        <EditTextPreference
+            android:defaultValue="50"
+            android:key="editTextPreferenceValidDistance"
+            android:summary="The radius distance from the location reminder to send notification"
+            android:title="Valid Distance"
+            android:inputType="number"
+             />
+    </PreferenceCategory>
     <PreferenceCategory android:title="Notification options" >
-        
-        <CheckBoxPreference 
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="cbNotifictionLights"
             android:summary="Blink lights on notification"
-            android:title="Blink lights"
-            />
-        <CheckBoxPreference 
+            android:title="Blink lights" />
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="cbNotifictionSound"
             android:summary="Play notification sound on notification"
-            android:title="Play Sound"
-            />
-        <CheckBoxPreference 
+            android:title="Play Sound" />
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="cbNotifictionVibrate"
             android:summary="Vibrate on notification"
-            android:title="Vibrate"
-            />
-
+            android:title="Vibrate" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Debug" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="checkBoxPreferenceDebug"
+            android:summary="Debug mode (Displays erros and debug messages on screen)"
+            android:title="Debug mode" />
     </PreferenceCategory>
 
 </PreferenceScreen>

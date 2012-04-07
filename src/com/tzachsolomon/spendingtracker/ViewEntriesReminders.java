@@ -46,7 +46,7 @@ public class ViewEntriesReminders extends Activity {
 	}
 
 	private void updateTable() {
-		String[][] data = m_SpendingTrackerDbEngine.getReminders();
+		String[][] data = m_SpendingTrackerDbEngine.getTimeReminders();
 		int howMuchRowsToRemove = tlRemindersEntries.getChildCount() - 1;
 
 		// removing all entries except the headers
@@ -94,15 +94,8 @@ public class ViewEntriesReminders extends Activity {
 		return ret;
 	}
 
-	private void menuItemReminderImport_Clicked() {
-		// 
-		
-	}
-
-	private void menuItemReminderExport_Clicked() {
-		// 
-	}
-
+	
+	
 	private void menuItemReminderDelete_Clicked() {
 		//
 		final EditText editTextRowId = new EditText(this);

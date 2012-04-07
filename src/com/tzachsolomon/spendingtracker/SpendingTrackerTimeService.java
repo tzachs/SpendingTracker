@@ -17,9 +17,9 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class SpendingTrackerService extends Service {
+public class SpendingTrackerTimeService extends Service {
 
-	private static final String TAG = SpendingTrackerService.class
+	private static final String TAG = SpendingTrackerTimeService.class
 			.getSimpleName();
 
 	private Calendar m_Calendar;
@@ -77,9 +77,9 @@ public class SpendingTrackerService extends Service {
 		try {
 			Log.i(TAG, "checkReminders started");
 			// Getting reminders from the database
-			String[][] m_Reminders = m_SpendingTrackerDbEngine.getReminders();
+			String[][] reminders = m_SpendingTrackerDbEngine.getTimeReminders();
 			int i = 0;
-			int length = m_Reminders.length;
+			int length = reminders.length;
 			boolean flag = false;
 
 			m_Calendar.setTimeInMillis(System.currentTimeMillis());
@@ -90,34 +90,34 @@ public class SpendingTrackerService extends Service {
 			for (i = 0; i < length; i++) {
 				flag = false;
 				Log.v(TAG, String.format("Reminder %s type %s at %s:%s amount %s",
-						m_Reminders[i][0],m_Reminders[i][1],m_Reminders[i][2],m_Reminders[i][3],
-						m_Reminders[i][4]));
+						reminders[i][0],reminders[i][1],reminders[i][2],reminders[i][3],
+						reminders[i][4]));
 						                    
 						
 				// checking if the reminder is the current hour and minute
 				if (m_Calendar.get(Calendar.HOUR_OF_DAY) == Integer
-						.parseInt(m_Reminders[i][2])
+						.parseInt(reminders[i][2])
 						&& m_Calendar.get(Calendar.MINUTE) == Integer
-								.parseInt(m_Reminders[i][3])) {
+								.parseInt(reminders[i][3])) {
 
 					// checking if the reminder is of type everyday
-					if (m_Reminders[i][1]
+					if (reminders[i][1]
 							.contentEquals(SpendingTrackerDbEngine.TYPE_REMINDER_EVERYDAY)) {
 						flag = true;
 						// checking if the reminder is of type weekly
-					} else if (m_Reminders[i][1]
+					} else if (reminders[i][1]
 							.contentEquals(SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY)) {
 						// reminder is of type weekly, checking if day in week
 						// match
-						if (m_Reminders[i][4]
+						if (reminders[i][4]
 								.contentEquals(Integer.toString((m_Calendar
 										.get(Calendar.DAY_OF_WEEK))))) {
 							flag = true;
 						}
 
-					} else if (m_Reminders[i][1]
+					} else if (reminders[i][1]
 							.contentEquals(SpendingTrackerDbEngine.TYPE_REMINDER_MONTHLY)) {
-						if (m_Reminders[i][4].contentEquals(Integer
+						if (reminders[i][4].contentEquals(Integer
 								.toString((m_Calendar
 										.get(Calendar.DAY_OF_MONTH))))) {
 							flag = true;
@@ -146,11 +146,11 @@ public class SpendingTrackerService extends Service {
 					
 					
 
-					extras.putBoolean(m_Reminders[i][1], true);
+					extras.putBoolean(reminders[i][1], true);
 					extras.putString(SpendingTrackerDbEngine.KEY_AMOUNT,
-							m_Reminders[i][5]);
+							reminders[i][5]);
 					extras.putString(SpendingTrackerDbEngine.KEY_CATEGORY,
-							m_Reminders[i][6]);
+							reminders[i][6]);
 					
 					m_Intent.putExtras(extras);
 
@@ -173,14 +173,20 @@ public class SpendingTrackerService extends Service {
 
 						sb.append(getString(R.string.stringDidYouSpend));
 						sb.append(' ');
-						sb.append(m_Reminders[i][5]);
+						sb.append(reminders[i][5]);
 						sb.append(' ');
-						sb.append(Currency.getInstance(Locale.getDefault())
-								.getSymbol());
+						try {
+							sb.append(Currency.getInstance(Locale.getDefault())
+									.getSymbol());
+						} catch (Exception e) {
+							// TODO: m_Debug option 
+							Log.d(TAG, e.getMessage().toString());
+							
+						}
 						sb.append(' ');
 						sb.append(getString(R.string.stringDidYouSpendOn));
 						sb.append(' ');
-						sb.append(m_Reminders[i][6]);
+						sb.append(reminders[i][6]);
 						sb.append(' ');
 						sb.append("?");
 
@@ -208,7 +214,6 @@ public class SpendingTrackerService extends Service {
 
 						m_NotificationManager.notify(12021982, m_Notification);
 						
-					
 				}
 
 			}
