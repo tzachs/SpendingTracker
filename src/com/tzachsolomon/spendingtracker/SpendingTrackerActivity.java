@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.SystemClock;
 
@@ -319,6 +320,9 @@ public class SpendingTrackerActivity extends Activity implements
 		super.onResume();
 
 		initPreferences();
+		
+
+		
 		startLocationService();
 		
 		updateLocale();
@@ -499,6 +503,10 @@ public class SpendingTrackerActivity extends Activity implements
 			if (checkBoxPreferencsReminderService) {
 
 				startTimeAlarmManager();
+				tabHostMain.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+			}
+			else {
+				tabHostMain.getTabWidget().getChildAt(1).setVisibility(View.GONE);
 			}
 			
 
@@ -789,6 +797,10 @@ public class SpendingTrackerActivity extends Activity implements
 
 			startService(service);
 
+			tabHostMain.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
+		} else {
+			tabHostMain.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+			
 		}
 
 		IntentFilter iFilter = new IntentFilter(

@@ -253,8 +253,6 @@ public class SpendingTrackerLocationService extends Service implements
 			if (enableVibrate) {
 				m_Notification.defaults |= Notification.DEFAULT_VIBRATE;
 			}
-			
-			
 
 			m_NotificationManager.notify(notificationId, m_Notification);
 		}
