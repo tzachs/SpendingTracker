@@ -227,12 +227,11 @@ public class SpendingTrackerLocationService extends Service implements
 
 			}
 
-			sb.append(' ');
-			sb.append(getString(R.string.stringDidYouSpendOn));
+			sb.append(getString(R.string.stringDidYouSpend));
 			sb.append(' ');
 			sb.append(category);
 			sb.append(' ');
-			sb.append(" at ");
+			sb.append(" @ ");
 			sb.append(locationName);
 			sb.append("?");
 

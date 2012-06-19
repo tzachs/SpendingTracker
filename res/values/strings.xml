@@ -22,8 +22,8 @@
     <string name="addCategoryTitle">Add a category</string>
     <string name="addCategoryMessage">Enter the name of the category</string>
     <string name="deleteCategoryTitle">Delete category?</string>
-    <string name="stringDidYouSpend">Did you spend</string>
-    <string name="stringDidYouSpendOn">on</string>
+    <string name="stringDidYouSpend">Did you spend on</string>
+    
 
     <!-- RADIO BUTTON -->
 

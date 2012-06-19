@@ -1,7 +1,7 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.Calendar;
-import java.util.Currency;
+
 import java.util.Locale;
 
 import android.app.Activity;
@@ -416,19 +416,13 @@ public class SpendingTrackerActivity extends Activity implements
 				editTextAmount.setText(amount);
 				checkBoxAutoExit = (CheckBox)notifyLayout.findViewById(R.id.checkBoxNotifyAutoExit);
 				checkBoxAutoExit.setChecked(true);
-
-
 				
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 				StringBuilder sb = new StringBuilder();
 				getIntent().removeExtra(SpendingTrackerDbEngine.KEY_AMOUNT);
 				getIntent().removeExtra(SpendingTrackerDbEngine.KEY_CATEGORY);
 
-				Log.i(TAG, "Found amount " + amount + " in extra");
-				Log.i(TAG, "Found category " + category + " in extra");
-
-
-				sb.append(getString(R.string.stringDidYouSpendOn));
+				sb.append(getString(R.string.stringDidYouSpend));
 				sb.append(' ');
 				sb.append(category);
 				sb.append(' ');
@@ -451,7 +445,7 @@ public class SpendingTrackerActivity extends Activity implements
 								EditText editTextAmount = (EditText)notifyLayout.findViewById(R.id.editTextNotifyAmount);
 								
 								m_SpendingTrackerDbEngine
-										.insertNewSpending(editTextAmount.toString(), category,
+										.insertNewSpending(editTextAmount.getText().toString(), category,
 												"From reminder", null);
 
 								if (checkBoxAutoExit.isChecked()) {
@@ -1409,19 +1403,19 @@ public class SpendingTrackerActivity extends Activity implements
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
+		// 
 
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
+		// 
 
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		// 
 
 	}
 }

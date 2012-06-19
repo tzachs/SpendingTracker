@@ -183,8 +183,8 @@ public class SpendingTrackerTimeService extends Service {
 							Log.d(TAG, e.getMessage().toString());
 							
 						}
-						sb.append(' ');
-						sb.append(getString(R.string.stringDidYouSpendOn));
+						
+						sb.append(getString(R.string.stringDidYouSpend));
 						sb.append(' ');
 						sb.append(reminders[i][6]);
 						sb.append(' ');
