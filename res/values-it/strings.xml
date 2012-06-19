@@ -70,7 +70,7 @@
     <!-- CHECK BOXES -->
  
  	<string name="checkBoxAutoExitText">Auto close</string>
-    <string name="checkBoxAutoAddReminderText">Aggiungi notifica automaticamente</string>
+    
     <string name="checkBoxSaturdayText">Sabato</string>
     <string name="checkBoxSaturdayHint">7</string>
     <string name="checkBoxFridayText">Venerdì</string>

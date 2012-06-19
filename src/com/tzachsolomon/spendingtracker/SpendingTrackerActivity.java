@@ -25,12 +25,13 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 
-import android.opengl.Visibility;
+
 import android.os.Bundle;
 import android.os.SystemClock;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,14 +44,17 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
+
 import android.widget.EditText;
 
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+
 import android.widget.Spinner;
 import android.widget.TabHost;
+
 
 import android.widget.TimePicker;
 import android.widget.TabHost.OnTabChangeListener;
@@ -64,11 +68,12 @@ public class SpendingTrackerActivity extends Activity implements
 		LocationListener {
 
 	// TODO: export to Google Document
-	// TODO: reminder by location
 	// TODO: add option to place tab on bottom instead of up
 	// TODO: add colors to categories
 	// TODO: add graphs
 	// TODO: auto export database (auto backup)
+	// TODO: auto import in case re installing the app
+	// TODO: add learning mode
 
 	/** Called when the activity is first created. */
 	private static final String TAG = SpendingTrackerActivity.class
@@ -126,7 +131,6 @@ public class SpendingTrackerActivity extends Activity implements
 	private CheckBox checkBoxSunday, checkBoxMonday, checkBoxTuesday,
 			checkBoxWednesday, checkBoxThursday, checkBoxFriday,
 			checkBoxSaturday;
-	private CheckBox checkBoxAutoAddReminder;
 
 	private RadioGroup radioGroupReminder;
 
@@ -172,6 +176,7 @@ public class SpendingTrackerActivity extends Activity implements
 		initVariables();
 
 		nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
 		
 
 	}
@@ -250,8 +255,7 @@ public class SpendingTrackerActivity extends Activity implements
 		buttonShowWeeklyEntries
 				.setText(getString(R.string.buttonShowWeeklyEntriesText));
 
-		checkBoxAutoAddReminder
-				.setText(getString(R.string.checkBoxAutoAddReminderText));
+		
 		checkBoxFriday.setText(getString(R.string.checkBoxFridayText));
 		checkBoxMonday.setText(getString(R.string.checkBoxMondayText));
 		checkBoxSaturday.setText(getString(R.string.checkBoxSaturdayText));
@@ -321,8 +325,6 @@ public class SpendingTrackerActivity extends Activity implements
 
 		initPreferences();
 		
-
-		
 		startLocationService();
 		
 		updateLocale();
@@ -351,6 +353,8 @@ public class SpendingTrackerActivity extends Activity implements
 		// Function checks if there is a pending reminder
 		// Currently only support one reminder
 
+		final EditText editTextAmount;
+		
 		Bundle extras = getIntent().getExtras();
 
 		int flag = getIntent().getFlags()
@@ -393,6 +397,11 @@ public class SpendingTrackerActivity extends Activity implements
 			}
 
 			if (isReminder) {
+				final CheckBox checkBoxAutoExit;
+				final String amount = extras
+				.getString(SpendingTrackerDbEngine.KEY_AMOUNT);
+		final String category = extras
+				.getString(SpendingTrackerDbEngine.KEY_CATEGORY);
 				
 				int notificationId = extras.getInt("notificationId");
 				
@@ -400,15 +409,16 @@ public class SpendingTrackerActivity extends Activity implements
 				nm.cancel(notificationId);
 				nm.cancel(12021982);
 
-				final CheckBox checkBoxAutoExit = new CheckBox(this);
-				checkBoxAutoExit
-						.setText(getString(R.string.checkBoxAutoExitText));
+				LayoutInflater factory = LayoutInflater.from(this);
+				final View notifyLayout;
+				notifyLayout = factory.inflate(R.layout.notify_layout, null);
+				editTextAmount = (EditText) notifyLayout.findViewById(R.id.editTextNotifyAmount);
+				editTextAmount.setText(amount);
+				checkBoxAutoExit = (CheckBox)notifyLayout.findViewById(R.id.checkBoxNotifyAutoExit);
 				checkBoxAutoExit.setChecked(true);
 
-				final String amount = extras
-						.getString(SpendingTrackerDbEngine.KEY_AMOUNT);
-				final String category = extras
-						.getString(SpendingTrackerDbEngine.KEY_CATEGORY);
+
+				
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 				StringBuilder sb = new StringBuilder();
 				getIntent().removeExtra(SpendingTrackerDbEngine.KEY_AMOUNT);
@@ -417,24 +427,7 @@ public class SpendingTrackerActivity extends Activity implements
 				Log.i(TAG, "Found amount " + amount + " in extra");
 				Log.i(TAG, "Found category " + category + " in extra");
 
-				sb.append(getString(R.string.stringDidYouSpend));
-				sb.append(' ');
-				sb.append(amount);
-				sb.append(' ');
 
-				try {
-					sb.append(Currency.getInstance(Locale.getDefault())
-							.getSymbol());
-				} catch (Exception e) {
-					//
-					if (m_DebugMode) {
-						Toast.makeText(this, e.getMessage().toString(),
-								Toast.LENGTH_SHORT).show();
-					}
-					e.printStackTrace();
-				}
-
-				sb.append(' ');
 				sb.append(getString(R.string.stringDidYouSpendOn));
 				sb.append(' ');
 				sb.append(category);
@@ -445,7 +438,7 @@ public class SpendingTrackerActivity extends Activity implements
 						.setTitle(getString(R.string.spentMoneyDialogTitleText));
 
 				alertDialog.setMessage(sb.toString());
-				alertDialog.setView(checkBoxAutoExit);
+				alertDialog.setView(notifyLayout);
 
 				alertDialog.setPositiveButton(
 						getString(R.string.dialogPositiveYes),
@@ -455,8 +448,10 @@ public class SpendingTrackerActivity extends Activity implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								//
+								EditText editTextAmount = (EditText)notifyLayout.findViewById(R.id.editTextNotifyAmount);
+								
 								m_SpendingTrackerDbEngine
-										.insertNewSpending(amount, category,
+										.insertNewSpending(editTextAmount.toString(), category,
 												"From reminder", null);
 
 								if (checkBoxAutoExit.isChecked()) {
@@ -472,7 +467,7 @@ public class SpendingTrackerActivity extends Activity implements
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								//
+								
 								if (checkBoxAutoExit.isChecked()) {
 									finish();
 								}
@@ -733,7 +728,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void initCheckBoxes() {
 		//
 
-		checkBoxAutoAddReminder = (CheckBox) findViewById(R.id.checkBoxAutoAddReminder);
+		
 
 		checkBoxSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
 		checkBoxMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
@@ -785,12 +780,13 @@ public class SpendingTrackerActivity extends Activity implements
 
 		boolean checkBoxPreferencesLocationService = m_SharedPreferences
 				.getBoolean("checkBoxPreferencesLocationService", false);
+		
+		cancelLocationAlarmManager();
 
 		// checking the location service option is enabled
 		if (checkBoxPreferencesLocationService) {
 			// the location service is enabled, thus disabling the alarm
 			// location manager
-			cancelLocationAlarmManager();
 
 			Intent service = new Intent(this,
 					SpendingTrackerLocationService.class);
@@ -837,17 +833,16 @@ public class SpendingTrackerActivity extends Activity implements
 		boolean checkBoxPreferencesLocationService = m_SharedPreferences
 				.getBoolean("checkBoxPreferencesLocationService", false);
 
+		Intent service = new Intent(this,
+				SpendingTrackerLocationService.class);
+
+		stopService(service);
+		
 		// checking the location service option is enabled
 		if (checkBoxPreferencesLocationService) {
 			// the location service is enabled, thus disabling the alarm
 			// location manager
-			Intent service = new Intent(this,
-					SpendingTrackerLocationService.class);
-
-			stopService(service);
-			
 			startLocationAlarmManager();
-			
 
 		}
 
@@ -862,6 +857,8 @@ public class SpendingTrackerActivity extends Activity implements
 			this.getIntent().getExtras().clear();
 		}
 		super.onDestroy();
+		
+		
 
 	}
 
@@ -870,7 +867,7 @@ public class SpendingTrackerActivity extends Activity implements
 		//
 		super.onStop();
 
-		Log.d(TAG, "onStop start");
+		
 
 	}
 
@@ -1084,18 +1081,7 @@ public class SpendingTrackerActivity extends Activity implements
 				updateDaySpent();
 				updateWeekSpent();
 				updateMonthSpent();
-
-				// if the add reminder is checked do not clear the texts and
-				// change to tab reminders
-				if (checkBoxAutoAddReminder.isChecked()) {
-
-					tabHostMain.setCurrentTabByTag(TAB_TAG_TIME_REMINDERS);
-				} else {
-					// initialize edit text
-					editTextQuickAddAmount.setText("");
-					editTextComment.setText("");
-				}
-
+				
 			} catch (Exception e) {
 				if (m_DebugMode) {
 					Toast.makeText(this, e.getMessage().toString(),

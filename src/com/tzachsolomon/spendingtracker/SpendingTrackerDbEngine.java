@@ -82,7 +82,7 @@ public class SpendingTrackerDbEngine {
 	private static final String TABLE_LOCATION_REMINDERS = "tblLocations";
 	private static final String TABLE_REMINDERS_QUEUE = "tblRemindersQueue";
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	private DbHelper ourHelper;
 	private final Context ourContext;
@@ -187,7 +187,7 @@ public class SpendingTrackerDbEngine {
 			
 			createTableLocationReminders(db);
 
-			db.execSQL("DROP TABLE " + TABLE_REMINDERS_QUEUE);
+			//db.execSQL("DROP TABLE " + TABLE_REMINDERS_QUEUE);
 			createTableRemindersQueue(db);
 
 		}

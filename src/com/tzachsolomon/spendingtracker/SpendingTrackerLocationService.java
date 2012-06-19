@@ -1,6 +1,6 @@
 package com.tzachsolomon.spendingtracker;
 
-import java.sql.Date;
+
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;

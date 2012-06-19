@@ -6,7 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.SQLException;
-import android.opengl.Visibility;
+
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;

@@ -3,7 +3,7 @@
 
     <style name="CustomTheme" parent="android:style/Theme.NoTitleBar">
         <item name="android:buttonStyle">@style/Button</item>
-        <item name="android:tabWidgetStyle">@style/CustomTab</item>
+         <item name="android:tabWidgetStyle">@style/CustomTab</item>
     </style>
 
    
