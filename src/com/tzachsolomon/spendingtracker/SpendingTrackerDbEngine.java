@@ -635,6 +635,17 @@ public class SpendingTrackerDbEngine {
 		this.close();
 
 	}
+	
+
+	public void deleteSpentEntries() {
+		// 
+		this.open();
+		ourDatabase.delete(TABLE_SPENDING, null, null);
+		
+		this.close();
+		
+	}
+
 
 	public void deleteCategory(String i_Category) {
 		//

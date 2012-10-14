@@ -996,7 +996,8 @@ public class SpendingTrackerActivity extends Activity implements
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						//
-						m_SpendingTrackerDbEngine.deleteAll();
+						m_SpendingTrackerDbEngine.deleteSpentEntries();
+						
 						updateDaySpent();
 						updateMonthSpent();
 						updateWeekSpent();
