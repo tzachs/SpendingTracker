@@ -43,45 +43,51 @@ public class Preferences extends PreferenceActivity implements SharedPreferences
 		super.onPause();
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
+
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-			String key) {
-		// 
-		boolean answer;
-		StringBuilder sb = new StringBuilder();
-		
-		if ( key.contentEquals("checkBoxPreferencsReminderService")){
-			if ( sharedPreferences.getBoolean("checkBoxPreferencsReminderService", true) ) {
-				sb.append(getString(R.string.toastMessageEnabledTimeReminderService));
-			} else {
-				sb.append(getString(R.string.toastMessageDisabledTimeReminderService));
-			}
-		}else if (key.contentEquals("checkBoxPreferencesLocationService")) {
-			
-			answer = sharedPreferences.getBoolean("checkBoxPreferencesLocationService", false);
-			
-			preferenceCategoryLocationAdvanced.setEnabled(answer);
-			
-			if ( answer) {
-				sb.append(getString(R.string.toastMessageEnabledLocationReminderService));
-				
-			}else {
-				sb.append(getString(R.string.toastMessageDisabledLocationReminderService));
-			}
-				
-		}
-		
-		if ( sb.length() > 0 ){
-		
-			Toast.makeText(this, sb.toString(),	Toast.LENGTH_SHORT).show();
-		}
-		
-		sb.setLength(0);
-		
-		
-	}
+//	@Override
+//	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+//			String key) {
+//		// 
+//		boolean answer;
+//		StringBuilder sb = new StringBuilder();
+//		
+//		if ( key.contentEquals("checkBoxPreferencsReminderService")){
+//			if ( sharedPreferences.getBoolean("checkBoxPreferencsReminderService", true) ) {
+//				sb.append(getString(R.string.toastMessageEnabledTimeReminderService));
+//			} else {
+//				sb.append(getString(R.string.toastMessageDisabledTimeReminderService));
+//			}
+//		}else if (key.contentEquals("checkBoxPreferencesLocationService")) {
+//			
+//			answer = sharedPreferences.getBoolean("checkBoxPreferencesLocationService", false);
+//			
+//			preferenceCategoryLocationAdvanced.setEnabled(answer);
+//			
+//			if ( answer) {
+//				sb.append(getString(R.string.toastMessageEnabledLocationReminderService));
+//				
+//			}else {
+//				sb.append(getString(R.string.toastMessageDisabledLocationReminderService));
+//			}
+//				
+//		}
+//		
+//		if ( sb.length() > 0 ){
+//		
+//			Toast.makeText(this, sb.toString(),	Toast.LENGTH_SHORT).show();
+//		}
+//		
+//		sb.setLength(0);
+//		
+//		
+//	}
 
 }

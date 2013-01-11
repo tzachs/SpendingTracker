@@ -132,7 +132,7 @@ public class SpendingTrackerTimeService extends Service {
 					Bundle extras = new Bundle();
 
 					m_Intent = new Intent(getBaseContext(),
-							SpendingTrackerActivity.class);
+							ActivitySpendingTracker.class);
 
 					Log.i(TAG, "Found reminder in database, sending notification");
 

@@ -3,6 +3,7 @@
 	<name>SpendingTracker</name>
 	<comment></comment>
 	<projects>
+		<project>sherlockactionbar</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

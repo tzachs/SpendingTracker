@@ -58,51 +58,51 @@ public class CategoriesManager extends ListActivity implements
 		lv.setOnItemClickListener(this);
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		//
-		final String category = (String) m_CategoriesList.get(position);
+//	@Override
+//	public void onItemClick(AdapterView<?> parent, View view, int position,
+//			long id) {
+//		//
+//		final String category = (String) m_CategoriesList.get(position);
+//
+//		if (position == 0) {
+//			showAddNewCategoryDialog();
+//			
+//		} else {
+//			showDeleteCategoryDialog(category);
+//		}
+//		Log.i(TAG, category);
+//
+//	}
 
-		if (position == 0) {
-			showAddNewCategoryDialog();
-			
-		} else {
-			showDeleteCategoryDialog(category);
-		}
-		Log.i(TAG, category);
-
-	}
-
-	private void showDeleteCategoryDialog(final String category) {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-		alert.setTitle(getString(R.string.deleteCategoryTitle));
-		alert.setMessage(category);
-
-		alert.setPositiveButton("Delete",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						m_SpendingTrackerDb.deleteCategory(category);
-						initializeList();
-					}
-				});
-
-		alert.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
-
-		alert.show();
-	}
+//	private void showDeleteCategoryDialog(final String category) {
+//		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//
+//		alert.setTitle(getString(R.string.deleteCategoryTitle));
+//		alert.setMessage(category);
+//
+//		alert.setPositiveButton("Delete",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						m_SpendingTrackerDb.deleteCategory(category);
+//						initializeList();
+//					}
+//				});
+//
+//		alert.setNegativeButton("Cancel",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
+//
+//		alert.show();
+//	}
 
 	private void showAddNewCategoryDialog() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -113,28 +113,28 @@ public class CategoriesManager extends ListActivity implements
 		final EditText input = new EditText(this);
 		alert.setView(input);
 
-		alert.setPositiveButton("Add",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						String value = input.getText().toString();
-						m_SpendingTrackerDb.insertNewCategory(value);
-						
-						initializeList();
-					}
-				});
-
-		alert.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
+//		alert.setPositiveButton("Add",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						String value = input.getText().toString();
+//						m_SpendingTrackerDb.insertNewCategory(value);
+//						
+//						initializeList();
+//					}
+//				});
+//
+//		alert.setNegativeButton("Cancel",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
 		alert.show();
 	}
@@ -185,6 +185,11 @@ public class CategoriesManager extends ListActivity implements
 	static class ViewHolder {
 		TextView text;
 
+	}
+
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

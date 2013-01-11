@@ -73,7 +73,6 @@ public class SpendingTrackerDbEngine {
 	public static final String KEY_REMINDER_STATUS = "colReminderStatus";
 	public static final String KEY_REMINDER_STATUS_PENDING = "pending";
 	public static final String KEY_REMINDER_STATUS_PRESSED = "pressed";
-	
 
 	private static final String DATABASE_NAME = "SpendingTrackerDb";
 	private static final String TABLE_SPENDING = "tblSpending";
@@ -136,15 +135,15 @@ public class SpendingTrackerDbEngine {
 					+ " TEXT NOT NULL, " + KEY_LONGITUDE + " TEXT NOT NULL, "
 					+ KEY_PROVIDER + " TEXT NOT NULL, " + KEY_SPEED
 					+ " TEXT NOT NULL, " + KEY_TIME + " TEXT NOT NULL, "
-					+ KEY_LOCATION_NAME + " TEXT NOT NULL, "
-					+ KEY_AMOUNT + " TEXT NOT NULL, " + KEY_CATEGORY
-					+ " TEXT NOT NULL " + ");";
+					+ KEY_LOCATION_NAME + " TEXT NOT NULL, " + KEY_AMOUNT
+					+ " TEXT NOT NULL, " + KEY_CATEGORY + " TEXT NOT NULL "
+					+ ");";
 
 			Log.d(TAG, "Executing the following queries: ");
 			Log.d(TAG, sqlQuery);
 
 			db.execSQL(sqlQuery);
-			
+
 		}
 
 		private void createTableRemindersQueue(SQLiteDatabase db) {
@@ -157,13 +156,13 @@ public class SpendingTrackerDbEngine {
 					+ KEY_REMINDER_ID + " TEXT NOT NULL " + ");";
 
 			db.execSQL(sqlQuery);
-			
+
 			ContentValues cv = new ContentValues();
-			
+
 			cv.put(KEY_REMINDER_TYPE, "-1");
 			cv.put(KEY_REMINDER_STATUS, "-1");
 			cv.put(KEY_REMINDER_ID, "-1");
-			
+
 			db.insert(TABLE_REMINDERS_QUEUE, null, cv);
 
 		}
@@ -184,10 +183,10 @@ public class SpendingTrackerDbEngine {
 
 			Log.v(TAG, DATABASE_NAME + "is upgraded from version " + oldVersion
 					+ " to version " + newVersion);
-			
+
 			createTableLocationReminders(db);
 
-			//db.execSQL("DROP TABLE " + TABLE_REMINDERS_QUEUE);
+			// db.execSQL("DROP TABLE " + TABLE_REMINDERS_QUEUE);
 			createTableRemindersQueue(db);
 
 		}
@@ -635,17 +634,15 @@ public class SpendingTrackerDbEngine {
 		this.close();
 
 	}
-	
 
 	public void deleteSpentEntries() {
-		// 
+		//
 		this.open();
 		ourDatabase.delete(TABLE_SPENDING, null, null);
-		
-		this.close();
-		
-	}
 
+		this.close();
+
+	}
 
 	public void deleteCategory(String i_Category) {
 		//
@@ -706,16 +703,16 @@ public class SpendingTrackerDbEngine {
 	 *            i_Calendar as a reference point
 	 * @return All the entries spent in a specific day
 	 */
-	public String[][] getSpentDailyEntries(Calendar i_Calendar) {
+	public ArrayList<ClassEntrySpentType> getSpentDailyEntries(Calendar i_Calendar) {
 
 		Calendar now;
 		int todayInMonth, thisYear, thisMonth;
 		String todayInMonthString, thisYearString, thisMonthString;
 		Cursor c;
 		int i = 0;
-		int iRowID, iAmount, iCategory;
+		int iRowID, iAmount, iCategory,iDate;
 
-		String[][] ret = null;
+		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -735,7 +732,7 @@ public class SpendingTrackerDbEngine {
 
 		this.open();
 
-		String[] columns = new String[] { KEY_ROWID, KEY_AMOUNT, KEY_CATEGORY };
+		String[] columns = new String[] { KEY_ROWID, KEY_AMOUNT, KEY_CATEGORY,KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
 		Log.v(TAG, "getting all entries for day " + todayInMonthString);
@@ -745,23 +742,21 @@ public class SpendingTrackerDbEngine {
 						+ todayInMonthString + "T%'", null, null, null,
 				m_SortByKey);
 
-		// setting the 2 dimensional array
-		ret = new String[c.getCount()][columns.length];
+		
 
 		iRowID = c.getColumnIndex(KEY_ROWID);
 		iAmount = c.getColumnIndex(KEY_AMOUNT);
 		iCategory = c.getColumnIndex(KEY_CATEGORY);
+		iDate = c.getColumnIndex(KEY_DATE);
 
-		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-
-			ret[i][iRowID] = c.getString(iRowID);
-			ret[i][iAmount] = c.getString(iAmount);
-			ret[i][iCategory] = c.getString(iCategory);
-
-			i++;
-
+			
+			ret.add(new ClassEntrySpentType(c.getString(iRowID),
+					c.getString(iAmount),
+					c.getString(iCategory),
+					c.getString(iDate)));
+					
 		}
 
 		c.close();
@@ -782,7 +777,7 @@ public class SpendingTrackerDbEngine {
 	 * @return All the entries spent in a specific Week
 	 */
 
-	public String[][] getSpentThisWeekEnteries(int i_FirstDayOfWeek,
+	public ArrayList<ClassEntrySpentType> getSpentThisWeekEnteries(int i_FirstDayOfWeek,
 			Calendar i_Calendar) {
 
 		Calendar now;
@@ -794,7 +789,7 @@ public class SpendingTrackerDbEngine {
 		int iRowID, iAmount, iCategory, iDate;
 		StringBuilder filter = new StringBuilder();
 
-		String[][] ret = null;
+		ArrayList<ClassEntrySpentType >ret = new ArrayList<ClassEntrySpentType>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -848,8 +843,6 @@ public class SpendingTrackerDbEngine {
 		c = ourDatabase.query(TABLE_SPENDING, columns, filter.toString(), null,
 				null, null, m_SortByKey);
 
-		// setting the 2 dimensional array
-		ret = new String[c.getCount()][columns.length];
 
 		iRowID = c.getColumnIndex(KEY_ROWID);
 		iAmount = c.getColumnIndex(KEY_AMOUNT);
@@ -860,11 +853,11 @@ public class SpendingTrackerDbEngine {
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
 			Log.v(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
-
-			ret[i][iRowID] = c.getString(iRowID);
-			ret[i][iAmount] = c.getString(iAmount);
-			ret[i][iCategory] = c.getString(iCategory);
-			ret[i][iDate] = c.getString(iDate).split("T")[0];
+			
+			ret.add(new ClassEntrySpentType(c.getString(iRowID),
+					c.getString(iAmount),
+					c.getString(iCategory),
+					c.getString(iDate)));
 
 			i++;
 
@@ -878,7 +871,8 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public String[][] getSpentThisMonthEnteries(Calendar i_Calendar) {
+	public ArrayList<ClassEntrySpentType> getSpentThisMonthEnteries(
+			Calendar i_Calendar) {
 
 		Calendar now;
 		int month;
@@ -888,7 +882,7 @@ public class SpendingTrackerDbEngine {
 		int i = 0;
 		int iRowID, iAmount, iCategory, iDate;
 
-		String[][] ret = null;
+		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -914,8 +908,6 @@ public class SpendingTrackerDbEngine {
 				+ monthString + "__T%'", null, null, null, m_SortByKey);
 
 		// Setting the 2 dimensional array
-		ret = new String[c.getCount()][columns.length];
-
 		iRowID = c.getColumnIndex(KEY_ROWID);
 		iAmount = c.getColumnIndex(KEY_AMOUNT);
 		iCategory = c.getColumnIndex(KEY_CATEGORY);
@@ -926,12 +918,9 @@ public class SpendingTrackerDbEngine {
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
 			Log.v(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
 
-			ret[i][iRowID] = c.getString(iRowID);
-			ret[i][iAmount] = c.getString(iAmount);
-			ret[i][iCategory] = c.getString(iCategory);
-			ret[i][iDate] = c.getString(iDate).split("T")[0];
-
-			i++;
+			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
+					.getString(iAmount), c.getString(iCategory), c
+					.getString(iDate)));
 
 		}
 
@@ -994,7 +983,8 @@ public class SpendingTrackerDbEngine {
 
 		String[] columns = new String[] { KEY_ROWID, KEY_ACCURACY,
 				KEY_ALTITUDE, KEY_BEARING, KEY_LATITUDE, KEY_LONGITUDE,
-				KEY_PROVIDER, KEY_SPEED, KEY_TIME, KEY_AMOUNT, KEY_CATEGORY, KEY_LOCATION_NAME };
+				KEY_PROVIDER, KEY_SPEED, KEY_TIME, KEY_AMOUNT, KEY_CATEGORY,
+				KEY_LOCATION_NAME };
 
 		this.open();
 
@@ -1384,11 +1374,12 @@ public class SpendingTrackerDbEngine {
 	public boolean isLocationChanged(String rowId) {
 
 		// Checking if the current location is last one found
-		// If the location is new the first id in TABLE_REMINDERS_QUERE will not be equal to rowId
+		// If the location is new the first id in TABLE_REMINDERS_QUERE will not
+		// be equal to rowId
 		boolean ret = false;
 		Cursor c;
 		StringBuilder filter = new StringBuilder();
-		
+
 		filter.append(KEY_ROWID);
 		filter.append("='1'");
 		filter.append(" AND ");
@@ -1396,31 +1387,32 @@ public class SpendingTrackerDbEngine {
 		filter.append("='");
 		filter.append(rowId);
 		filter.append("'");
-		
 
 		this.open();
 		// getting the last row and checking if it is our rowId
 		c = ourDatabase.query(TABLE_REMINDERS_QUEUE, null, filter.toString(),
-				null, null, null, null,null);
+				null, null, null, null, null);
 
 		try {
-			// If no row was found than this is the first time we are at this location
-			if ( c.getCount() == 0 ){
-				// updating last location 
+			// If no row was found than this is the first time we are at this
+			// location
+			if (c.getCount() == 0) {
+				// updating last location
 				ContentValues cv = new ContentValues();
-				
+
 				cv.put(KEY_REMINDER_ID, rowId);
-				
-				ourDatabase.update(TABLE_REMINDERS_QUEUE, cv,KEY_ROWID + "='1'", null);
+
+				ourDatabase.update(TABLE_REMINDERS_QUEUE, cv, KEY_ROWID
+						+ "='1'", null);
 				ret = true;
 			}
- 
+
 		} catch (Exception e) {
 			//
 			Log.d(TAG, e.getMessage().toString());
-			
+
 		}
-		
+
 		c.close();
 
 		this.close();
@@ -1448,15 +1440,15 @@ public class SpendingTrackerDbEngine {
 	}
 
 	public String[][] getLocationRemindersAsStrings() {
-		
-		
+
 		String[][] ret = null;
-		String[] columns = new String[] { KEY_ROWID, KEY_LOCATION_NAME, KEY_AMOUNT, KEY_CATEGORY };
+		String[] columns = new String[] { KEY_ROWID, KEY_LOCATION_NAME,
+				KEY_AMOUNT, KEY_CATEGORY };
 
 		this.open();
 
-		Cursor c = ourDatabase.query(TABLE_LOCATION_REMINDERS, columns, null, null,
-				null, null, null);
+		Cursor c = ourDatabase.query(TABLE_LOCATION_REMINDERS, columns, null,
+				null, null, null, null);
 
 		// setting 2 dimensional array
 		ret = new String[c.getCount()][columns.length];
@@ -1484,11 +1476,11 @@ public class SpendingTrackerDbEngine {
 		this.close();
 
 		return ret;
-		
+
 	}
 
 	public void deleteLocationReminderById(String i_ReminderId) {
-		// 
+		//
 		this.open();
 		int ret;
 
@@ -1497,27 +1489,26 @@ public class SpendingTrackerDbEngine {
 		Log.v(TAG, "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
-		
+
 	}
 
 	public void deleteAllSentNotifications() {
-		// 
+		//
 		deleteTableAndResetId(TABLE_REMINDERS_QUEUE);
-		
+
 		// Resetting last known location
 		ContentValues cv = new ContentValues();
-		
+
 		cv.put(KEY_REMINDER_TYPE, "-1");
 		cv.put(KEY_REMINDER_STATUS, "-1");
 		cv.put(KEY_REMINDER_ID, "-1");
-		
+
 		this.open();
-		
+
 		ourDatabase.insert(TABLE_REMINDERS_QUEUE, null, cv);
-		
+
 		this.close();
-		
-		
+
 	}
 
 }

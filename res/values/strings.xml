@@ -149,6 +149,13 @@
     <string name="textViewTimeLabel">Time</string>
     <string name="textViewEntriesRemindersLocationNameText">Location</string>
     <string name="editTextLocationNameHint">Short description of the location</string>
+    <string name="_rowNumber">#</string>
+    <string name="amount">Amount</string>
+    <string name="category">Category</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="del">Del</string>
+    <string name="edit">Edit</string>
     
     
     

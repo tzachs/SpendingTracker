@@ -99,17 +99,14 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		switch (m_Type) {
 
 		case TYPE_TODAY:
-
-			m_Data = m_SpendingTrackerDbEngine.getSpentDailyEntries(m_Calendar);
+			
 			break;
 
 		case TYPE_WEEK:
-			m_Data = m_SpendingTrackerDbEngine.getSpentThisWeekEnteries(1,
-					m_Calendar);
+			
 			break;
 		case TYPE_MONTH:
-			m_Data = m_SpendingTrackerDbEngine
-					.getSpentThisMonthEnteries(m_Calendar);
+			
 			break;
 
 		default:
@@ -296,28 +293,28 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 				.setTitle(getString(R.string.alertDialogImportDatabaseTitle));
 		alertDialog
 				.setMessage(getString(R.string.alertDialogImportDatabaseMessage));
-		alertDialog.setPositiveButton(
-				getString(R.string.alertDialogImportDatabasePositive),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						importDatabase();
-
-					}
-
-				});
-		alertDialog.setNegativeButton(
-				getString(R.string.alertDialogImportDatabaseNegative),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
+//		alertDialog.setPositiveButton(
+//				getString(R.string.alertDialogImportDatabasePositive),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						importDatabase();
+//
+//					}
+//
+//				});
+//		alertDialog.setNegativeButton(
+//				getString(R.string.alertDialogImportDatabaseNegative),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
 		alertDialog.show();
 
@@ -363,28 +360,28 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		alertDialog
 				.setMessage(getString(R.string.alertDialogExportDatabaseMessage));
 
-		alertDialog.setPositiveButton(
-				getString(R.string.alertDialogExportDatabasePositive),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						exportDatabase();
-
-					}
-
-				});
-		alertDialog.setNegativeButton(
-				getString(R.string.alertDialogExportDatabaseNegative),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
+//		alertDialog.setPositiveButton(
+//				getString(R.string.alertDialogExportDatabasePositive),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						exportDatabase();
+//
+//					}
+//
+//				});
+//		alertDialog.setNegativeButton(
+//				getString(R.string.alertDialogExportDatabaseNegative),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
 		alertDialog.show();
 
@@ -403,36 +400,36 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		alertDialog
 				.setTitle(getString(R.string.alertDialogViewEntriesSpentTitleDelete));
 
-		alertDialog.setPositiveButton(
-				getString(R.string.alertDialogViewEntriesSpentPositiveDelete),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						String rowId = editTextRowId.getText().toString();
-
-						m_SpendingTrackerDbEngine
-								.deleteSpentEntryByRowId(rowId);
-
-						Toast.makeText(ViewEntriesSpent.this,
-								getString(R.string.entryDeleted),
-								Toast.LENGTH_SHORT).show();
-
-						updateTableLayout();
-
-					}
-				});
-		alertDialog.setNegativeButton(
-				getString(R.string.alertDialogViewEntriesSpentNegative),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
+//		alertDialog.setPositiveButton(
+//				getString(R.string.alertDialogViewEntriesSpentPositiveDelete),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						String rowId = editTextRowId.getText().toString();
+//
+//						m_SpendingTrackerDbEngine
+//								.deleteSpentEntryByRowId(rowId);
+//
+//						Toast.makeText(ViewEntriesSpent.this,
+//								getString(R.string.entryDeleted),
+//								Toast.LENGTH_SHORT).show();
+//
+//						updateTableLayout();
+//
+//					}
+//				});
+//		alertDialog.setNegativeButton(
+//				getString(R.string.alertDialogViewEntriesSpentNegative),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
 		alertDialog.show();
 
@@ -451,35 +448,35 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		alertDialog
 				.setTitle(getString(R.string.alertDialogViewEntriesSpentTitleEdit));
 
-		alertDialog.setPositiveButton(
-				getString(R.string.alertDialogViewEntriesSpentPositiveEdit),
-				new DialogInterface.OnClickListener() {
+//		alertDialog.setPositiveButton(
+//				getString(R.string.alertDialogViewEntriesSpentPositiveEdit),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						Intent intent = new Intent(ViewEntriesSpent.this,
+//								EditEntrySpent.class);
+//
+//						intent.putExtra("RowId", editTextRowId.getText()
+//								.toString());
+//
+//						startActivity(intent);
+//
+//					}
+////				});
+//		alertDialog.setNegativeButton(
+//				getString(R.string.alertDialogViewEntriesSpentNegative),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						Intent intent = new Intent(ViewEntriesSpent.this,
-								EditEntrySpent.class);
-
-						intent.putExtra("RowId", editTextRowId.getText()
-								.toString());
-
-						startActivity(intent);
-
-					}
-				});
-		alertDialog.setNegativeButton(
-				getString(R.string.alertDialogViewEntriesSpentNegative),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
-
-		alertDialog.show();
+//		alertDialog.show();
 
 	}
 
@@ -545,36 +542,36 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	}
 
-	@Override
-	public boolean onDown(MotionEvent e) {
-		//
-		return true;
-	}
+//	@Override
+//	public boolean onDown(MotionEvent e) {
+//		//
+//		return true;
+//	}
 
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		//
-		float direction = e1.getX() - e2.getX();
-		float distance = Math.abs(direction);
-
-		Log.d(TAG, "velocityX " + velocityX);
-		Log.d(TAG, "distance " + distance);
-
-		// checking if the user swipe from left to right or right to left
-		if (Math.abs(velocityX) > 100 && distance > 100) {
-
-			if (direction > 0) {
-				// move right
-				screenSlide(1);
-			} else {
-				// move left
-				screenSlide(-1);
-
-			}
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+//			float velocityY) {
+//		//
+//		float direction = e1.getX() - e2.getX();
+//		float distance = Math.abs(direction);
+//
+//		Log.d(TAG, "velocityX " + velocityX);
+//		Log.d(TAG, "distance " + distance);
+//
+//		// checking if the user swipe from left to right or right to left
+//		if (Math.abs(velocityX) > 100 && distance > 100) {
+//
+//			if (direction > 0) {
+//				// move right
+//				screenSlide(1);
+//			} else {
+//				// move left
+//				screenSlide(-1);
+//
+//			}
+//		}
+//		return true;
+//	}
 
 	/**
 	 * Function will add according to m_Type it is currently displaying
@@ -627,47 +624,94 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		// Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void onLongPress(MotionEvent e) {
-		//
-
+	public boolean onDoubleTap(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	@Override
+	public boolean onDoubleTapEvent(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean onSingleTapConfirmed(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean onDown(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		//
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	@Override
 	public void onShowPress(MotionEvent e) {
-		//
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		//
-		return true;
-	}
-
-	@Override
-	public boolean onDoubleTap(MotionEvent e) {
-		//
+		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean onDoubleTapEvent(MotionEvent e) {
-		//
-		return false;
-	}
-
-	@Override
-	public boolean onSingleTapConfirmed(MotionEvent e) {
-		//
-		return false;
-	}
+//	@Override
+//	public void onLongPress(MotionEvent e) {
+//		//
+//
+//	}
+//
+//	@Override
+//	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+//			float distanceY) {
+//		//
+//		return true;
+//	}
+//
+//	@Override
+//	public void onShowPress(MotionEvent e) {
+//		//
+//
+//	}
+//
+//	@Override
+//	public boolean onSingleTapUp(MotionEvent e) {
+//		//
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean onDoubleTap(MotionEvent e) {
+//		//
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean onDoubleTapEvent(MotionEvent e) {
+//		//
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean onSingleTapConfirmed(MotionEvent e) {
+//		//
+//		return false;
+//	}
 
 }

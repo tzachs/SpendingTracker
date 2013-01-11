@@ -104,25 +104,25 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 		//
 		spinnerCategories = (Spinner) findViewById(R.id.spinnerCategories);
 
-		spinnerCategories
-				.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int pos, long id) {
-						//
-						m_CategorySelected = parent.getItemAtPosition(pos)
-								.toString();
-
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-
-						m_CategorySelected = "";
-					}
-
-				});
+//		spinnerCategories
+//				.setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//					@Override
+//					public void onItemSelected(AdapterView<?> parent,
+//							View view, int pos, long id) {
+//						//
+//						m_CategorySelected = parent.getItemAtPosition(pos)
+//								.toString();
+//
+//					}
+//
+//					@Override
+//					public void onNothingSelected(AdapterView<?> arg0) {
+//
+//						m_CategorySelected = "";
+//					}
+//
+//				});
 
 	}
 
@@ -134,17 +134,17 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 
 	}
 
-	@Override
-	public void onClick(View v) {
-		//
-		switch (v.getId()) {
-		case R.id.buttonSpentEditUpdate:
-			buttonSpentEditUpdate_Clicked();
-			break;
-
-		}
-
-	}
+//	@Override
+//	public void onClick(View v) {
+//		//
+//		switch (v.getId()) {
+//		case R.id.buttonSpentEditUpdate:
+//			buttonSpentEditUpdate_Clicked();
+//			break;
+//
+//		}
+//
+//	}
 
 	private void buttonSpentEditUpdate_Clicked() {
 		//
@@ -172,6 +172,11 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 		
 		Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
 
+	}
+
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -105,30 +105,30 @@ public class ViewEntriesReminders extends Activity {
 
 		alertDialog.setTitle(getString(R.string.alertDialogTitleDeleteReminder));
 		alertDialog.setView(editTextRowId);
-		alertDialog.setPositiveButton("Delete",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						String reminderId = editTextRowId.getText().toString();
-						Log.v(TAG, "Delete reminder with id " + reminderId);
-
-						m_SpendingTrackerDbEngine
-								.deleteReminderById(reminderId);
-						updateTable();
-
-					}
-				});
-		alertDialog.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
+//		alertDialog.setPositiveButton("Delete",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						String reminderId = editTextRowId.getText().toString();
+//						Log.v(TAG, "Delete reminder with id " + reminderId);
+//
+//						m_SpendingTrackerDbEngine
+//								.deleteReminderById(reminderId);
+//						updateTable();
+//
+//					}
+//				});
+//		alertDialog.setNegativeButton("Cancel",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
 		alertDialog.show();
 

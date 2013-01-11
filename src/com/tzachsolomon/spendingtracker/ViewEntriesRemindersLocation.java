@@ -185,52 +185,57 @@ public class ViewEntriesRemindersLocation extends Activity implements OnClickLis
 		alertDialog
 				.setTitle(getString(R.string.alertDialogTitleDeleteReminder));
 		alertDialog.setView(editTextRowId);
-		alertDialog.setPositiveButton("Delete",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						String reminderId = editTextRowId.getText().toString();
-						Log.v(TAG, "Delete reminder with id " + reminderId);
-
-						m_SpendingTrackerDbEngine
-								.deleteLocationReminderById(reminderId);
-						updateTable();
-
-					}
-				});
-		alertDialog.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-
-					}
-				});
+//		alertDialog.setPositiveButton("Delete",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						String reminderId = editTextRowId.getText().toString();
+//						Log.v(TAG, "Delete reminder with id " + reminderId);
+//
+//						m_SpendingTrackerDbEngine
+//								.deleteLocationReminderById(reminderId);
+//						updateTable();
+//
+//					}
+//				});
+//		alertDialog.setNegativeButton("Cancel",
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//
+//					}
+//				});
 
 		alertDialog.show();
 
 	}
-
-	@Override
-	public void onClick(View v) {
-		// 
-		switch (v.getId()) {
-		case R.id.buttonDeleteSentLocationNotifications:
-			buttonDeleteSentLocationNotifications_Clicked();
-			break;
-
-		default:
-			break;
-		}
-		
-	}
+//
+//	@Override
+//	public void onClick(View v) {
+//		// 
+//		switch (v.getId()) {
+//		case R.id.buttonDeleteSentLocationNotifications:
+//			buttonDeleteSentLocationNotifications_Clicked();
+//			break;
+//
+//		default:
+//			break;
+//		}
+//		
+//	}
 
 	private void buttonDeleteSentLocationNotifications_Clicked() {
 		// 
 		m_SpendingTrackerDbEngine.deleteAllSentNotifications();
+		
+	}
+
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -117,19 +117,19 @@ public class SpendingTrackerLocationService extends Service implements
 		m_NotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		// update the activity UI
-		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
-		intent.putExtra("location", location);
-
-		sendBroadcast(intent);
-		
-		// check if to send notification
-		checkReminders(location);
-
-	}
+//
+//	@Override
+//	public void onLocationChanged(Location location) {
+//		// update the activity UI
+//		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
+//		intent.putExtra("location", location);
+//
+//		sendBroadcast(intent);
+//		
+//		// check if to send notification
+//		checkReminders(location);
+//
+//	}
 
 	private void checkReminders(Location i_CurrentLocation) {
 		//
@@ -160,7 +160,7 @@ public class SpendingTrackerLocationService extends Service implements
 		
 		Bundle extras = new Bundle();
 		Intent intent = new Intent(getBaseContext(),
-				SpendingTrackerActivity.class);
+				ActivitySpendingTracker.class);
 		String amount = i_Data.getAsString(SpendingTrackerDbEngine.KEY_AMOUNT);
 		String category = i_Data
 				.getAsString(SpendingTrackerDbEngine.KEY_CATEGORY);
@@ -295,23 +295,43 @@ public class SpendingTrackerLocationService extends Service implements
 
 		return ret;
 	}
+//
+//	@Override
+//	public void onProviderDisabled(String provider) {
+//		//
+//
+//	}
+//
+//	@Override
+//	public void onProviderEnabled(String provider) {
+//		//
+//
+//	}
+//
+//	@Override
+//	public void onStatusChanged(String provider, int status, Bundle extras) {
+//		//
+//
+//	}
 
-	@Override
+	public void onLocationChanged(Location location) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void onProviderDisabled(String provider) {
-		//
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public void onProviderEnabled(String provider) {
-		//
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		//
-
+		// TODO Auto-generated method stub
+		
 	}
 
 }

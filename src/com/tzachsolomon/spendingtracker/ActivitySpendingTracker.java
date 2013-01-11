@@ -1,8 +1,14 @@
 package com.tzachsolomon.spendingtracker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import java.util.Locale;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.ActionBar.Tab;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -25,25 +31,24 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 
-
 import android.os.Bundle;
 import android.os.SystemClock;
 
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-
 
 import android.widget.EditText;
 
@@ -51,10 +56,8 @@ import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-
 import android.widget.Spinner;
 import android.widget.TabHost;
-
 
 import android.widget.TimePicker;
 import android.widget.TabHost.OnTabChangeListener;
@@ -62,10 +65,9 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-public class SpendingTrackerActivity extends Activity implements
-		OnClickListener, OnTabChangeListener, OnCheckedChangeListener,
-		LocationListener {
+public class ActivitySpendingTracker extends SherlockFragmentActivity implements
+		OnTabChangeListener, OnCheckedChangeListener,
+		LocationListener, OnClickListener {
 
 	// TODO: export to Google Document
 	// TODO: add option to place tab on bottom instead of up
@@ -76,7 +78,7 @@ public class SpendingTrackerActivity extends Activity implements
 	// TODO: add learning mode
 
 	/** Called when the activity is first created. */
-	private static final String TAG = SpendingTrackerActivity.class
+	private static final String TAG = ActivitySpendingTracker.class
 			.getSimpleName();
 
 	private TabHost tabHostMain;
@@ -122,7 +124,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private TextView textViewSpeedLabel;
 	private TextView textViewSpeedText;
 	private TextView textViewTimeLabel;
-	
+
 	private TextView textViewTimeText;
 
 	private Spinner spinnerCategories;
@@ -149,36 +151,142 @@ public class SpendingTrackerActivity extends Activity implements
 	private PendingIntent m_LocationAlarmSender;
 
 	private boolean m_DebugMode;
-	
+
 	NotificationManager nm;
 
 	private BroadcastReceiver m_BroadcastReceiverLocationUpdate;
+
+	private ViewPager mViewPager;
+
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+
+		mViewPager = new ViewPager(this);
+		mViewPager.setId(R.id.pager);
+
+		setContentView(mViewPager);
+
+		initializeActionBar();
+
+		// setContentView(R.layout.main);
 
 		// waiting for the debugger to attach in order to the debug the service
 		// android.os.Debug.waitForDebugger();
 
 		m_TimeAlarmSender = PendingIntent.getService(
-				SpendingTrackerActivity.this, 0, new Intent(
-						SpendingTrackerActivity.this,
+				ActivitySpendingTracker.this, 0, new Intent(
+						ActivitySpendingTracker.this,
 						SpendingTrackerTimeService.class), 0);
 		m_LocationAlarmSender = PendingIntent.getService(
-				SpendingTrackerActivity.this, 0, new Intent(
-						SpendingTrackerActivity.this,
+				ActivitySpendingTracker.this, 0, new Intent(
+						ActivitySpendingTracker.this,
 						SpendingTrackerLocationService.class), 0);
-		initPreferences();
+		// initPreferences();
 
-		initVariables();
+		// initVariables();
 
 		nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		
+	}
 
+	private void initializeActionBar() {
+		//
+
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+//		mTabsAdapter = new TabsAdapter(this, mViewPager);
+
+		// mTabsAdapter.addTab(actionBar.newTab().setText("אודות"),
+		// FragmentAbout.class, null);
+		// mTabsAdapter.addTab(actionBar.newTab().setText("חישוב דמי ניהול"),
+		// FragmentMgmtCommission.class, null);
+		// mTabsAdapter.addTab(actionBar.newTab().setText("איך לחלק?"),
+		// FragmentHowDivideMenahlimKeren.class, null);
+		//
+
+	}
+
+	public static class TabsAdapter extends FragmentPagerAdapter implements
+			ActionBar.TabListener, ViewPager.OnPageChangeListener {
+		private final Context mContext;
+		private final ActionBar mActionBar;
+		private final ViewPager mViewPager;
+		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+
+		static final class TabInfo {
+			private final Class<?> clss;
+			private final Bundle args;
+
+			TabInfo(Class<?> _class, Bundle _args) {
+				clss = _class;
+				args = _args;
+			}
+		}
+
+		public TabsAdapter(SherlockFragmentActivity activity, ViewPager pager) {
+			super(activity.getSupportFragmentManager());
+			mContext = activity;
+			mActionBar = activity.getSupportActionBar();
+			mViewPager = pager;
+			mViewPager.setAdapter(this);
+			mViewPager.setOnPageChangeListener(this);
+
+		}
+
+		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
+			TabInfo info = new TabInfo(clss, args);
+			tab.setTag(info);
+			tab.setTabListener(this);
+			mTabs.add(info);
+			mActionBar.addTab(tab);
+			notifyDataSetChanged();
+		}
+
+		@Override
+		public int getCount() {
+			return mTabs.size();
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			TabInfo info = mTabs.get(position);
+			return Fragment.instantiate(mContext, info.clss.getName(),
+					info.args);
+		}
+
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
+		}
+
+		public void onPageSelected(int position) {
+			mActionBar.setSelectedNavigationItem(position);
+		}
+
+		public void onPageScrollStateChanged(int state) {
+		}
+
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			Object tag = tab.getTag();
+			for (int i = 0; i < mTabs.size(); i++) {
+				if (mTabs.get(i) == tag) {
+					mViewPager.setCurrentItem(i);
+				}
+			}
+		}
+
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+
+		}
+
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		}
 	}
 
 	private void updateLocale() {
@@ -255,7 +363,6 @@ public class SpendingTrackerActivity extends Activity implements
 		buttonShowWeeklyEntries
 				.setText(getString(R.string.buttonShowWeeklyEntriesText));
 
-		
 		checkBoxFriday.setText(getString(R.string.checkBoxFridayText));
 		checkBoxMonday.setText(getString(R.string.checkBoxMondayText));
 		checkBoxSaturday.setText(getString(R.string.checkBoxSaturdayText));
@@ -285,8 +392,8 @@ public class SpendingTrackerActivity extends Activity implements
 
 		int secondsToAdd = 60 - firstTime.get(Calendar.SECOND);
 
-		Log.v(TAG, "Starting Time service using alarm manager in " + secondsToAdd
-				+ " Seconds");
+		Log.v(TAG, "Starting Time service using alarm manager in "
+				+ secondsToAdd + " Seconds");
 
 		firstTime.add(Calendar.SECOND, secondsToAdd);
 
@@ -324,9 +431,9 @@ public class SpendingTrackerActivity extends Activity implements
 		super.onResume();
 
 		initPreferences();
-		
+
 		startLocationService();
-		
+
 		updateLocale();
 		updateStringsFromResource();
 
@@ -346,15 +453,15 @@ public class SpendingTrackerActivity extends Activity implements
 
 		unregisterReceiver(m_BroadcastReceiverLocationUpdate);
 		stopLocationService();
-		
-		}
+
+	}
 
 	private void checkPendingReminder() {
 		// Function checks if there is a pending reminder
 		// Currently only support one reminder
 
 		final EditText editTextAmount;
-		
+
 		Bundle extras = getIntent().getExtras();
 
 		int flag = getIntent().getFlags()
@@ -399,12 +506,12 @@ public class SpendingTrackerActivity extends Activity implements
 			if (isReminder) {
 				final CheckBox checkBoxAutoExit;
 				final String amount = extras
-				.getString(SpendingTrackerDbEngine.KEY_AMOUNT);
-		final String category = extras
-				.getString(SpendingTrackerDbEngine.KEY_CATEGORY);
-				
+						.getString(SpendingTrackerDbEngine.KEY_AMOUNT);
+				final String category = extras
+						.getString(SpendingTrackerDbEngine.KEY_CATEGORY);
+
 				int notificationId = extras.getInt("notificationId");
-				
+
 				// Cancel notification
 				nm.cancel(notificationId);
 				nm.cancel(12021982);
@@ -412,11 +519,13 @@ public class SpendingTrackerActivity extends Activity implements
 				LayoutInflater factory = LayoutInflater.from(this);
 				final View notifyLayout;
 				notifyLayout = factory.inflate(R.layout.notify_layout, null);
-				editTextAmount = (EditText) notifyLayout.findViewById(R.id.editTextNotifyAmount);
+				editTextAmount = (EditText) notifyLayout
+						.findViewById(R.id.editTextNotifyAmount);
 				editTextAmount.setText(amount);
-				checkBoxAutoExit = (CheckBox)notifyLayout.findViewById(R.id.checkBoxNotifyAutoExit);
+				checkBoxAutoExit = (CheckBox) notifyLayout
+						.findViewById(R.id.checkBoxNotifyAutoExit);
 				checkBoxAutoExit.setChecked(true);
-				
+
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 				StringBuilder sb = new StringBuilder();
 				getIntent().removeExtra(SpendingTrackerDbEngine.KEY_AMOUNT);
@@ -434,40 +543,41 @@ public class SpendingTrackerActivity extends Activity implements
 				alertDialog.setMessage(sb.toString());
 				alertDialog.setView(notifyLayout);
 
-				alertDialog.setPositiveButton(
-						getString(R.string.dialogPositiveYes),
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								//
-								EditText editTextAmount = (EditText)notifyLayout.findViewById(R.id.editTextNotifyAmount);
-								
-								m_SpendingTrackerDbEngine
-										.insertNewSpending(editTextAmount.getText().toString(), category,
-												"From reminder", null);
-
-								if (checkBoxAutoExit.isChecked()) {
-									finish();
-								}
-
-							}
-						});
-				alertDialog.setNegativeButton(
-						getString(R.string.dialogPositiveNo),
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								
-								if (checkBoxAutoExit.isChecked()) {
-									finish();
-								}
-
-							}
-						});
+//				alertDialog.setPositiveButton(
+//						getString(R.string.dialogPositiveYes),
+//						new DialogInterface.OnClickListener() {
+//
+//							@Override
+//							public void onClick(DialogInterface dialog,
+//									int which) {
+//								//
+//								EditText editTextAmount = (EditText) notifyLayout
+//										.findViewById(R.id.editTextNotifyAmount);
+//
+//								m_SpendingTrackerDbEngine.insertNewSpending(
+//										editTextAmount.getText().toString(),
+//										category, "From reminder", null);
+//
+//								if (checkBoxAutoExit.isChecked()) {
+//									finish();
+//								}
+//
+//							}
+//						});
+//				alertDialog.setNegativeButton(
+//						getString(R.string.dialogPositiveNo),
+//						new DialogInterface.OnClickListener() {
+//
+//							@Override
+//							public void onClick(DialogInterface dialog,
+//									int which) {
+//
+//								if (checkBoxAutoExit.isChecked()) {
+//									finish();
+//								}
+//
+//							}
+//						});
 
 				alertDialog.show();
 
@@ -492,12 +602,12 @@ public class SpendingTrackerActivity extends Activity implements
 			if (checkBoxPreferencsReminderService) {
 
 				startTimeAlarmManager();
-				tabHostMain.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+				tabHostMain.getTabWidget().getChildAt(1)
+						.setVisibility(View.VISIBLE);
+			} else {
+				tabHostMain.getTabWidget().getChildAt(1)
+						.setVisibility(View.GONE);
 			}
-			else {
-				tabHostMain.getTabWidget().getChildAt(1).setVisibility(View.GONE);
-			}
-			
 
 		} catch (Exception e) {
 			if (m_DebugMode) {
@@ -512,7 +622,7 @@ public class SpendingTrackerActivity extends Activity implements
 	private void initVariables() {
 		try {
 
-			m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+			
 			m_CategorySelected = "";
 
 			initRadioButtons();
@@ -520,7 +630,7 @@ public class SpendingTrackerActivity extends Activity implements
 			setCheckboxesVisible(View.GONE);
 
 			initEditTexts();
-			initTabs();
+			
 			initButtons();
 			initTextViews();
 			initSpinners();
@@ -528,25 +638,25 @@ public class SpendingTrackerActivity extends Activity implements
 			timePickerDay = (TimePicker) findViewById(R.id.timePicker);
 			timePickerDay.setIs24HourView(true);
 
-			spinnerCategories
-					.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-						@Override
-						public void onItemSelected(AdapterView<?> parent,
-								View view, int pos, long id) {
-							//
-							m_CategorySelected = parent.getItemAtPosition(pos)
-									.toString();
-
-						}
-
-						@Override
-						public void onNothingSelected(AdapterView<?> arg0) {
-
-							m_CategorySelected = "";
-						}
-
-					});
+//			spinnerCategories
+//					.setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//						@Override
+//						public void onItemSelected(AdapterView<?> parent,
+//								View view, int pos, long id) {
+//							//
+//							m_CategorySelected = parent.getItemAtPosition(pos)
+//									.toString();
+//
+//						}
+//
+//						@Override
+//						public void onNothingSelected(AdapterView<?> arg0) {
+//
+//							m_CategorySelected = "";
+//						}
+//
+//					});
 
 		} catch (Exception e) {
 			if (m_DebugMode) {
@@ -599,13 +709,13 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private void initButtons() {
 		//
-		buttonQuickAddInsert = (Button) findViewById(R.id.buttonQuickAddInsert);
+		
 
-		buttonShowTodayEntries = (Button) findViewById(R.id.buttonShowTodayEntries);
-		buttonShowMonthEntries = (Button) findViewById(R.id.buttonShowMonthEntries);
+		
+		
 		buttonShowTimeReminderEntries = (Button) findViewById(R.id.buttonShowTimeReminderEntries);
 		buttonShowLocationReminderEntries = (Button) findViewById(R.id.buttonShowLocationReminderEntries);
-		buttonShowWeeklyEntries = (Button) findViewById(R.id.buttonShowWeeklyEntries);
+		
 
 		buttonAddTimeReminder = (Button) findViewById(R.id.buttonAddTimeReminder);
 		buttonAddLocationReminder = (Button) findViewById(R.id.buttonAddLocationReminder);
@@ -625,95 +735,12 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
-	private void initTabs() {
-
-		Resources resources = getResources();
-
-		// setting up the tabs
-		tabHostMain = (TabHost) findViewById(R.id.tabhostMain);
-		tabHostMain.setup();
-
-		tabHostMain.setOnTabChangedListener(this);
-
-		// setup general tab
-		tabSpec = tabHostMain.newTabSpec(TAB_TAG_GENERAL);
-		tabSpec.setContent(R.id.tabGeneral);
-		textViewTabTextGeneral = new TextView(this);
-		textViewTabTextGeneral
-				.setText(getString(R.string.textViewTabTextGeneral));
-
-		textViewTabTextGeneral.setBackgroundDrawable(resources
-				.getDrawable(R.drawable.custom_tab));
-		textViewTabTextGeneral.setLayoutParams(new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT));
-
-		tabSpec.setIndicator(textViewTabTextGeneral);
-
-		tabHostMain.addTab(tabSpec);
-
-		// setup Time Reminders tab
-		tabSpec = tabHostMain.newTabSpec(TAB_TAG_TIME_REMINDERS);
-		tabSpec.setContent(R.id.tabReminders);
-
-		textViewTabTextTimeReminders = new TextView(this);
-		textViewTabTextTimeReminders
-				.setText(getString(R.string.textViewTabTextTimeReminders));
-
-		textViewTabTextTimeReminders.setBackgroundDrawable(resources
-				.getDrawable(R.drawable.custom_tab));
-		textViewTabTextTimeReminders
-				.setLayoutParams(new ViewGroup.LayoutParams(
-						ViewGroup.LayoutParams.WRAP_CONTENT,
-						ViewGroup.LayoutParams.WRAP_CONTENT));
-
-		tabSpec.setIndicator(textViewTabTextTimeReminders);
-
-		tabHostMain.addTab(tabSpec);
-
-		// setup Location Reminders tab
-		tabSpec = tabHostMain.newTabSpec(TAB_TAG_LOCATION_REMINDERS);
-		tabSpec.setContent(R.id.tabLocationReminders);
-
-		textViewTabTextLocationReminders = new TextView(this);
-		textViewTabTextLocationReminders
-				.setText(getString(R.string.textViewTabTextLocationReminders));
-
-		textViewTabTextLocationReminders.setBackgroundDrawable(resources
-				.getDrawable(R.drawable.custom_tab));
-		textViewTabTextLocationReminders
-				.setLayoutParams(new ViewGroup.LayoutParams(
-						ViewGroup.LayoutParams.WRAP_CONTENT,
-						ViewGroup.LayoutParams.WRAP_CONTENT));
-
-		tabSpec.setIndicator(textViewTabTextLocationReminders);
-
-		tabHostMain.addTab(tabSpec);
-
-		// setup Entries tab
-		tabSpec = tabHostMain.newTabSpec(TAB_TAG_ENTRIES);
-		tabSpec.setContent(R.id.tabEntries);
-		textViewTabTextEntries = new TextView(this);
-		textViewTabTextEntries
-				.setText(getString(R.string.textViewTabTextEntries));
-
-		textViewTabTextEntries.setBackgroundDrawable(resources
-				.getDrawable(R.drawable.custom_tab));
-		textViewTabTextEntries.setLayoutParams(new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.FILL_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT));
-
-		tabSpec.setIndicator(textViewTabTextEntries);
-
-		tabHostMain.addTab(tabSpec);
-
-	}
-
+	
 	private void initEditTexts() {
 		//
 		editTextDayInMonthReminder = (EditText) findViewById(R.id.editTextDayInMonth);
 		editTextDayInMonthReminder.setVisibility(View.GONE);
-		editTextQuickAddAmount = (EditText) findViewById(R.id.editTextQuickAddAmount);
+		
 		editTextComment = (EditText) findViewById(R.id.editTextComment);
 		editTextLocationName = (EditText) findViewById(R.id.editTextLocationName);
 
@@ -721,8 +748,6 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private void initCheckBoxes() {
 		//
-
-		
 
 		checkBoxSunday = (CheckBox) findViewById(R.id.checkBoxSunday);
 		checkBoxMonday = (CheckBox) findViewById(R.id.checkBoxMonday);
@@ -774,7 +799,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 		boolean checkBoxPreferencesLocationService = m_SharedPreferences
 				.getBoolean("checkBoxPreferencesLocationService", false);
-		
+
 		cancelLocationAlarmManager();
 
 		// checking the location service option is enabled
@@ -787,10 +812,11 @@ public class SpendingTrackerActivity extends Activity implements
 
 			startService(service);
 
-			tabHostMain.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
+			tabHostMain.getTabWidget().getChildAt(2)
+					.setVisibility(View.VISIBLE);
 		} else {
 			tabHostMain.getTabWidget().getChildAt(2).setVisibility(View.GONE);
-			
+
 		}
 
 		IntentFilter iFilter = new IntentFilter(
@@ -803,8 +829,9 @@ public class SpendingTrackerActivity extends Activity implements
 				//
 				Location location = (Location) intent.getExtras().get(
 						"location");
-				if ( m_DebugMode ){
-					Toast.makeText(SpendingTrackerActivity.this, "Location updated", Toast.LENGTH_SHORT).show();
+				if (m_DebugMode) {
+					Toast.makeText(ActivitySpendingTracker.this,
+							"Location updated", Toast.LENGTH_SHORT).show();
 				}
 				updateLocationTextViews(location);
 
@@ -814,7 +841,7 @@ public class SpendingTrackerActivity extends Activity implements
 		registerReceiver(m_BroadcastReceiverLocationUpdate, iFilter);
 
 	}
-	
+
 	/**
 	 * Function will start the location service and cancel the location alarm
 	 * manager in order prevent from the alarm manager to stop the location
@@ -827,11 +854,10 @@ public class SpendingTrackerActivity extends Activity implements
 		boolean checkBoxPreferencesLocationService = m_SharedPreferences
 				.getBoolean("checkBoxPreferencesLocationService", false);
 
-		Intent service = new Intent(this,
-				SpendingTrackerLocationService.class);
+		Intent service = new Intent(this, SpendingTrackerLocationService.class);
 
 		stopService(service);
-		
+
 		// checking the location service option is enabled
 		if (checkBoxPreferencesLocationService) {
 			// the location service is enabled, thus disabling the alarm
@@ -841,8 +867,6 @@ public class SpendingTrackerActivity extends Activity implements
 		}
 
 	}
-	
-	
 
 	@Override
 	protected void onDestroy() {
@@ -851,8 +875,6 @@ public class SpendingTrackerActivity extends Activity implements
 			this.getIntent().getExtras().clear();
 		}
 		super.onDestroy();
-		
-		
 
 	}
 
@@ -860,8 +882,6 @@ public class SpendingTrackerActivity extends Activity implements
 	protected void onStop() {
 		//
 		super.onStop();
-
-		
 
 	}
 
@@ -887,55 +907,55 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
-	@Override
-	public void onClick(View v) {
-
-		switch (v.getId()) {
-
-		case R.id.buttonCategoriesEdit:
-			buttonCategoriesEdit();
-			break;
-
-		case R.id.buttonShowTimeReminderEntries:
-			buttonShowTimeReminderEnteries_Clicked();
-			break;
-		case R.id.buttonShowLocationReminderEntries:
-			buttonShowLocationReminderEnteries_Clicked();
-			break;
-		// User wants to add entry to database
-		case R.id.buttonQuickAddInsert:
-			buttonAddEntry_Clicked();
-			break;
-
-		case R.id.buttonAddTimeReminder:
-			buttonAddTimeReminderToDatabase_Clicked();
-			break;
-
-		case R.id.buttonAddLocationReminder:
-			buttonAddLocationReminder_Clicked();
-			break;
-
-		case R.id.buttonShowMonthEntries:
-			buttonShowMonthEntries_Clicked();
-			break;
-
-		case R.id.buttonShowTodayEntries:
-			bShowTodayEnteriesClick();
-			break;
-
-		case R.id.buttonShowWeeklyEntries:
-			buttonShowWeeklyEntries_Clicked();
-			break;
-
-		case R.id.buttonDeleteAllEnteries:
-			buttonDeleteAllEnteries_Clicked();
-			break;
-
-		default:
-			break;
-		}
-
-	}
+//	@Override
+//	public void onClick(View v) {
+//
+//		switch (v.getId()) {
+//
+//		case R.id.buttonCategoriesEdit:
+//			buttonCategoriesEdit();
+//			break;
+//
+//		case R.id.buttonShowTimeReminderEntries:
+//			buttonShowTimeReminderEnteries_Clicked();
+//			break;
+//		case R.id.buttonShowLocationReminderEntries:
+//			buttonShowLocationReminderEnteries_Clicked();
+//			break;
+//		// User wants to add entry to database
+//		case R.id.buttonQuickAddInsert:
+//			buttonAddEntry_Clicked();
+//			break;
+//
+//		case R.id.buttonAddTimeReminder:
+//			buttonAddTimeReminderToDatabase_Clicked();
+//			break;
+//
+//		case R.id.buttonAddLocationReminder:
+//			buttonAddLocationReminder_Clicked();
+//			break;
+//
+//		case R.id.buttonShowMonthEntries:
+//			buttonShowMonthEntries_Clicked();
+//			break;
+//
+//		case R.id.buttonShowTodayEntries:
+//			bShowTodayEnteriesClick();
+//			break;
+//
+//		case R.id.buttonShowWeeklyEntries:
+//			buttonShowWeeklyEntries_Clicked();
+//			break;
+//
+//		case R.id.buttonDeleteAllEnteries:
+//			buttonDeleteAllEnteries_Clicked();
+//			break;
+//
+//		default:
+//			break;
+//		}
+//
+//	}
 
 	private void buttonShowLocationReminderEnteries_Clicked() {
 		//
@@ -990,30 +1010,30 @@ public class SpendingTrackerActivity extends Activity implements
 		alertDialog.setTitle(getString(R.string.dialogTitleDeleteAllEntries));
 		alertDialog
 				.setMessage(getString(R.string.dialogMessageDeleteAllEntries));
-		alertDialog.setPositiveButton(getString(R.string.dialogPositiveYes),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						//
-						m_SpendingTrackerDbEngine.deleteSpentEntries();
-						
-						updateDaySpent();
-						updateMonthSpent();
-						updateWeekSpent();
-
-						initSpinnerCategories();
-					}
-				});
-		alertDialog.setNegativeButton(getString(R.string.dialogPositiveNo),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// DO NOTHING
-
-					}
-				});
+//		alertDialog.setPositiveButton(getString(R.string.dialogPositiveYes),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						//
+//						m_SpendingTrackerDbEngine.deleteSpentEntries();
+//
+//						updateDaySpent();
+//						updateMonthSpent();
+//						updateWeekSpent();
+//
+//						initSpinnerCategories();
+//					}
+//				});
+//		alertDialog.setNegativeButton(getString(R.string.dialogPositiveNo),
+//				new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						// DO NOTHING
+//
+//					}
+//				});
 
 		alertDialog.show();
 
@@ -1029,7 +1049,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 	private void buttonCategoriesEdit() {
 		//
-		Intent intent = new Intent(SpendingTrackerActivity.this,
+		Intent intent = new Intent(ActivitySpendingTracker.this,
 				CategoriesManager.class);
 		startActivity(intent);
 
@@ -1067,7 +1087,7 @@ public class SpendingTrackerActivity extends Activity implements
 
 				// showing message to user that entry was added
 				if (m_SharedPreferences.getBoolean("cbShowEntryAdded", true)) {
-					Toast.makeText(SpendingTrackerActivity.this,
+					Toast.makeText(ActivitySpendingTracker.this,
 							getString(R.string.toastMessageEntryAdded),
 							Toast.LENGTH_SHORT).show();
 				}
@@ -1076,7 +1096,7 @@ public class SpendingTrackerActivity extends Activity implements
 				updateDaySpent();
 				updateWeekSpent();
 				updateMonthSpent();
-				
+
 			} catch (Exception e) {
 				if (m_DebugMode) {
 					Toast.makeText(this, e.getMessage().toString(),
@@ -1218,42 +1238,44 @@ public class SpendingTrackerActivity extends Activity implements
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//
-		super.onCreateOptionsMenu(menu);
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.mainmenu, menu);
+	
+	
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		//
+//		super.onCreateOptionsMenu(menu);
+//		MenuInflater menuInflater = getMenuInflater();
+//		menuInflater.inflate(R.menu.mainmenu, menu);
+//
+//		return true;
+//	}
 
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		boolean ret = true;
-
-		switch (item.getItemId()) {
-		case R.id.menuAbout:
-			menuAbout_Clicked();
-
-			break;
-
-		case R.id.menuExit:
-
-			finish();
-			break;
-
-		case R.id.menuPrefernces:
-			menuPreferences_Clicked();
-
-		default:
-			ret = super.onOptionsItemSelected(item);
-		}
-
-		return ret;
-
-	}
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//
+//		boolean ret = true;
+//
+//		switch (item.getItemId()) {
+//		case R.id.menuAbout:
+//			menuAbout_Clicked();
+//
+//			break;
+//
+//		case R.id.menuExit:
+//
+//			finish();
+//			break;
+//
+//		case R.id.menuPrefernces:
+//			menuPreferences_Clicked();
+//
+//		default:
+//			ret = super.onOptionsItemSelected(item);
+//		}
+//
+//		return ret;
+//
+//	}
 
 	private void menuPreferences_Clicked() {
 		//
@@ -1314,47 +1336,47 @@ public class SpendingTrackerActivity extends Activity implements
 		}
 	}
 
-	@Override
-	public void onTabChanged(String tabId) {
-		//
-		if (TAB_TAG_TIME_REMINDERS.contentEquals(tabId)) {
-			timePickerDay.setCurrentHour(Calendar.getInstance().get(
-					Calendar.HOUR_OF_DAY));
-			timePickerDay.setCurrentMinute(Calendar.getInstance().get(
-					Calendar.MINUTE));
-		} else if (TAB_TAG_LOCATION_REMINDERS.contentEquals(tabId)) {
+//	@Override
+//	public void onTabChanged(String tabId) {
+//		//
+//		if (TAB_TAG_TIME_REMINDERS.contentEquals(tabId)) {
+//			timePickerDay.setCurrentHour(Calendar.getInstance().get(
+//					Calendar.HOUR_OF_DAY));
+//			timePickerDay.setCurrentMinute(Calendar.getInstance().get(
+//					Calendar.MINUTE));
+//		} else if (TAB_TAG_LOCATION_REMINDERS.contentEquals(tabId)) {
+//
+//		}
+//
+//	}
 
-		}
-
-	}
-
-	@Override
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		//
-		switch (checkedId) {
-		case R.id.radioButtonEveryday:
-			setCheckboxesVisible(View.GONE);
-			editTextDayInMonthReminder.setVisibility(View.GONE);
-			break;
-
-		case R.id.radioButtonWeekly:
-			setCheckAccordingToDate();
-
-			setCheckboxesVisible(View.VISIBLE);
-			editTextDayInMonthReminder.setVisibility(View.GONE);
-
-			break;
-
-		case R.id.radioButtonMonthly:
-			setCheckboxesVisible(View.GONE);
-			editTextDayInMonthReminder.setVisibility(View.VISIBLE);
-			break;
-
-		default:
-			break;
-		}
-
-	}
+//	@Override
+//	public void onCheckedChanged(RadioGroup group, int checkedId) {
+//		//
+//		switch (checkedId) {
+//		case R.id.radioButtonEveryday:
+//			setCheckboxesVisible(View.GONE);
+//			editTextDayInMonthReminder.setVisibility(View.GONE);
+//			break;
+//
+//		case R.id.radioButtonWeekly:
+//			setCheckAccordingToDate();
+//
+//			setCheckboxesVisible(View.VISIBLE);
+//			editTextDayInMonthReminder.setVisibility(View.GONE);
+//
+//			break;
+//
+//		case R.id.radioButtonMonthly:
+//			setCheckboxesVisible(View.GONE);
+//			editTextDayInMonthReminder.setVisibility(View.VISIBLE);
+//			break;
+//
+//		default:
+//			break;
+//		}
+//
+//	}
 
 	private void setCheckAccordingToDate() {
 		//
@@ -1395,28 +1417,63 @@ public class SpendingTrackerActivity extends Activity implements
 
 	}
 
-	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void onLocationChanged(Location location) {
-		//
-		updateLocationTextViews(location);
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public void onProviderDisabled(String provider) {
-		// 
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public void onProviderEnabled(String provider) {
-		// 
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// 
-
+		// TODO Auto-generated method stub
+		
 	}
+
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onTabChanged(String tabId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+//	@Override
+//	public void onLocationChanged(Location location) {
+//		//
+//		updateLocationTextViews(location);
+//
+//	}
+//
+//	@Override
+//	public void onProviderDisabled(String provider) {
+//		//
+//
+//	}
+//
+//	@Override
+//	public void onProviderEnabled(String provider) {
+//		//
+//
+//	}
+//
+//	@Override
+//	public void onStatusChanged(String provider, int status, Bundle extras) {
+//		//
+//
+//	}
 }
