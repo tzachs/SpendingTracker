@@ -1,5 +1,7 @@
 package com.tzachsolomon.spendingtracker;
 
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -139,8 +141,9 @@ public class SpendingTrackerDbEngine {
 					+ " TEXT NOT NULL, " + KEY_CATEGORY + " TEXT NOT NULL "
 					+ ");";
 
-			Log.d(TAG, "Executing the following queries: ");
-			Log.d(TAG, sqlQuery);
+			
+			DebugDb(TAG, "Executing the following queries: ");
+			DebugDb(TAG, sqlQuery);
 
 			db.execSQL(sqlQuery);
 
@@ -181,7 +184,7 @@ public class SpendingTrackerDbEngine {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-			Log.v(TAG, DATABASE_NAME + "is upgraded from version " + oldVersion
+			DebugDb(TAG, DATABASE_NAME + "is upgraded from version " + oldVersion
 					+ " to version " + newVersion);
 
 			createTableLocationReminders(db);
@@ -226,7 +229,7 @@ public class SpendingTrackerDbEngine {
 				Attributes attributes) throws SAXException {
 			//
 			try {
-				// Log.v(TAG, "startElement " + localName);
+				// DebugDb(TAG, "startElement " + localName);
 				if (localName.contentEquals("TABLE")) {
 					String tableName = attributes.getValue("NAME");
 
@@ -237,16 +240,16 @@ public class SpendingTrackerDbEngine {
 					if (tableName
 							.contentEquals(SpendingTrackerDbEngine.TABLE_CATEGORIES)) {
 						inTableCategories = true;
-						Log.v(TAG, "in table " + TABLE_CATEGORIES);
+						DebugDb(TAG, "in table " + TABLE_CATEGORIES);
 
 					} else if (tableName
 							.contentEquals(SpendingTrackerDbEngine.TABLE_REMINDERS)) {
 						inTableReminders = true;
-						Log.v(TAG, "in table " + TABLE_REMINDERS);
+						DebugDb(TAG, "in table " + TABLE_REMINDERS);
 					} else if (tableName
 							.contentEquals(SpendingTrackerDbEngine.TABLE_SPENDING)) {
 						inTableSpending = true;
-						Log.v(TAG, "in table " + TABLE_SPENDING);
+						DebugDb(TAG, "in table " + TABLE_SPENDING);
 					}
 
 				} else if (localName.contentEquals("ENTRY")) {
@@ -260,7 +263,7 @@ public class SpendingTrackerDbEngine {
 
 					for (i = 0; i < count; i++) {
 						values[i] = attributes.getValue(i);
-						Log.v(TAG, "Attribute is " + attributes.getQName(i)
+						DebugDb(TAG, "Attribute is " + attributes.getQName(i)
 								+ " Value is " + values[i]);
 
 					}
@@ -278,7 +281,7 @@ public class SpendingTrackerDbEngine {
 					}
 				}
 			} catch (Exception e) {
-				Log.e(TAG, e.getMessage());
+				DebugDb(TAG, e.getMessage());
 
 			}
 
@@ -454,7 +457,7 @@ public class SpendingTrackerDbEngine {
 				KEY_DATE, KEY_COMMENT };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		Log.v(TAG, "checking for day " + todayInMonthString);
+		DebugDb(TAG, "checking for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
@@ -464,7 +467,7 @@ public class SpendingTrackerDbEngine {
 		iColAmount = c.getColumnIndex(KEY_AMOUNT);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			Log.v(TAG, "Found entry at date " + c.getString(iColDate));
+			DebugDb(TAG, "Found entry at date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 		}
 
@@ -500,8 +503,8 @@ public class SpendingTrackerDbEngine {
 
 		thisMonthString = (thisMonth < 10 ? "0" : "") + thisMonth;
 		thisYearString = Integer.toString(thisYear);
-		Log.v(TAG, "Found Year " + thisYearString);
-		Log.v(TAG, "Found Month" + thisMonthString);
+		DebugDb(TAG, "Found Year " + thisYearString);
+		DebugDb(TAG, "Found Month" + thisMonthString);
 
 		// getting today in the week
 		today = now.get(Calendar.DAY_OF_WEEK);
@@ -517,7 +520,7 @@ public class SpendingTrackerDbEngine {
 
 			today = todayInMonth - i;
 			todayInMonthString = (today < 10 ? "0" : "") + today;
-			Log.v(TAG, "Adding entry for day " + todayInMonthString);
+			DebugDb(TAG, "Adding entry for day " + todayInMonthString);
 			filter.append(KEY_DATE);
 			filter.append(" LIKE '%" + thisYearString + thisMonthString
 					+ todayInMonthString + "T%'");
@@ -527,12 +530,12 @@ public class SpendingTrackerDbEngine {
 		}
 		today = todayInMonth - i;
 		todayInMonthString = (today < 10 ? "0" : "") + today;
-		Log.v(TAG, "Adding entry for day " + todayInMonthString);
+		DebugDb(TAG, "Adding entry for day " + todayInMonthString);
 		filter.append(KEY_DATE);
 		filter.append(" LIKE '%" + thisYearString + thisMonthString
 				+ todayInMonthString + "T%'");
 
-		Log.v(TAG, "using filter " + filter.toString());
+		DebugDb(TAG, "using filter " + filter.toString());
 
 		this.open();
 
@@ -543,7 +546,7 @@ public class SpendingTrackerDbEngine {
 		iColAmount = c.getColumnIndex(KEY_AMOUNT);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			Log.v(TAG, "Found entry at date " + c.getString(iColDate));
+			DebugDb(TAG, "Found entry at date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 
 		}
@@ -579,7 +582,7 @@ public class SpendingTrackerDbEngine {
 
 		// Making sure digit 1 - 9 are 01 - 09
 		monthString = (month < 10 ? "0" : "") + month;
-		Log.v(TAG, "checking for day " + monthString);
+		DebugDb(TAG, "checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
 				+ monthString + "__T%'", null, null, null, null);
@@ -588,7 +591,7 @@ public class SpendingTrackerDbEngine {
 		iColDate = c.getColumnIndex(KEY_DATE);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			Log.v(TAG, "Found entry from date " + c.getString(iColDate));
+			DebugDb(TAG, "Found entry from date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 		}
 
@@ -648,7 +651,7 @@ public class SpendingTrackerDbEngine {
 		//
 		this.open();
 
-		Log.v(TAG, "Deleting category " + i_Category);
+		DebugDb(TAG, "Deleting category " + i_Category);
 		ourDatabase.delete(TABLE_CATEGORIES, KEY_CATEGORY + "=\'" + i_Category
 				+ "\'", null);
 
@@ -735,7 +738,7 @@ public class SpendingTrackerDbEngine {
 		String[] columns = new String[] { KEY_ROWID, KEY_AMOUNT, KEY_CATEGORY,KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		Log.v(TAG, "getting all entries for day " + todayInMonthString);
+		DebugDb(TAG, "getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
@@ -816,7 +819,7 @@ public class SpendingTrackerDbEngine {
 
 			today = todayInMonth - i;
 			todayInMonthString = (today < 10 ? "0" : "") + today;
-			Log.v(TAG, "adding entry for day " + todayInMonthString);
+			DebugDb(TAG, "adding entry for day " + todayInMonthString);
 			filter.append(KEY_DATE);
 			filter.append(" LIKE '%" + thisYearString + thisMonthString
 					+ todayInMonthString + "T%'");
@@ -827,7 +830,7 @@ public class SpendingTrackerDbEngine {
 
 		today = todayInMonth - i;
 		todayInMonthString = (today < 10 ? "0" : "") + today;
-		Log.v(TAG, "adding entry for day " + todayInMonthString);
+		DebugDb(TAG, "adding entry for day " + todayInMonthString);
 		filter.append(KEY_DATE);
 		filter.append(" LIKE '%" + thisYearString + thisMonthString
 				+ todayInMonthString + "T%'");
@@ -838,7 +841,7 @@ public class SpendingTrackerDbEngine {
 				KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		Log.v(TAG, "getting all entries for day " + todayInMonthString);
+		DebugDb(TAG, "getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, filter.toString(), null,
 				null, null, m_SortByKey);
@@ -852,7 +855,7 @@ public class SpendingTrackerDbEngine {
 		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			Log.v(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
+			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
 			
 			ret.add(new ClassEntrySpentType(c.getString(iRowID),
 					c.getString(iAmount),
@@ -891,7 +894,7 @@ public class SpendingTrackerDbEngine {
 			now = i_Calendar;
 		}
 
-		Log.i(TAG, "Getting month entries using " + now.toString());
+		DebugDb(TAG, "Getting month entries using " + now.toString());
 
 		month = now.get(Calendar.MONTH) + 1;
 
@@ -902,7 +905,7 @@ public class SpendingTrackerDbEngine {
 
 		// Making sure digit 1 - 9 are 01 - 09
 		monthString = (month < 10 ? "0" : "") + month;
-		Log.v(TAG, "checking for day " + monthString);
+		DebugDb(TAG, "checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
 				+ monthString + "__T%'", null, null, null, m_SortByKey);
@@ -916,7 +919,7 @@ public class SpendingTrackerDbEngine {
 		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			Log.v(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
+			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
 
 			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
@@ -1033,7 +1036,7 @@ public class SpendingTrackerDbEngine {
 
 			}
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage().toString());
+			DebugDb(TAG, e.getMessage().toString());
 		}
 
 		c.close();
@@ -1051,7 +1054,7 @@ public class SpendingTrackerDbEngine {
 
 		ret = ourDatabase.delete(TABLE_REMINDERS, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		Log.v(TAG, "Number of rows affected is " + Integer.toString(ret));
+		DebugDb(TAG, "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1111,7 +1114,7 @@ public class SpendingTrackerDbEngine {
 		ret = ourDatabase.update(TABLE_SPENDING, cv, KEY_ROWID + "=" + m_RowId,
 				null);
 
-		Log.v(TAG, "Updated rows: " + ret);
+		DebugDb(TAG, "Updated rows: " + ret);
 
 		this.close();
 
@@ -1148,10 +1151,10 @@ public class SpendingTrackerDbEngine {
 				i_XmlSerializer.startTag(null, "ENTRY");
 
 				for (i = 0; i < columnCount; i++) {
-					Log.v(TAG, "Column is " + columns[i]);
-					Log.v(TAG,
+					DebugDb(TAG, "Column is " + columns[i]);
+					DebugDb(TAG,
 							"Column index is " + c.getColumnIndex(columns[i]));
-					Log.v(TAG,
+					DebugDb(TAG,
 							"Value is "
 									+ c.getString(c.getColumnIndex(columns[i])));
 					try {
@@ -1228,11 +1231,11 @@ public class SpendingTrackerDbEngine {
 
 		} catch (IOException e) {
 			ret = e.getMessage();
-			Log.e(TAG, e.getMessage());
+			DebugDb(TAG, e.getMessage());
 		} catch (NullPointerException e) {
 			//
 			ret = e.getMessage();
-			Log.e(TAG, e.getMessage());
+			DebugDb(TAG, e.getMessage());
 		}
 
 		return ret;
@@ -1267,7 +1270,7 @@ public class SpendingTrackerDbEngine {
 		} catch (Exception e) {
 			//
 			ret = e.getMessage();
-			Log.e(TAG, e.getMessage());
+			DebugDb(TAG, e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -1329,7 +1332,7 @@ public class SpendingTrackerDbEngine {
 
 		ret = ourDatabase.delete(TABLE_SPENDING, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		Log.v(TAG, "Number of rows affected is " + Integer.toString(ret));
+		DebugDb(TAG, "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1409,7 +1412,7 @@ public class SpendingTrackerDbEngine {
 
 		} catch (Exception e) {
 			//
-			Log.d(TAG, e.getMessage().toString());
+			DebugDb(TAG, e.getMessage().toString());
 
 		}
 
@@ -1486,7 +1489,7 @@ public class SpendingTrackerDbEngine {
 
 		ret = ourDatabase.delete(TABLE_LOCATION_REMINDERS, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		Log.v(TAG, "Number of rows affected is " + Integer.toString(ret));
+		DebugDb(TAG, "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 

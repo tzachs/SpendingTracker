@@ -3,11 +3,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textViewCategoryName"
+    
+    <Button 
+        android:id="@+id/buttonAddCategory"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="Add Category"
+        />
+
+    <ListView
+        android:id="@+id/listViewCategories"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

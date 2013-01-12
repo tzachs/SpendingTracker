@@ -16,19 +16,22 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.tzachsolomon.spendingtracker.FragmentEntries.SpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonAddEntrySpentListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonCategoriesEditListener;
 import com.tzachsolomon.spendingtracker.FragmentRemindersTime.AddTimeReminderListener;
 
 public class ActivityMain1 extends SherlockFragmentActivity implements
-		ButtonAddEntrySpentListener, ButtonCategoriesEditListener, AddTimeReminderListener {
+		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
+		AddTimeReminderListener, SpentEntryListener {
 
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
 	private SpendingTrackerDbEngine mSpendingTrackerDbEngine;
 	private SharedPreferences mSharedPreferences;
-	
-	// TODO: update daily,weekly,monthly spent
+	private FragmentGeneral mFragemtGeneral;
+	private FragmentEntries mFragmentEntries;
+
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
 	// TODO: admin reminders
@@ -48,17 +51,16 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		setContentView(mViewPager);
 
 		initializeActionBar();
-		
+
 		initializeVariables();
 	}
 
 	private void initializeVariables() {
-		// 
+		//
 		mSpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
 
-		
 	}
 
 	private void initializeActionBar() {
@@ -80,7 +82,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mTabsAdapter.addTab(actionBar.newTab().setText("Location Reminder"),
 				FragmentRemindersLocation.class, null);
 		mTabsAdapter.addTab(actionBar.newTab().setText("Admin"),
-		 FragmentAdminDb.class, null);
+				FragmentAdminDb.class, null);
 
 	}
 
@@ -167,10 +169,9 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	}
 
-
 	public void onAddTimeReminderClicked() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void onButtonAddEntrySpentClicked(Bundle values) {
@@ -179,42 +180,74 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		String category = values.getString("category");
 		String comments = values.getString("comments");
 		boolean validEntry = true;
-		
-		if ( amount.isEmpty() ){
-			Toast.makeText(ActivityMain1.this, "Please fill in the amount", Toast.LENGTH_LONG).show();
+
+		if (amount.isEmpty()) {
+			Toast.makeText(ActivityMain1.this, "Please fill in the amount",
+					Toast.LENGTH_LONG).show();
 			validEntry = false;
 		}
-		
-		if ( category.isEmpty() ){
-			Toast.makeText(ActivityMain1.this, "Please fill in the category", Toast.LENGTH_LONG).show();
+
+		if (category.isEmpty()) {
+			Toast.makeText(ActivityMain1.this, "Please fill in the category",
+					Toast.LENGTH_LONG).show();
 			validEntry = false;
 		}
-		
-//		if ( comments.isEmpty() ){
-//			Toast.makeText(ActivityMain1.this, "Please fill in the comments", Toast.LENGTH_LONG).show();
-//			validEntry = false;
-//		}
-		
-		if (validEntry){
-			mSpendingTrackerDbEngine.insertNewSpending(amount,category,comments,null);	
+
+		// if ( comments.isEmpty() ){
+		// Toast.makeText(ActivityMain1.this, "Please fill in the comments",
+		// Toast.LENGTH_LONG).show();
+		// validEntry = false;
+		// }
+
+		if (validEntry) {
+			mSpendingTrackerDbEngine.insertNewSpending(amount, category,
+					comments, null);
 		}
-		
+
 		// showing message to user that entry was added
 		if (mSharedPreferences.getBoolean("cbShowEntryAdded", true)) {
 			Toast.makeText(ActivityMain1.this,
 					getString(R.string.toastMessageEntryAdded),
 					Toast.LENGTH_SHORT).show();
 		}
+
+		if (mFragemtGeneral != null) {
+			mFragemtGeneral.updateSpentDayWeekMonth();
+			
+		}
 		
-		// TODO: 
-//		updateDaySpent();
-//		updateWeekSpent();
-//		updateMonthSpent();
+		if (mFragmentEntries != null){
+			mFragmentEntries.updateListViewAdapter();
+		}
+
+	}
+
+	public void setFragmentGeneralRef(String tag) {
+		//
+		mFragemtGeneral = (FragmentGeneral) getSupportFragmentManager()
+				.findFragmentByTag(tag);
+
+	}
+
+	public void setFragmentEntriesRef(String tag) {
+		// 
+		mFragmentEntries = (FragmentEntries) getSupportFragmentManager()
+				.findFragmentByTag(tag);
 		
-		
+	}
+
+	public void onSpentEntryDeleted(String rowId) {
+		// 
+		mSpendingTrackerDbEngine.deleteSpentEntryByRowId(rowId);
+		mFragmentEntries.updateListViewAdapter();
+		mFragemtGeneral.updateSpentDayWeekMonth();
 		
 		
 	}
-	
-	
+
+	public void onSpentEntryEdited(String rowId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

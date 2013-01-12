@@ -58,7 +58,7 @@
         android:id="@+id/spinnerCategories"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/custom_background"
         android:prompt="@string/spinnerPrompt" />
 
     <Button
