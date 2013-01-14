@@ -76,7 +76,7 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 		//
 		try {
 
-			m_Categories = m_SpendingTrackerDbEngine.getCategories();
+//			m_Categories = m_SpendingTrackerDbEngine.getCategories();
 			m_SpinnerArrayAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item, m_Categories);
 

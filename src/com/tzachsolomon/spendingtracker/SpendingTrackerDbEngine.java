@@ -141,7 +141,6 @@ public class SpendingTrackerDbEngine {
 					+ " TEXT NOT NULL, " + KEY_CATEGORY + " TEXT NOT NULL "
 					+ ");";
 
-			
 			DebugDb(TAG, "Executing the following queries: ");
 			DebugDb(TAG, sqlQuery);
 
@@ -184,8 +183,8 @@ public class SpendingTrackerDbEngine {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-			DebugDb(TAG, DATABASE_NAME + "is upgraded from version " + oldVersion
-					+ " to version " + newVersion);
+			DebugDb(TAG, DATABASE_NAME + "is upgraded from version "
+					+ oldVersion + " to version " + newVersion);
 
 			createTableLocationReminders(db);
 
@@ -603,16 +602,37 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public String[] getCategories() {
+	public ArrayList<ClassCategoryType> getCategories() {
 
-		String[] ret = null;
-		int i = 0;
+		ArrayList<ClassCategoryType> ret= new ArrayList<ClassCategoryType>();
 
 		this.open();
 		Cursor cursor = ourDatabase.query(TABLE_CATEGORIES,
 				new String[] { KEY_CATEGORY }, null, null, null, null,
 				KEY_CATEGORY);
 
+		for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+			ret.add(new ClassCategoryType(cursor.getString(0)));
+		}
+
+		cursor.close();
+
+		this.close();
+
+		return ret;
+
+	}
+	
+	public String[] getCategoriesStringArray() {
+
+		String[] ret= null;
+
+		this.open();
+		Cursor cursor = ourDatabase.query(TABLE_CATEGORIES,
+				new String[] { KEY_CATEGORY }, null, null, null, null,
+				KEY_CATEGORY);
+		
+		int i = 0;
 		ret = new String[cursor.getCount()];
 
 		for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
@@ -627,6 +647,7 @@ public class SpendingTrackerDbEngine {
 		return ret;
 
 	}
+
 
 	public void deleteAll() {
 
@@ -706,14 +727,15 @@ public class SpendingTrackerDbEngine {
 	 *            i_Calendar as a reference point
 	 * @return All the entries spent in a specific day
 	 */
-	public ArrayList<ClassEntrySpentType> getSpentDailyEntries(Calendar i_Calendar) {
+	public ArrayList<ClassEntrySpentType> getSpentDailyEntries(
+			Calendar i_Calendar) {
 
 		Calendar now;
 		int todayInMonth, thisYear, thisMonth;
 		String todayInMonthString, thisYearString, thisMonthString;
 		Cursor c;
 		int i = 0;
-		int iRowID, iAmount, iCategory,iDate;
+		int iRowID, iAmount, iCategory, iDate;
 
 		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
 
@@ -735,7 +757,8 @@ public class SpendingTrackerDbEngine {
 
 		this.open();
 
-		String[] columns = new String[] { KEY_ROWID, KEY_AMOUNT, KEY_CATEGORY,KEY_DATE };
+		String[] columns = new String[] { KEY_ROWID, KEY_AMOUNT, KEY_CATEGORY,
+				KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
 		DebugDb(TAG, "getting all entries for day " + todayInMonthString);
@@ -745,21 +768,17 @@ public class SpendingTrackerDbEngine {
 						+ todayInMonthString + "T%'", null, null, null,
 				m_SortByKey);
 
-		
-
 		iRowID = c.getColumnIndex(KEY_ROWID);
 		iAmount = c.getColumnIndex(KEY_AMOUNT);
 		iCategory = c.getColumnIndex(KEY_CATEGORY);
 		iDate = c.getColumnIndex(KEY_DATE);
 
-
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			
-			ret.add(new ClassEntrySpentType(c.getString(iRowID),
-					c.getString(iAmount),
-					c.getString(iCategory),
-					c.getString(iDate)));
-					
+
+			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
+					.getString(iAmount), c.getString(iCategory), c
+					.getString(iDate)));
+
 		}
 
 		c.close();
@@ -780,8 +799,8 @@ public class SpendingTrackerDbEngine {
 	 * @return All the entries spent in a specific Week
 	 */
 
-	public ArrayList<ClassEntrySpentType> getSpentThisWeekEnteries(int i_FirstDayOfWeek,
-			Calendar i_Calendar) {
+	public ArrayList<ClassEntrySpentType> getSpentThisWeekEnteries(
+			int i_FirstDayOfWeek, Calendar i_Calendar) {
 
 		Calendar now;
 		int todayInMonth, today, thisYear, thisMonth;
@@ -792,7 +811,7 @@ public class SpendingTrackerDbEngine {
 		int iRowID, iAmount, iCategory, iDate;
 		StringBuilder filter = new StringBuilder();
 
-		ArrayList<ClassEntrySpentType >ret = new ArrayList<ClassEntrySpentType>();
+		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -846,7 +865,6 @@ public class SpendingTrackerDbEngine {
 		c = ourDatabase.query(TABLE_SPENDING, columns, filter.toString(), null,
 				null, null, m_SortByKey);
 
-
 		iRowID = c.getColumnIndex(KEY_ROWID);
 		iAmount = c.getColumnIndex(KEY_AMOUNT);
 		iCategory = c.getColumnIndex(KEY_CATEGORY);
@@ -856,11 +874,10 @@ public class SpendingTrackerDbEngine {
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
 			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
-			
-			ret.add(new ClassEntrySpentType(c.getString(iRowID),
-					c.getString(iAmount),
-					c.getString(iCategory),
-					c.getString(iDate)));
+
+			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
+					.getString(iAmount), c.getString(iCategory), c
+					.getString(iDate)));
 
 			i++;
 

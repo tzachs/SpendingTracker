@@ -889,7 +889,7 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 		//
 		try {
 
-			m_Categories = m_SpendingTrackerDbEngine.getCategories();
+//			m_Categories = m_SpendingTrackerDbEngine.getCategories();
 			ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
 					this, android.R.layout.simple_spinner_item, m_Categories);
 

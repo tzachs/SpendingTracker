@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.tzachsolomon.spendingtracker.FragmentCategoriesManager.CategoriesManagerListener;
+import com.tzachsolomon.spendingtracker.FragmentDialogCategoryAdd.AddCategoryListener;
 import com.tzachsolomon.spendingtracker.FragmentEntries.SpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonAddEntrySpentListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonCategoriesEditListener;
@@ -23,7 +25,7 @@ import com.tzachsolomon.spendingtracker.FragmentRemindersTime.AddTimeReminderLis
 
 public class ActivityMain1 extends SherlockFragmentActivity implements
 		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
-		AddTimeReminderListener, SpentEntryListener {
+		AddTimeReminderListener, SpentEntryListener, AddCategoryListener,CategoriesManagerListener {
 
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -31,6 +33,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private SharedPreferences mSharedPreferences;
 	private FragmentGeneral mFragemtGeneral;
 	private FragmentEntries mFragmentEntries;
+	private FragmentCategoriesManager mFragmentCategoriesManager;
 
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
@@ -164,8 +167,10 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	public void onButtonCategoriesEditClicked() {
 		//
-		Toast.makeText(ActivityMain1.this, "onButtonCategoriesEditClicked",
-				Toast.LENGTH_LONG).show();
+		FragmentCategoriesManager fragmentCategoriesManager = new FragmentCategoriesManager();
+		
+		fragmentCategoriesManager.show(getSupportFragmentManager(), "FragmentCategoriesManager");
+		
 
 	}
 
@@ -247,6 +252,28 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	public void onSpentEntryEdited(String rowId) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void onAddCategorySaveClicked(String categoryName) {
+		// 
+		mSpendingTrackerDbEngine.insertNewCategory(categoryName);
+		Toast.makeText(ActivityMain1.this, categoryName + " category added", Toast.LENGTH_LONG).show();
+		mFragemtGeneral.initSpinnerCategories();
+		mFragmentCategoriesManager.initCategories();
+	}
+
+	public void setFragmentCategoriesManagerRef(String tag) {
+		// 
+		mFragmentCategoriesManager = (FragmentCategoriesManager)getSupportFragmentManager().findFragmentByTag(tag);
+	}
+
+	public void onDeleteCategoryClicked(String categoryName) {
+		// 
+		mSpendingTrackerDbEngine.deleteCategory(categoryName);
+		Toast.makeText(ActivityMain1.this, "Category " + categoryName +  " deleted!", Toast.LENGTH_LONG).show();
+		mFragemtGeneral.initSpinnerCategories();
+		mFragmentCategoriesManager.initCategories();
 		
 	}
 

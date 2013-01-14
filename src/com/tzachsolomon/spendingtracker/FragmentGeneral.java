@@ -1,5 +1,7 @@
 package com.tzachsolomon.spendingtracker;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +32,8 @@ public class FragmentGeneral extends SherlockFragment implements
 		public void onButtonCategoriesEditClicked();
 	}
 
+	private static final String TAG = FragmentGeneral.class.getSimpleName();
+
 	private ButtonAddEntrySpentListener mButtonAddEntrySpentListener;
 	private ButtonCategoriesEditListener mButtonCategoriesEditListener;
 	private Button buttonAddEntrySpent;
@@ -40,7 +44,7 @@ public class FragmentGeneral extends SherlockFragment implements
 	private String m_CategorySelected;
 	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
 	private SherlockFragmentActivity mActivity;
-	private String[] m_Categories;
+	private ArrayList<ClassCategoryType> m_Categories;
 	private TextView textViewSpentToday;
 	private TextView textViewSpentMonth;
 	private TextView textViewSpentWeek;
@@ -160,15 +164,15 @@ public class FragmentGeneral extends SherlockFragment implements
 
 	}
 
-	private void initSpinnerCategories() {
+	public void initSpinnerCategories() {
 		//
 		try {
 
-			m_Categories = m_SpendingTrackerDbEngine.getCategories();
+			String[] m_Categories1 = m_SpendingTrackerDbEngine.getCategoriesStringArray();
 
 			ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
 					mActivity, android.R.layout.simple_spinner_item,
-					m_Categories);
+					m_Categories1);
 
 			spinnerCategories.setAdapter(spinnerArrayAdapter);
 
@@ -178,8 +182,8 @@ public class FragmentGeneral extends SherlockFragment implements
 			// Toast.LENGTH_SHORT).show();
 			// }
 
-			// e.printStackTrace();
-			// Log.d(TAG, e.toString());
+			e.printStackTrace();
+			Log.d(TAG, e.toString());
 		}
 
 	}
@@ -225,5 +229,6 @@ public class FragmentGeneral extends SherlockFragment implements
 		//
 		m_CategorySelected = "";
 	}
+
 
 }

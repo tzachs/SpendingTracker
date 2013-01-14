@@ -46,8 +46,8 @@ public class CategoriesManager extends ListActivity implements
 		m_CategoriesList = new ArrayList<String>();
 
 		m_CategoriesList.add(getString(R.string.addCategoryTitle));
-		m_CategoriesList.addAll(Arrays.asList(m_SpendingTrackerDb
-				.getCategories()));
+//		m_CategoriesList.addAll(Arrays.asList(m_SpendingTrackerDb
+//				.getCategories()));
 
 		m_ListAdapter = new ActivityList(CategoriesManager.this,
 				android.R.id.text1, m_CategoriesList);
@@ -153,12 +153,12 @@ public class CategoriesManager extends ListActivity implements
 			if (convertView == null) {
 				LayoutInflater inflater = LayoutInflater
 						.from(CategoriesManager.this);
-				convertView = inflater.inflate(R.layout.categories_manager,
-						parent, false);
+//				convertView = inflater.inflate(R.layout.categories_manager,
+//						parent, false);
 				holder = new ViewHolder();
 
-				holder.text = (TextView) convertView
-						.findViewById(R.id.textViewCategoryName);
+//				holder.text = (TextView) convertView
+//						.findViewById(R.id.textViewCategoryName);
 
 				convertView.setTag(holder);
 

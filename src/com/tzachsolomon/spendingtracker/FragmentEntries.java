@@ -85,6 +85,7 @@ public class FragmentEntries extends SherlockFragment implements
 		//
 		super.onActivityCreated(savedInstanceState);
 		registerForContextMenu(listViewEntriesSpent);
+		
 	}
 
 	@Override
