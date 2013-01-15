@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,18 @@ public class ClassEntriesSpentAdapter extends BaseAdapter {
 		//
 
 		return mItem.get(position).getRowId();
+	}
+
+	public Bundle getItemAsBundle(int position) {
+		//
+		Bundle ret = new Bundle();
+		ret.putString("id", mItem.get(position).getRowId());
+		ret.putString("amount", mItem.get(position).getAmount());
+		ret.putString("date", mItem.get(position).getDate());
+		ret.putString("time", mItem.get(position).getTime());
+		ret.putString("category", mItem.get(position).getCategory());
+
+		return ret;
 	}
 
 }

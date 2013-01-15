@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewEntryId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_rowNumber" />
+
+    <TextView
+        android:id="@+id/textViewEntryAmount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Amount" />
+
+    <EditText
+        android:id="@+id/editTextAmount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textViewEntryDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Date" />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textViewEntryTime"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Time" />
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spinnerCategories"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonUpdateSpentEntry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:layout_margin="4dp" />
+
+</LinearLayout>

@@ -36,7 +36,7 @@ public class FragmentEntries extends SherlockFragment implements
 	public interface SpentEntryListener {
 		public void onSpentEntryDeleted(String rowId);
 
-		public void onSpentEntryEdited(String rowId);
+		public void onSpentEntryEditRequest(Bundle values);
 	}
 
 	@Override
@@ -107,8 +107,8 @@ public class FragmentEntries extends SherlockFragment implements
 		switch (item.getItemId()) {
 		case 1:
 			if (mSpentEntryListener != null) {
-				mSpentEntryListener.onSpentEntryEdited(mEntriesSpent
-						.getRowIdAtIndex(info.position));
+				mSpentEntryListener.onSpentEntryEditRequest(mEntriesSpent.getItemAsBundle(info.position));
+						
 			}
 
 			break;

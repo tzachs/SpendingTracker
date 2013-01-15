@@ -18,6 +18,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.tzachsolomon.spendingtracker.FragmentCategoriesManager.CategoriesManagerListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoryAdd.AddCategoryListener;
+import com.tzachsolomon.spendingtracker.FragmentDialogEditSpentEntry.UpdateSpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentEntries.SpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonAddEntrySpentListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonCategoriesEditListener;
@@ -25,7 +26,8 @@ import com.tzachsolomon.spendingtracker.FragmentRemindersTime.AddTimeReminderLis
 
 public class ActivityMain1 extends SherlockFragmentActivity implements
 		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
-		AddTimeReminderListener, SpentEntryListener, AddCategoryListener,CategoriesManagerListener {
+		AddTimeReminderListener, SpentEntryListener, AddCategoryListener,
+		CategoriesManagerListener, UpdateSpentEntryListener {
 
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -168,9 +170,9 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	public void onButtonCategoriesEditClicked() {
 		//
 		FragmentCategoriesManager fragmentCategoriesManager = new FragmentCategoriesManager();
-		
-		fragmentCategoriesManager.show(getSupportFragmentManager(), "FragmentCategoriesManager");
-		
+
+		fragmentCategoriesManager.show(getSupportFragmentManager(),
+				"FragmentCategoriesManager");
 
 	}
 
@@ -218,10 +220,10 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 		if (mFragemtGeneral != null) {
 			mFragemtGeneral.updateSpentDayWeekMonth();
-			
+
 		}
-		
-		if (mFragmentEntries != null){
+
+		if (mFragmentEntries != null) {
 			mFragmentEntries.updateListViewAdapter();
 		}
 
@@ -235,46 +237,62 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	}
 
 	public void setFragmentEntriesRef(String tag) {
-		// 
+		//
 		mFragmentEntries = (FragmentEntries) getSupportFragmentManager()
 				.findFragmentByTag(tag);
-		
+
 	}
 
 	public void onSpentEntryDeleted(String rowId) {
-		// 
+		//
 		mSpendingTrackerDbEngine.deleteSpentEntryByRowId(rowId);
 		mFragmentEntries.updateListViewAdapter();
 		mFragemtGeneral.updateSpentDayWeekMonth();
-		
-		
+
 	}
 
-	public void onSpentEntryEdited(String rowId) {
-		// TODO Auto-generated method stub
-		
+	public void onSpentEntryEditRequest(Bundle values) {
+		//
+		FragmentDialogEditSpentEntry fragment = new FragmentDialogEditSpentEntry();
+		fragment.setArguments(values);
+		fragment.show(getSupportFragmentManager(),
+				"FragmentDialogEditSpentEntry");
+
 	}
 
 	public void onAddCategorySaveClicked(String categoryName) {
-		// 
+		//
 		mSpendingTrackerDbEngine.insertNewCategory(categoryName);
-		Toast.makeText(ActivityMain1.this, categoryName + " category added", Toast.LENGTH_LONG).show();
+		Toast.makeText(ActivityMain1.this, categoryName + " category added",
+				Toast.LENGTH_LONG).show();
 		mFragemtGeneral.initSpinnerCategories();
 		mFragmentCategoriesManager.initCategories();
 	}
 
 	public void setFragmentCategoriesManagerRef(String tag) {
-		// 
-		mFragmentCategoriesManager = (FragmentCategoriesManager)getSupportFragmentManager().findFragmentByTag(tag);
+		//
+		mFragmentCategoriesManager = (FragmentCategoriesManager) getSupportFragmentManager()
+				.findFragmentByTag(tag);
 	}
 
 	public void onDeleteCategoryClicked(String categoryName) {
-		// 
+		//
 		mSpendingTrackerDbEngine.deleteCategory(categoryName);
-		Toast.makeText(ActivityMain1.this, "Category " + categoryName +  " deleted!", Toast.LENGTH_LONG).show();
+		Toast.makeText(ActivityMain1.this,
+				"Category " + categoryName + " deleted!", Toast.LENGTH_LONG)
+				.show();
 		mFragemtGeneral.initSpinnerCategories();
 		mFragmentCategoriesManager.initCategories();
-		
+
 	}
 
+	public void onUpdateSpentEntryClicked(Bundle values) {
+		//
+		mSpendingTrackerDbEngine.updateSpentByRowId(values.getString("id"),
+				values.getString("amount"), values.getString("date") + "T" + values.getString("time"),
+				values.getString("category"));
+		Toast.makeText(ActivityMain1.this, "Entry " + values.getString("id") + " updated!", Toast.LENGTH_LONG).show();
+		mFragmentEntries.updateListViewAdapter();
+
+	}
 }
