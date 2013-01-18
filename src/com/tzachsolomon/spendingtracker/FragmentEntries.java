@@ -26,8 +26,8 @@ public class FragmentEntries extends SherlockFragment implements
 	private static final String TAG = FragmentEntries.class.getSimpleName();
 
 	private ListView listViewEntriesSpent;
-	private ClassEntriesSpentAdapter mEntriesSpent;
-	private SpendingTrackerDbEngine mDbEngine;
+	private ClassAdapterEntriesSpent mEntriesSpent;
+	private ClassDbEngine mDbEngine;
 	private Calendar mCalendar;
 	private RadioGroup radioGroupEntries;
 	private SherlockFragmentActivity mActivity;
@@ -132,7 +132,7 @@ public class FragmentEntries extends SherlockFragment implements
 		//
 		super.onCreate(savedInstanceState);
 
-		mDbEngine = new SpendingTrackerDbEngine(this.getSherlockActivity());
+		mDbEngine = new ClassDbEngine(this.getSherlockActivity());
 	}
 
 	@Override
@@ -153,17 +153,17 @@ public class FragmentEntries extends SherlockFragment implements
 		//
 		switch (checkedId) {
 		case R.id.radioButtonEntiresMonthly:
-			mEntriesSpent = new ClassEntriesSpentAdapter(
+			mEntriesSpent = new ClassAdapterEntriesSpent(
 					this.getSherlockActivity(),
 					mDbEngine.getSpentThisMonthEnteries(mCalendar));
 			break;
 		case R.id.radioButtonEntriesEveryday:
-			mEntriesSpent = new ClassEntriesSpentAdapter(
+			mEntriesSpent = new ClassAdapterEntriesSpent(
 					this.getSherlockActivity(),
 					mDbEngine.getSpentDailyEntries(mCalendar));
 			break;
 		case R.id.radioButtonEntriesWeekly:
-			mEntriesSpent = new ClassEntriesSpentAdapter(
+			mEntriesSpent = new ClassAdapterEntriesSpent(
 					this.getSherlockActivity(),
 					mDbEngine.getSpentThisWeekEnteries(1, mCalendar));
 			break;

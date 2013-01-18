@@ -42,9 +42,9 @@ public class FragmentGeneral extends SherlockFragment implements
 	private EditText editTextComment;
 	private Spinner spinnerCategories;
 	private String m_CategorySelected;
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 	private SherlockFragmentActivity mActivity;
-	private ArrayList<ClassCategoryType> m_Categories;
+	private ArrayList<ClassTypeCategory> m_Categories;
 	private TextView textViewSpentToday;
 	private TextView textViewSpentMonth;
 	private TextView textViewSpentWeek;
@@ -70,7 +70,7 @@ public class FragmentGeneral extends SherlockFragment implements
 					+ " must implement ButtonCategoriesEditListener ");
 		}
 
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(activity);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(activity);
 	}
 
 	private void updateMonthSpent() {

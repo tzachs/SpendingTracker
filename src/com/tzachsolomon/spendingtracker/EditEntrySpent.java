@@ -17,7 +17,7 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 
 	private static final String TAG = EditEntrySpent.class.getSimpleName();
 
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 
 	private EditText editTextSpentEditAmount;
 	private EditText editTextSpentEditDate;
@@ -41,7 +41,7 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 
 		initializeVariables();
 
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
 
 		Bundle extras = getIntent().getExtras();
 

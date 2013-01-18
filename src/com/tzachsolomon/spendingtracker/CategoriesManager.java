@@ -27,7 +27,7 @@ public class CategoriesManager extends ListActivity implements
 
 	private static final String TAG = CategoriesManager.class.getSimpleName();
 
-	private SpendingTrackerDbEngine m_SpendingTrackerDb;
+	private ClassDbEngine m_SpendingTrackerDb;
 	private ArrayList<String> m_CategoriesList;
 	private ActivityList m_ListAdapter;
 
@@ -41,7 +41,7 @@ public class CategoriesManager extends ListActivity implements
 	}
 
 	private void initializeList() {
-		m_SpendingTrackerDb = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDb = new ClassDbEngine(this);
 
 		m_CategoriesList = new ArrayList<String>();
 

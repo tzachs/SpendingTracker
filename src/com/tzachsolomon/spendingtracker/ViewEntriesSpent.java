@@ -47,7 +47,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 	private TableLayout tlEntries;
 	private TextView textViewSpendingRefrenceDate;
 
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 	private int m_Type;
 	private Calendar m_Calendar;
 	private String[][] m_Data;
@@ -262,26 +262,26 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 	private void menuItemSpentSortCategory_Clicked() {
 		//
 		m_SpendingTrackerDbEngine
-				.setSortBy(SpendingTrackerDbEngine.KEY_CATEGORY);
+				.setSortBy(ClassDbEngine.KEY_CATEGORY);
 		updateTableLayout();
 	}
 
 	private void menuItemSpentSortAmount_Clicked() {
 		//
-		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_AMOUNT);
+		m_SpendingTrackerDbEngine.setSortBy(ClassDbEngine.KEY_AMOUNT);
 		updateTableLayout();
 	}
 
 	private void menuItemSpentSortDate_Clicked() {
 		//
-		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_DATE);
+		m_SpendingTrackerDbEngine.setSortBy(ClassDbEngine.KEY_DATE);
 		updateTableLayout();
 
 	}
 
 	private void menuItemSpentSortId_Clicked() {
 		//
-		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_ROWID);
+		m_SpendingTrackerDbEngine.setSortBy(ClassDbEngine.KEY_ROWID);
 		updateTableLayout();
 	}
 
@@ -537,8 +537,8 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 		showRefrenceDate();
 
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
-		m_SpendingTrackerDbEngine.setSortBy(SpendingTrackerDbEngine.KEY_DATE);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
+		m_SpendingTrackerDbEngine.setSortBy(ClassDbEngine.KEY_DATE);
 
 	}
 

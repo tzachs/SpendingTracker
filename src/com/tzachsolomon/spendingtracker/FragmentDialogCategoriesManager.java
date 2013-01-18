@@ -22,13 +22,13 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class FragmentCategoriesManager extends SherlockDialogFragment implements
+public class FragmentDialogCategoriesManager extends SherlockDialogFragment implements
 		OnClickListener, OnMenuItemClickListener {
 
 	private ListView listViewCategories;
 	private SherlockFragmentActivity mActivity;
-	private ArrayList<ClassCategoryType> m_Categories;
-	private SpendingTrackerDbEngine mSpendingTrackerDbEngine;
+	private ArrayList<ClassTypeCategory> m_Categories;
+	private ClassDbEngine mSpendingTrackerDbEngine;
 	private Button buttonAddCategory;
 	private CategoriesManagerListener mCategoriesManagerListener;
 
@@ -42,7 +42,7 @@ public class FragmentCategoriesManager extends SherlockDialogFragment implements
 		super.onAttach(activity);
 		mActivity = (SherlockFragmentActivity) activity;
 
-		mSpendingTrackerDbEngine = new SpendingTrackerDbEngine(activity);
+		mSpendingTrackerDbEngine = new ClassDbEngine(activity);
 
 		try {
 			mCategoriesManagerListener = (CategoriesManagerListener) mActivity;
@@ -101,7 +101,7 @@ public class FragmentCategoriesManager extends SherlockDialogFragment implements
 
 			m_Categories = mSpendingTrackerDbEngine.getCategories();
 
-			listViewCategories.setAdapter(new ClassCategoryAdapter(
+			listViewCategories.setAdapter(new ClassAdapterCategory(
 					getSherlockActivity(), m_Categories));
 
 		} catch (Exception e) {

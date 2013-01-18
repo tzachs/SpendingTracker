@@ -31,7 +31,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.util.Xml;
 
-public class SpendingTrackerDbEngine {
+public class ClassDbEngine {
 
 	private static final String TAG = "SpendingTrackerDbEngine";
 
@@ -236,17 +236,16 @@ public class SpendingTrackerDbEngine {
 					inTableReminders = false;
 					inTableSpending = false;
 
-					if (tableName
-							.contentEquals(SpendingTrackerDbEngine.TABLE_CATEGORIES)) {
+					if (tableName.contentEquals(ClassDbEngine.TABLE_CATEGORIES)) {
 						inTableCategories = true;
 						DebugDb(TAG, "in table " + TABLE_CATEGORIES);
 
 					} else if (tableName
-							.contentEquals(SpendingTrackerDbEngine.TABLE_REMINDERS)) {
+							.contentEquals(ClassDbEngine.TABLE_REMINDERS)) {
 						inTableReminders = true;
 						DebugDb(TAG, "in table " + TABLE_REMINDERS);
 					} else if (tableName
-							.contentEquals(SpendingTrackerDbEngine.TABLE_SPENDING)) {
+							.contentEquals(ClassDbEngine.TABLE_SPENDING)) {
 						inTableSpending = true;
 						DebugDb(TAG, "in table " + TABLE_SPENDING);
 					}
@@ -319,12 +318,12 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public SpendingTrackerDbEngine(Context i_Context) {
+	public ClassDbEngine(Context i_Context) {
 		ourContext = i_Context;
-		m_SortByKey = SpendingTrackerDbEngine.KEY_ROWID;
+		m_SortByKey = ClassDbEngine.KEY_ROWID;
 	}
 
-	public SpendingTrackerDbEngine open() throws SQLException {
+	public ClassDbEngine open() throws SQLException {
 
 		ourHelper = new DbHelper(ourContext);
 		ourDatabase = ourHelper.getWritableDatabase();
@@ -602,9 +601,9 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public ArrayList<ClassCategoryType> getCategories() {
+	public ArrayList<ClassTypeCategory> getCategories() {
 
-		ArrayList<ClassCategoryType> ret= new ArrayList<ClassCategoryType>();
+		ArrayList<ClassTypeCategory> ret = new ArrayList<ClassTypeCategory>();
 
 		this.open();
 		Cursor cursor = ourDatabase.query(TABLE_CATEGORIES,
@@ -612,7 +611,7 @@ public class SpendingTrackerDbEngine {
 				KEY_CATEGORY);
 
 		for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-			ret.add(new ClassCategoryType(cursor.getString(0)));
+			ret.add(new ClassTypeCategory(cursor.getString(0)));
 		}
 
 		cursor.close();
@@ -622,16 +621,16 @@ public class SpendingTrackerDbEngine {
 		return ret;
 
 	}
-	
+
 	public String[] getCategoriesStringArray() {
 
-		String[] ret= null;
+		String[] ret = null;
 
 		this.open();
 		Cursor cursor = ourDatabase.query(TABLE_CATEGORIES,
 				new String[] { KEY_CATEGORY }, null, null, null, null,
 				KEY_CATEGORY);
-		
+
 		int i = 0;
 		ret = new String[cursor.getCount()];
 
@@ -647,7 +646,6 @@ public class SpendingTrackerDbEngine {
 		return ret;
 
 	}
-
 
 	public void deleteAll() {
 
@@ -727,7 +725,7 @@ public class SpendingTrackerDbEngine {
 	 *            i_Calendar as a reference point
 	 * @return All the entries spent in a specific day
 	 */
-	public ArrayList<ClassEntrySpentType> getSpentDailyEntries(
+	public ArrayList<ClassTypeEntrySpent> getSpentDailyEntries(
 			Calendar i_Calendar) {
 
 		Calendar now;
@@ -737,7 +735,7 @@ public class SpendingTrackerDbEngine {
 		int i = 0;
 		int iRowID, iAmount, iCategory, iDate;
 
-		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
+		ArrayList<ClassTypeEntrySpent> ret = new ArrayList<ClassTypeEntrySpent>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -775,7 +773,7 @@ public class SpendingTrackerDbEngine {
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
 
-			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
+			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
 					.getString(iDate)));
 
@@ -799,7 +797,7 @@ public class SpendingTrackerDbEngine {
 	 * @return All the entries spent in a specific Week
 	 */
 
-	public ArrayList<ClassEntrySpentType> getSpentThisWeekEnteries(
+	public ArrayList<ClassTypeEntrySpent> getSpentThisWeekEnteries(
 			int i_FirstDayOfWeek, Calendar i_Calendar) {
 
 		Calendar now;
@@ -811,7 +809,7 @@ public class SpendingTrackerDbEngine {
 		int iRowID, iAmount, iCategory, iDate;
 		StringBuilder filter = new StringBuilder();
 
-		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
+		ArrayList<ClassTypeEntrySpent> ret = new ArrayList<ClassTypeEntrySpent>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -875,7 +873,7 @@ public class SpendingTrackerDbEngine {
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
 			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
 
-			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
+			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
 					.getString(iDate)));
 
@@ -891,7 +889,7 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public ArrayList<ClassEntrySpentType> getSpentThisMonthEnteries(
+	public ArrayList<ClassTypeEntrySpent> getSpentThisMonthEnteries(
 			Calendar i_Calendar) {
 
 		Calendar now;
@@ -902,7 +900,7 @@ public class SpendingTrackerDbEngine {
 		int i = 0;
 		int iRowID, iAmount, iCategory, iDate;
 
-		ArrayList<ClassEntrySpentType> ret = new ArrayList<ClassEntrySpentType>();
+		ArrayList<ClassTypeEntrySpent> ret = new ArrayList<ClassTypeEntrySpent>();
 
 		if (i_Calendar == null) {
 			now = Calendar.getInstance();
@@ -938,7 +936,7 @@ public class SpendingTrackerDbEngine {
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
 			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
 
-			ret.add(new ClassEntrySpentType(c.getString(iRowID), c
+			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
 					.getString(iDate)));
 
@@ -952,9 +950,11 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public String[][] getTimeReminders() {
+	public ArrayList<ClassTypeReminderTime> getRemindersTime() {
 		//
-		String[][] ret = null;
+
+		ArrayList<ClassTypeReminderTime> ret = new ArrayList<ClassTypeReminderTime>();
+
 		String[] columns = new String[] { KEY_ROWID, KEY_TYPE, KEY_HOUR,
 				KEY_MINUTE, KEY_DAY, KEY_AMOUNT, KEY_CATEGORY };
 
@@ -963,8 +963,43 @@ public class SpendingTrackerDbEngine {
 		Cursor c = ourDatabase.query(TABLE_REMINDERS, columns, null, null,
 				null, null, null);
 
-		// setting 2 dimensional array
-		ret = new String[c.getCount()][columns.length];
+		int iRowID = c.getColumnIndex(KEY_ROWID);
+		int iType = c.getColumnIndex(KEY_TYPE);
+		int iHour = c.getColumnIndex(KEY_HOUR);
+		int iMinute = c.getColumnIndex(KEY_MINUTE);
+		int iDay = c.getColumnIndex(KEY_DAY);
+		int iAmount = c.getColumnIndex(KEY_AMOUNT);
+		int iCategory = c.getColumnIndex(KEY_CATEGORY);
+
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+
+			ret.add(new ClassTypeReminderTime(c.getString(iRowID), c
+					.getString(iType), c.getString(iHour),
+					c.getString(iMinute), c.getString(iDay), c.getString(iCategory),c
+					.getString(iAmount)));
+
+		}
+
+		c.close();
+
+		this.close();
+
+		return ret;
+	}
+
+	public String[][] getRemindersTimeAsStringMatrix() {
+		//
+
+		String[][] ret;
+		String[] columns = new String[] { KEY_ROWID, KEY_TYPE, KEY_HOUR,
+				KEY_MINUTE, KEY_DAY, KEY_AMOUNT, KEY_CATEGORY };
+
+		this.open();
+
+		Cursor c = ourDatabase.query(TABLE_REMINDERS, columns, null, null,
+				null, null, null);
+
+		ret = new String[c.getCount()][c.getColumnCount()];
 
 		int iRowID = c.getColumnIndex(KEY_ROWID);
 		int iType = c.getColumnIndex(KEY_TYPE);
@@ -978,13 +1013,13 @@ public class SpendingTrackerDbEngine {
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 
-			ret[i][iRowID] = c.getString(iRowID);
-			ret[i][iType] = c.getString(iType);
-			ret[i][iHour] = c.getString(iHour);
-			ret[i][iMinute] = c.getString(iMinute);
-			ret[i][iDay] = c.getString(iDay);
-			ret[i][iAmount] = c.getString(iAmount);
-			ret[i][iCategory] = c.getString(iCategory);
+			ret[i][0] = c.getString(iRowID);
+			ret[i][1] = c.getString(iType);
+			ret[i][2] = c.getString(iHour);
+			ret[i][3] = c.getString(iMinute);
+			ret[i][4] = c.getString(iDay);
+			ret[i][5] = c.getString(iAmount);
+			ret[i][6] = c.getString(iCategory);
 
 			i++;
 
@@ -1064,7 +1099,7 @@ public class SpendingTrackerDbEngine {
 
 	}
 
-	public void deleteReminderById(String i_ReminderId) {
+	public void deleteReminderTimeById(String i_ReminderId) {
 		//
 		this.open();
 		int ret;

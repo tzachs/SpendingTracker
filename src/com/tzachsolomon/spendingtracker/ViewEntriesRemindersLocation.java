@@ -31,7 +31,7 @@ public class ViewEntriesRemindersLocation extends Activity implements OnClickLis
 
 	private TableLayout tableLayoutRemindersEntries;
 
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 	private SharedPreferences m_SharedPreferences;
 	private boolean m_DebugMode;
 	private Button buttonDeleteSentLocationNotifications;
@@ -127,7 +127,7 @@ public class ViewEntriesRemindersLocation extends Activity implements OnClickLis
 		// initialize members
 		tableLayoutRemindersEntries = (TableLayout) findViewById(R.id.tableLayoutEnteriesReminders);
 
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
 		buttonDeleteSentLocationNotifications = (Button) findViewById(R.id.buttonDeleteSentLocationNotifications);
 		
 		buttonDeleteSentLocationNotifications.setOnClickListener(this);

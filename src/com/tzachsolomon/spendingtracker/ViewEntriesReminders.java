@@ -25,7 +25,7 @@ public class ViewEntriesReminders extends Activity {
 
 	private TableLayout tlRemindersEntries;
 
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class ViewEntriesReminders extends Activity {
 	}
 
 	private void updateTable() {
-		String[][] data = m_SpendingTrackerDbEngine.getTimeReminders();
+		String[][] data = m_SpendingTrackerDbEngine.getRemindersTimeAsStringMatrix();
 		int howMuchRowsToRemove = tlRemindersEntries.getChildCount() - 1;
 
 		// removing all entries except the headers
@@ -162,7 +162,7 @@ public class ViewEntriesReminders extends Activity {
 		// initialize members
 		tlRemindersEntries = (TableLayout) findViewById(R.id.tableLayoutEnteriesReminders);
 
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
 
 	}
 }

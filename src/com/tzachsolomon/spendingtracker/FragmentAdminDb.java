@@ -15,7 +15,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class FragmentAdminDb extends SherlockFragment implements OnClickListener {
 
 	private final static String XMLFILE = "spendingTracker.xml";
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 	private Button buttonDbExport;
 	private Button buttonDbImport;
 	
@@ -24,7 +24,7 @@ public class FragmentAdminDb extends SherlockFragment implements OnClickListener
 		// 
 		super.onCreate(savedInstanceState);
 		
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this.getSherlockActivity());
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this.getSherlockActivity());
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

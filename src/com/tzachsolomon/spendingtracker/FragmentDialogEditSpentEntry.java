@@ -36,7 +36,7 @@ public class FragmentDialogEditSpentEntry extends SherlockDialogFragment
 	private String mCategory;
 	private Button buttonUpdateSpentEntry;
 	private TextView textViewEntryId;
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 	private Spinner spinnerCategories;
 
 	public interface UpdateSpentEntryListener {
@@ -49,7 +49,7 @@ public class FragmentDialogEditSpentEntry extends SherlockDialogFragment
 		super.onAttach(activity);
 		mActivity = (SherlockFragmentActivity) activity;
 
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(mActivity);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(mActivity);
 	}
 
 	@Override

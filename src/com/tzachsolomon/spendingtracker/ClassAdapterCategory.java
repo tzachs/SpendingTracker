@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ClassCategoryAdapter extends BaseAdapter {
+public class ClassAdapterCategory extends BaseAdapter {
 
-	private ArrayList<ClassCategoryType> mItems;
+	private ArrayList<ClassTypeCategory> mItems;
 	private LayoutInflater mLayoutInflater;
 
-	public ClassCategoryAdapter(SherlockFragmentActivity activity,
-			ArrayList<ClassCategoryType> items) {
+	public ClassAdapterCategory(SherlockFragmentActivity activity,
+			ArrayList<ClassTypeCategory> items) {
 		mItems = items;
 		mLayoutInflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -12,15 +12,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ClassEntriesSpentAdapter extends BaseAdapter {
+public class ClassAdapterEntriesSpent extends BaseAdapter {
 
-	private ArrayList<ClassEntrySpentType> mItem;
+	private ArrayList<ClassTypeEntrySpent> mItem;
 	private LayoutInflater mLayoutInflater;
 	private SherlockFragmentActivity mActivity;
 
-	public ClassEntriesSpentAdapter(
+	public ClassAdapterEntriesSpent(
 			SherlockFragmentActivity sherlockFragmentActivity,
-			ArrayList<ClassEntrySpentType> items) {
+			ArrayList<ClassTypeEntrySpent> items) {
 		mItem = items;
 		mActivity = sherlockFragmentActivity;
 		mLayoutInflater = (LayoutInflater) sherlockFragmentActivity

@@ -30,7 +30,7 @@ public class SpendingTrackerLocationService extends Service implements
 
 	public static final String ACTION_FILTER = "com.tzachsolomon.spendingtracker.updatelocation";
 
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 
 	private NotificationManager m_NotificationManager;
 	private Notification m_Notification;
@@ -113,7 +113,7 @@ public class SpendingTrackerLocationService extends Service implements
 
 	private void initializeVariables() {
 		//
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
 		m_NotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 	}
@@ -161,12 +161,12 @@ public class SpendingTrackerLocationService extends Service implements
 		Bundle extras = new Bundle();
 		Intent intent = new Intent(getBaseContext(),
 				ActivitySpendingTracker.class);
-		String amount = i_Data.getAsString(SpendingTrackerDbEngine.KEY_AMOUNT);
+		String amount = i_Data.getAsString(ClassDbEngine.KEY_AMOUNT);
 		String category = i_Data
-				.getAsString(SpendingTrackerDbEngine.KEY_CATEGORY);
-		String rowId = i_Data.getAsString(SpendingTrackerDbEngine.KEY_ROWID);
+				.getAsString(ClassDbEngine.KEY_CATEGORY);
+		String rowId = i_Data.getAsString(ClassDbEngine.KEY_ROWID);
 		String locationName = i_Data
-				.getAsString(SpendingTrackerDbEngine.KEY_LOCATION_NAME);
+				.getAsString(ClassDbEngine.KEY_LOCATION_NAME);
 		int notificationId = 0; 
 
 		if (m_SpendingTrackerDbEngine.isLocationChanged(rowId) == false) {
@@ -184,11 +184,11 @@ public class SpendingTrackerLocationService extends Service implements
 			
 
 			extras.putBoolean("fromNotifaction", true);
-			extras.putString(SpendingTrackerDbEngine.KEY_AMOUNT, amount);
-			extras.putString(SpendingTrackerDbEngine.KEY_CATEGORY, category);
-			extras.putString(SpendingTrackerDbEngine.KEY_REMINDER_TYPE,
-					SpendingTrackerDbEngine.KEY_REMINDER_TYPE_LOCATION);
-			extras.putString(SpendingTrackerDbEngine.KEY_REMINDER_ID, rowId);
+			extras.putString(ClassDbEngine.KEY_AMOUNT, amount);
+			extras.putString(ClassDbEngine.KEY_CATEGORY, category);
+			extras.putString(ClassDbEngine.KEY_REMINDER_TYPE,
+					ClassDbEngine.KEY_REMINDER_TYPE_LOCATION);
+			extras.putString(ClassDbEngine.KEY_REMINDER_ID, rowId);
 			extras.putInt("notificationId", notificationId);
 
 			intent.putExtras(extras);
@@ -265,28 +265,28 @@ public class SpendingTrackerLocationService extends Service implements
 			Location location = new Location(i_CurrentLocation);
 
 			location.setAccuracy(contentValues
-					.getAsFloat(SpendingTrackerDbEngine.KEY_ACCURACY));
+					.getAsFloat(ClassDbEngine.KEY_ACCURACY));
 			location.setAltitude(contentValues
-					.getAsDouble(SpendingTrackerDbEngine.KEY_ALTITUDE));
+					.getAsDouble(ClassDbEngine.KEY_ALTITUDE));
 			location.setBearing(contentValues
-					.getAsFloat(SpendingTrackerDbEngine.KEY_BEARING));
+					.getAsFloat(ClassDbEngine.KEY_BEARING));
 			location.setLatitude(contentValues
-					.getAsDouble(SpendingTrackerDbEngine.KEY_LATITUDE));
+					.getAsDouble(ClassDbEngine.KEY_LATITUDE));
 			location.setLongitude(contentValues
-					.getAsDouble(SpendingTrackerDbEngine.KEY_LONGITUDE));
+					.getAsDouble(ClassDbEngine.KEY_LONGITUDE));
 			location.setProvider(contentValues
-					.getAsString(SpendingTrackerDbEngine.KEY_PROVIDER));
+					.getAsString(ClassDbEngine.KEY_PROVIDER));
 			location.setSpeed(contentValues
-					.getAsFloat(SpendingTrackerDbEngine.KEY_SPEED));
+					.getAsFloat(ClassDbEngine.KEY_SPEED));
 			location.setTime(contentValues
-					.getAsLong(SpendingTrackerDbEngine.KEY_TIME));
+					.getAsLong(ClassDbEngine.KEY_TIME));
 
 			ret = i_CurrentLocation.distanceTo(location);
 
 			Log.v(TAG,
 					"Distance from "
 							+ contentValues
-									.getAsString(SpendingTrackerDbEngine.KEY_LOCATION_NAME)
+									.getAsString(ClassDbEngine.KEY_LOCATION_NAME)
 							+ " is " + ret);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage().toString());

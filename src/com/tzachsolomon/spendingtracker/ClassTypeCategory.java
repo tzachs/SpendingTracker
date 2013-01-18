@@ -1,10 +1,10 @@
 package com.tzachsolomon.spendingtracker;
 
-public class ClassCategoryType {
+public class ClassTypeCategory {
 	
 	private String mCategoryName;
 	
-	public ClassCategoryType(String categoryName){
+	public ClassTypeCategory(String categoryName){
 		mCategoryName = categoryName;
 	}
 	

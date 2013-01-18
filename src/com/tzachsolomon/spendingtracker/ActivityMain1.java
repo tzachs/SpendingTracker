@@ -16,9 +16,10 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
-import com.tzachsolomon.spendingtracker.FragmentCategoriesManager.CategoriesManagerListener;
+import com.tzachsolomon.spendingtracker.FragmentDialogCategoriesManager.CategoriesManagerListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoryAdd.AddCategoryListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogEditSpentEntry.UpdateSpentEntryListener;
+import com.tzachsolomon.spendingtracker.FragmentDialogRemindersTimeManage.ReminderTimeListener;
 import com.tzachsolomon.spendingtracker.FragmentEntries.SpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonAddEntrySpentListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonCategoriesEditListener;
@@ -27,15 +28,17 @@ import com.tzachsolomon.spendingtracker.FragmentRemindersTime.AddTimeReminderLis
 public class ActivityMain1 extends SherlockFragmentActivity implements
 		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
 		AddTimeReminderListener, SpentEntryListener, AddCategoryListener,
-		CategoriesManagerListener, UpdateSpentEntryListener {
+		CategoriesManagerListener, UpdateSpentEntryListener,
+		ReminderTimeListener {
 
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
-	private SpendingTrackerDbEngine mSpendingTrackerDbEngine;
+	private ClassDbEngine mSpendingTrackerDbEngine;
 	private SharedPreferences mSharedPreferences;
 	private FragmentGeneral mFragemtGeneral;
 	private FragmentEntries mFragmentEntries;
-	private FragmentCategoriesManager mFragmentCategoriesManager;
+	private FragmentDialogCategoriesManager mFragmentCategoriesManager;
+	private FragmentDialogRemindersTimeManage mFragmentDialogRemindersTimeManage;
 
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
@@ -62,7 +65,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	private void initializeVariables() {
 		//
-		mSpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		mSpendingTrackerDbEngine = new ClassDbEngine(this);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
 
@@ -169,7 +172,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	public void onButtonCategoriesEditClicked() {
 		//
-		FragmentCategoriesManager fragmentCategoriesManager = new FragmentCategoriesManager();
+		FragmentDialogCategoriesManager fragmentCategoriesManager = new FragmentDialogCategoriesManager();
 
 		fragmentCategoriesManager.show(getSupportFragmentManager(),
 				"FragmentCategoriesManager");
@@ -243,6 +246,13 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	}
 
+	public void setFragmentReminderTimeManagerRef(String tag) {
+		//
+		mFragmentDialogRemindersTimeManage = (FragmentDialogRemindersTimeManage) getSupportFragmentManager()
+				.findFragmentByTag(tag);
+
+	}
+
 	public void onSpentEntryDeleted(String rowId) {
 		//
 		mSpendingTrackerDbEngine.deleteSpentEntryByRowId(rowId);
@@ -271,7 +281,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	public void setFragmentCategoriesManagerRef(String tag) {
 		//
-		mFragmentCategoriesManager = (FragmentCategoriesManager) getSupportFragmentManager()
+		mFragmentCategoriesManager = (FragmentDialogCategoriesManager) getSupportFragmentManager()
 				.findFragmentByTag(tag);
 	}
 
@@ -289,10 +299,31 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	public void onUpdateSpentEntryClicked(Bundle values) {
 		//
 		mSpendingTrackerDbEngine.updateSpentByRowId(values.getString("id"),
-				values.getString("amount"), values.getString("date") + "T" + values.getString("time"),
+				values.getString("amount"), values.getString("date") + "T"
+						+ values.getString("time"),
 				values.getString("category"));
-		Toast.makeText(ActivityMain1.this, "Entry " + values.getString("id") + " updated!", Toast.LENGTH_LONG).show();
+		Toast.makeText(ActivityMain1.this,
+				"Entry " + values.getString("id") + " updated!",
+				Toast.LENGTH_LONG).show();
 		mFragmentEntries.updateListViewAdapter();
 
 	}
+
+	public void onDeleteReminderTimeClicked(String rowId) {
+		//
+		mSpendingTrackerDbEngine.deleteReminderTimeById(rowId);
+		mFragmentDialogRemindersTimeManage.initRemindersTimeListView();
+
+	}
+
+	public void onManagerReminderTimeClicked() {
+		// 
+		FragmentDialogRemindersTimeManage fragmentDialogRemindersTimeManage = new FragmentDialogRemindersTimeManage();
+
+		fragmentDialogRemindersTimeManage.show(getSupportFragmentManager(),
+				"FragmentDialogRemindersTimeManage");
+		
+		
+	}
+
 }

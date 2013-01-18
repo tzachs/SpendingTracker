@@ -1,6 +1,6 @@
 package com.tzachsolomon.spendingtracker;
 
-public class ClassEntrySpentType {
+public class ClassTypeEntrySpent {
 	
 	
 	private String mRowId;
@@ -8,7 +8,7 @@ public class ClassEntrySpentType {
 	private String mCategory;
 	private String mDate;
 	
-	public ClassEntrySpentType(String rowId, String amount, String category, String date){
+	public ClassTypeEntrySpent(String rowId, String amount, String category, String date){
 		mRowId = rowId;
 		mAmount = amount;
 		mCategory = category;

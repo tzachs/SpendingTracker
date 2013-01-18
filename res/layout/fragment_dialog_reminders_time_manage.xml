@@ -5,35 +5,42 @@
     android:orientation="vertical" >
 
     <RadioGroup
-        android:id="@+id/radioGroupEntries"
+        android:id="@+id/radioGroupReminders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:orientation="horizontal" >
 
         <RadioButton
-            android:id="@+id/radioButtonEntriesEveryday"
+            android:id="@+id/radioButtonRemindersTimeAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:text="All" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRemindersTimeEveryday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/radioButtonEverydayText" />
 
         <RadioButton
-            android:id="@+id/radioButtonEntriesWeekly"
+            android:id="@+id/radioButtonRemindersTimeWeekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radioButtonWeeklyText" />
 
         <RadioButton
-            android:id="@+id/radioButtonEntiresMonthly"
+            android:id="@+id/radioButtonRemindersTimeMonthly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radioButtonMonthlyText" />
     </RadioGroup>
 
     <ListView
-        android:id="@+id/listViewEntriesSpent"
+        android:id="@+id/listViewTimeReminders"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="wrap_content" >
     </ListView>
 
 </LinearLayout>

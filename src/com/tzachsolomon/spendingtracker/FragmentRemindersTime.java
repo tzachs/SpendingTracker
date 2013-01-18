@@ -22,6 +22,7 @@ public class FragmentRemindersTime extends SherlockFragment implements
 
 	public interface AddTimeReminderListener {
 		public void onAddTimeReminderClicked();
+		public void onManagerReminderTimeClicked();
 	}
 	
 	private RelativeLayout relativeLayoutDayCheckboxes;
@@ -30,6 +31,7 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	private SherlockFragmentActivity mActivity;
 	private AddTimeReminderListener mButtonAddEntrySpentListener;
 	private Button buttonAddTimeReminder;
+	private Button buttonManageTimeReminderEntries;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -66,6 +68,9 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		
 		buttonAddTimeReminder = (Button) view.findViewById(R.id.buttonAddTimeReminder);
 		buttonAddTimeReminder.setOnClickListener(this);
+		buttonManageTimeReminderEntries = (Button)view.findViewById(R.id.buttonManageTimeReminderEntries);
+		buttonManageTimeReminderEntries.setOnClickListener(this);
+		
 
 		return view;
 
@@ -105,6 +110,17 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		case R.id.buttonAddTimeReminder:
 			buttonAddTimeReminder_Clicked();
 			break;
+		case R.id.buttonManageTimeReminderEntries:
+			buttonManageTimeReminderEntries_Clicked();
+			break;
+		}
+		
+	}
+
+	private void buttonManageTimeReminderEntries_Clicked() {
+		// 
+		if (mButtonAddEntrySpentListener != null){
+			mButtonAddEntrySpentListener.onManagerReminderTimeClicked();
 		}
 		
 	}

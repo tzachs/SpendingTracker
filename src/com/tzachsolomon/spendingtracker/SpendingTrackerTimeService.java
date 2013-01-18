@@ -24,7 +24,7 @@ public class SpendingTrackerTimeService extends Service {
 
 	private Calendar m_Calendar;
 	private Intent m_Intent;
-	private SpendingTrackerDbEngine m_SpendingTrackerDbEngine;
+	private ClassDbEngine m_SpendingTrackerDbEngine;
 
 	NotificationManager m_NotificationManager;
 	Notification m_Notification;
@@ -55,7 +55,7 @@ public class SpendingTrackerTimeService extends Service {
 		super.onStart(intent, startId);
 	}
 	private void initializeVariables() {
-		m_SpendingTrackerDbEngine = new SpendingTrackerDbEngine(this);
+		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
 		m_Calendar = Calendar.getInstance();
 
 		m_NotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -77,7 +77,7 @@ public class SpendingTrackerTimeService extends Service {
 		try {
 			Log.i(TAG, "checkReminders started");
 			// Getting reminders from the database
-			String[][] reminders = m_SpendingTrackerDbEngine.getTimeReminders();
+			String[][] reminders = m_SpendingTrackerDbEngine.getRemindersTimeAsStringMatrix();
 			int i = 0;
 			int length = reminders.length;
 			boolean flag = false;
@@ -102,11 +102,11 @@ public class SpendingTrackerTimeService extends Service {
 
 					// checking if the reminder is of type everyday
 					if (reminders[i][1]
-							.contentEquals(SpendingTrackerDbEngine.TYPE_REMINDER_EVERYDAY)) {
+							.contentEquals(ClassDbEngine.TYPE_REMINDER_EVERYDAY)) {
 						flag = true;
 						// checking if the reminder is of type weekly
 					} else if (reminders[i][1]
-							.contentEquals(SpendingTrackerDbEngine.TYPE_REMINDER_WEEKLY)) {
+							.contentEquals(ClassDbEngine.TYPE_REMINDER_WEEKLY)) {
 						// reminder is of type weekly, checking if day in week
 						// match
 						if (reminders[i][4]
@@ -116,7 +116,7 @@ public class SpendingTrackerTimeService extends Service {
 						}
 
 					} else if (reminders[i][1]
-							.contentEquals(SpendingTrackerDbEngine.TYPE_REMINDER_MONTHLY)) {
+							.contentEquals(ClassDbEngine.TYPE_REMINDER_MONTHLY)) {
 						if (reminders[i][4].contentEquals(Integer
 								.toString((m_Calendar
 										.get(Calendar.DAY_OF_MONTH))))) {
@@ -147,9 +147,9 @@ public class SpendingTrackerTimeService extends Service {
 					
 
 					extras.putBoolean(reminders[i][1], true);
-					extras.putString(SpendingTrackerDbEngine.KEY_AMOUNT,
+					extras.putString(ClassDbEngine.KEY_AMOUNT,
 							reminders[i][5]);
-					extras.putString(SpendingTrackerDbEngine.KEY_CATEGORY,
+					extras.putString(ClassDbEngine.KEY_CATEGORY,
 							reminders[i][6]);
 					
 					m_Intent.putExtras(extras);
