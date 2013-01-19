@@ -35,18 +35,7 @@ public class ClassDbEngine {
 
 	private static final String TAG = "SpendingTrackerDbEngine";
 
-	public static final String TYPE_REMINDER_EVERYDAY = "Everyday";
-	public static final String TYPE_REMINDER_WEEKLY = "Weekly";
-	public static final String TYPE_REMINDER_MONTHLY = "Monthly";
-
-	public static final String TYPE_REMINDER_SUNDAY = "1";
-	public static final String TYPE_REMINDER_MONDAY = "2";
-	public static final String TYPE_REMINDER_TUESDAY = "3";
-	public static final String TYPE_REMINDER_WEDNESDAY = "4";
-	public static final String TYPE_REMINDER_THURSDAY = "5";
-	public static final String TYPE_REMINDER_FRIDAY = "6";
-	public static final String TYPE_REMINDER_SATURDAY = "7";
-	public static final String TYPE_REMINDER_DAY_DONT_CARE = "-1";
+	
 
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_AMOUNT = "colAmount";

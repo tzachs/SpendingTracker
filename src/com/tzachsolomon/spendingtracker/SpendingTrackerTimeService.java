@@ -1,6 +1,7 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.Calendar;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
 import java.util.Currency;
 import java.util.Locale;
 
@@ -102,11 +103,11 @@ public class SpendingTrackerTimeService extends Service {
 
 					// checking if the reminder is of type everyday
 					if (reminders[i][1]
-							.contentEquals(ClassDbEngine.TYPE_REMINDER_EVERYDAY)) {
+							.contentEquals(TYPE_REMINDER_TIME_EVERYDAY)) {
 						flag = true;
 						// checking if the reminder is of type weekly
 					} else if (reminders[i][1]
-							.contentEquals(ClassDbEngine.TYPE_REMINDER_WEEKLY)) {
+							.contentEquals(TYPE_REMINDER_TIME_WEEKLY)) {
 						// reminder is of type weekly, checking if day in week
 						// match
 						if (reminders[i][4]
@@ -116,7 +117,7 @@ public class SpendingTrackerTimeService extends Service {
 						}
 
 					} else if (reminders[i][1]
-							.contentEquals(ClassDbEngine.TYPE_REMINDER_MONTHLY)) {
+							.contentEquals(TYPE_REMINDER_TIME_MONTHLY)) {
 						if (reminders[i][4].contentEquals(Integer
 								.toString((m_Calendar
 										.get(Calendar.DAY_OF_MONTH))))) {

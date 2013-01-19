@@ -62,6 +62,10 @@ public class ClassTypeReminderTime {
 	public void setmAmount(String mAmount) {
 		this.mAmount = mAmount;
 	}
+	public String toToastMessage() {
+		// 
+		return "Day: " + mDay + " Hour: " + mHour + " Minute: " + mMinute;
+	}
 	
 	
 	

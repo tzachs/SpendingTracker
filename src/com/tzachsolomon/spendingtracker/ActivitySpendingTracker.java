@@ -1,6 +1,8 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.ArrayList;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
+
 import java.util.Calendar;
 
 import java.util.Locale;
@@ -474,24 +476,24 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 			Log.i(TAG, "Found extras, checking if starting from reminder");
 			boolean isReminder = false;
 			if (extras
-					.containsKey(ClassDbEngine.TYPE_REMINDER_EVERYDAY)) {
+					.containsKey(TYPE_REMINDER_TIME_EVERYDAY)) {
 				Log.i(TAG, "Starting from everyday reminder");
 				getIntent().removeExtra(
-						ClassDbEngine.TYPE_REMINDER_EVERYDAY);
+						TYPE_REMINDER_TIME_EVERYDAY);
 
 				isReminder = true;
 
 			} else if (extras
-					.containsKey(ClassDbEngine.TYPE_REMINDER_WEEKLY)) {
+					.containsKey(TYPE_REMINDER_TIME_WEEKLY)) {
 				Log.i(TAG, "Starting from weekly reminder");
 				getIntent().removeExtra(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY);
+						TYPE_REMINDER_TIME_WEEKLY);
 				isReminder = true;
 			} else if (extras
-					.containsKey(ClassDbEngine.TYPE_REMINDER_MONTHLY)) {
+					.containsKey(TYPE_REMINDER_TIME_MONTHLY)) {
 				Log.i(TAG, "Starting from monthly reminder");
 				getIntent().removeExtra(
-						ClassDbEngine.TYPE_REMINDER_MONTHLY);
+						TYPE_REMINDER_TIME_MONTHLY);
 				isReminder = true;
 			} else if (extras
 					.containsKey(ClassDbEngine.KEY_REMINDER_TYPE)) {
@@ -1132,9 +1134,9 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 		case R.id.radioButtonEveryday:
 			//
 			m_SpendingTrackerDbEngine.insertNewTimeReminder(
-					ClassDbEngine.TYPE_REMINDER_EVERYDAY,
+					TYPE_REMINDER_TIME_EVERYDAY,
 					currentHour, currentMinute,
-					ClassDbEngine.TYPE_REMINDER_DAY_DONT_CARE,
+					TYPE_REMINDER_TIME_DAY_DONT_CARE,
 					amount, m_CategorySelected);
 
 			sb.append(getString(R.string.toastMessageAddedEverydayReminder)
@@ -1145,57 +1147,57 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 
 			if (checkBoxSunday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_SUNDAY, amount,
+						TYPE_REMINDER_TIME_SUNDAY, amount,
 						m_CategorySelected);
 				sb.append(getString(R.string.checkBoxSundayText));
 			}
 			if (checkBoxMonday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_MONDAY, amount,
+						TYPE_REMINDER_TIME_MONDAY, amount,
 						m_CategorySelected);
 				sb.append(getString(R.string.checkBoxMondayText));
 			}
 			if (checkBoxTuesday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_TUESDAY, amount,
+						TYPE_REMINDER_TIME_TUESDAY, amount,
 						m_CategorySelected);
 				sb.append(getString(R.string.checkBoxTuesdayText));
 			}
 			if (checkBoxWednesday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_WEDNESDAY,
+						TYPE_REMINDER_TIME_WEDNESDAY,
 						amount, m_CategorySelected);
 				sb.append(getString(R.string.checkBoxWednesdayText));
 			}
 			if (checkBoxThursday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_THURSDAY, amount,
+						TYPE_REMINDER_TIME_THURSDAY, amount,
 						m_CategorySelected);
 				sb.append(getString(R.string.checkBoxThursdayText));
 			}
 			if (checkBoxFriday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_FRIDAY, amount,
+						TYPE_REMINDER_TIME_FRIDAY, amount,
 						m_CategorySelected);
 				sb.append(getString(R.string.checkBoxFridayText));
 			}
 			if (checkBoxSaturday.isChecked()) {
 				m_SpendingTrackerDbEngine.insertNewTimeReminder(
-						ClassDbEngine.TYPE_REMINDER_WEEKLY,
+						TYPE_REMINDER_TIME_WEEKLY,
 						currentHour, currentMinute,
-						ClassDbEngine.TYPE_REMINDER_SATURDAY, amount,
+						TYPE_REMINDER_TIME_SATURDAY, amount,
 						m_CategorySelected);
 				sb.append(getString(R.string.checkBoxSaturdayText));
 			}
@@ -1214,7 +1216,7 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 		case R.id.radioButtonMonthly:
 
 			m_SpendingTrackerDbEngine.insertNewTimeReminder(
-					ClassDbEngine.TYPE_REMINDER_MONTHLY, currentHour,
+					TYPE_REMINDER_TIME_MONTHLY, currentHour,
 					currentMinute, editTextDayInMonthReminder.getText()
 							.toString(), amount, m_CategorySelected);
 			sb.append(getString(R.string.toastMessageAddedMonthlyReminder)

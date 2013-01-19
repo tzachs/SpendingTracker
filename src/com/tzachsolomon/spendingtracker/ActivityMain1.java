@@ -23,11 +23,11 @@ import com.tzachsolomon.spendingtracker.FragmentDialogRemindersTimeManage.Remind
 import com.tzachsolomon.spendingtracker.FragmentEntries.SpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonAddEntrySpentListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonCategoriesEditListener;
-import com.tzachsolomon.spendingtracker.FragmentRemindersTime.AddTimeReminderListener;
+import com.tzachsolomon.spendingtracker.FragmentRemindersTime.TimeReminderListener;
 
 public class ActivityMain1 extends SherlockFragmentActivity implements
 		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
-		AddTimeReminderListener, SpentEntryListener, AddCategoryListener,
+		TimeReminderListener, SpentEntryListener, AddCategoryListener,
 		CategoriesManagerListener, UpdateSpentEntryListener,
 		ReminderTimeListener {
 
@@ -162,6 +162,11 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 			}
 		}
 
+		public void setTabPage(int i) {
+			mViewPager.setCurrentItem(i);
+
+		}
+
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 
 		}
@@ -179,8 +184,33 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	}
 
-	public void onAddTimeReminderClicked() {
+	public void onAddTimeReminderClicked(ArrayList<ClassTypeReminderTime> values) {
 		// TODO Auto-generated method stub
+		String amount = mFragemtGeneral.getAmount();
+		String category = mFragemtGeneral.getCategory();
+		StringBuilder sb = new StringBuilder();
+
+		if (amount.length() > 0) {
+
+			for (ClassTypeReminderTime reminderTime : values) {
+				mSpendingTrackerDbEngine.insertNewTimeReminder(
+						reminderTime.getmType(), reminderTime.getmHour(),
+						reminderTime.getmMinute(), reminderTime.getmDay(),
+						amount, category);
+				sb.append(reminderTime.toToastMessage());
+				sb.append("\n");
+
+			}
+			sb.append("Category: " + category);
+			sb.append("Amount: " + amount);
+			Toast.makeText(ActivityMain1.this, sb.toString(), Toast.LENGTH_LONG)
+					.show();
+			sb.setLength(0);
+		} else {
+			Toast.makeText(ActivityMain1.this, "Please fill in amount",
+					Toast.LENGTH_LONG).show();
+			mTabsAdapter.setTabPage(0);
+		}
 
 	}
 
@@ -317,13 +347,12 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	}
 
 	public void onManagerReminderTimeClicked() {
-		// 
+		//
 		FragmentDialogRemindersTimeManage fragmentDialogRemindersTimeManage = new FragmentDialogRemindersTimeManage();
 
 		fragmentDialogRemindersTimeManage.show(getSupportFragmentManager(),
 				"FragmentDialogRemindersTimeManage");
-		
-		
+
 	}
 
 }

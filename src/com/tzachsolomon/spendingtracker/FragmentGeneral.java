@@ -230,5 +230,14 @@ public class FragmentGeneral extends SherlockFragment implements
 		m_CategorySelected = "";
 	}
 
+	public String getAmount() {
+		// 
+		return editTextEntrySpent.getText().toString();
+	}
+	
+	public String getCategory(){
+		return m_CategorySelected;
+	}
+
 
 }
