@@ -62,29 +62,39 @@
         <PreferenceScreen android:title="Debug" >
             <CheckBoxPreference
                 android:defaultValue="false"
+                android:key="checkBoxPrefActivityMain"
+                android:summary="Activity Main debugging"
+                android:title="Activity Main" />
+            <CheckBoxPreference
+                android:defaultValue="false"
                 android:key="checkBoxPrefDebugDb"
                 android:summary="Database debugging"
-                android:title="Enable" />
+                android:title="Database engine" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="checkBoxPrefFragmentGeneral"
                 android:summary="Fragment General debugging"
-                android:title="Enable" />
+                android:title="Fragment General" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="checkBoxPrefFragmentReminderTime"
                 android:summary="Fragment Time Reminder debugging"
-                android:title="Enable" />
+                android:title="Fragment Time Reminder" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="checkBoxPrefFragmentReminderLocation"
                 android:summary="Fragment Location Reminder debugging"
-                android:title="Enable" />
+                android:title="Fragment Location" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="checkBoxPrefFragmentAdmin"
                 android:summary="Fragment Admin debugging"
-                android:title="Enable" />
+                android:title="Fragment Admin" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="checkBoxPrefServiceReminderTime"
+                android:summary="Service Time Reminder debugging"
+                android:title="Service Time Reminder" />
         </PreferenceScreen>
     </PreferenceCategory>
 

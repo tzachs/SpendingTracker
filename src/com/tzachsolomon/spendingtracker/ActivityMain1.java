@@ -1,18 +1,24 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -45,6 +51,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private FragmentEntries mFragmentEntries;
 	private FragmentDialogCategoriesManager mFragmentCategoriesManager;
 	private FragmentDialogRemindersTimeManage mFragmentDialogRemindersTimeManage;
+	private PendingIntent mTimeAlarmSender;
 
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
@@ -67,6 +74,22 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		initializeActionBar();
 
 		initializeVariables();
+		
+		mTimeAlarmSender = PendingIntent.getService(
+				ActivityMain1.this, 0, new Intent(
+						ActivityMain1.this,
+						SpendingTrackerTimeService.class), 0);
+		
+		updatePreferences();
+	}
+	
+	public void updatePreferences() {
+		ClassCommonUtilities.DEBUG_DB = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_DB,false);
+		ClassCommonUtilities.DEBUG_FRAGMENT_GENERAL = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_GENERAL,false);
+		ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_LOCATION = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION,false);
+		ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME,false);
+		ClassCommonUtilities.DEBUG_SERVICE_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_SERVICE_REMINDER_TIME,false);
+		ClassCommonUtilities.DEBUG_ACTIVITY_MAIN = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_ACTIVITY_MAIN,false);
 	}
 
 	private void initializeVariables() {
@@ -373,19 +396,77 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	}
 	
+	private void checkServiceStatus() {
+		//
+		try {
+			boolean checkBoxPreferencsReminderService = mSharedPreferences
+					.getBoolean("checkBoxPreferencsReminderService", true);
+
+			// checking service always should be on and the service is not
+			// running
+			cancelTimeAlarmManager();
+
+			if (checkBoxPreferencsReminderService) {
+
+				startTimeAlarmManager();
+			}	
+		} catch (Exception e) {
+			DebugActivityMain(e.toString());
+		}
+
+	}
+	
+	@Override
+	protected void onResume() {
+		// 
+		super.onResume();
+		checkServiceStatus();
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// 
 		super.onActivityResult(requestCode, resultCode,  data);
 		switch (requestCode){
 		case ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES:
-			ClassCommonUtilities.DEBUG_DB = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_DB,false);
-			ClassCommonUtilities.DEBUG_FRAGMENT_GENERAL = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_GENERAL,false);
-			ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_LOCATION = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION,false);
-			ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME,false);
+			updatePreferences();
+			
 			break;
 		}
 	}
+
+	
+	
+	private void cancelTimeAlarmManager() {
+		//
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.cancel(mTimeAlarmSender);
+	}
+	
+	private void startTimeAlarmManager() {
+		//
+		Calendar firstTime = Calendar.getInstance();
+		firstTime.setTimeInMillis(System.currentTimeMillis());
+
+		
+		int secondsToAdd = 60 - firstTime.get(Calendar.SECOND);
+
+		DebugActivityMain("Starting Time service using alarm manager in "
+				+ secondsToAdd + " Seconds");
+
+		firstTime.setTimeInMillis(SystemClock.elapsedRealtime());
+		firstTime.add(Calendar.SECOND, secondsToAdd);
+
+		// Schedule the alarm!
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+				firstTime.getTimeInMillis(), 60000, mTimeAlarmSender);
+
+	}
+	
+	
+	
+
 
 	public void onUpdateSpentEntryClicked(Bundle values) {
 		//

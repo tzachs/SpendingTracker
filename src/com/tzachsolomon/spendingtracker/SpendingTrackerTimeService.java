@@ -2,6 +2,7 @@ package com.tzachsolomon.spendingtracker;
 
 import java.util.Calendar;
 import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
+
 import java.util.Currency;
 import java.util.Locale;
 
@@ -11,6 +12,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
 import android.os.IBinder;
@@ -20,8 +22,7 @@ import android.util.Log;
 
 public class SpendingTrackerTimeService extends Service {
 
-	private static final String TAG = SpendingTrackerTimeService.class
-			.getSimpleName();
+	
 
 	private Calendar m_Calendar;
 	private Intent m_Intent;
@@ -29,13 +30,17 @@ public class SpendingTrackerTimeService extends Service {
 
 	NotificationManager m_NotificationManager;
 	Notification m_Notification;
+	private SharedPreferences mSharedPreferences;
 	
 	@Override
 	public void onCreate() {
 		//
 		super.onCreate();
-
-		Log.i(TAG, "Service onCreate");
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getBaseContext());
+		ClassCommonUtilities.DEBUG_SERVICE_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_SERVICE_REMINDER_TIME,false);
+		
+		DebugServiceReminderTime("Time Service onCreate");
 
 		initializeVariables();
 
@@ -50,8 +55,7 @@ public class SpendingTrackerTimeService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		//
-		Log.i(TAG, "Service onStart");
-		
+		ClassCommonUtilities.DebugServiceReminderTime("Time reminder service started");
 
 		super.onStart(intent, startId);
 	}
@@ -68,7 +72,7 @@ public class SpendingTrackerTimeService extends Service {
 		super.onDestroy();
 
 		
-		Log.i(TAG, "Destroying service");
+		DebugServiceReminderTime("Time Destroying service");
 
 	}
 
@@ -76,7 +80,7 @@ public class SpendingTrackerTimeService extends Service {
 	private void checkReminders() {
 
 		try {
-			Log.i(TAG, "checkReminders started");
+			DebugServiceReminderTime("checkReminders started");
 			// Getting reminders from the database
 			String[][] reminders = m_SpendingTrackerDbEngine.getRemindersTimeAsStringMatrix();
 			int i = 0;
@@ -85,14 +89,12 @@ public class SpendingTrackerTimeService extends Service {
 
 			m_Calendar.setTimeInMillis(System.currentTimeMillis());
 
-			Log.i(TAG, "Looping over " + Integer.toString(length)
+			DebugServiceReminderTime("Looping over " + Integer.toString(length)
 					+ " reminders");
 			// going over the reminders
 			for (i = 0; i < length; i++) {
 				flag = false;
-				Log.v(TAG, String.format("Reminder %s type %s at %s:%s amount %s",
-						reminders[i][0],reminders[i][1],reminders[i][2],reminders[i][3],
-						reminders[i][4]));
+				
 						                    
 						
 				// checking if the reminder is the current hour and minute
@@ -134,8 +136,9 @@ public class SpendingTrackerTimeService extends Service {
 
 					m_Intent = new Intent(getBaseContext(),
 							ActivityMain1.class);
-
-					Log.i(TAG, "Found reminder in database, sending notification");
+					DebugServiceReminderTime(String.format("Sending notification for Reminder %s type %s at %s:%s amount %s",
+							reminders[i][0],reminders[i][1],reminders[i][2],reminders[i][3],
+							reminders[i][4]));
 
 					// When activity will start up, it needs to check if the
 					// first
@@ -181,7 +184,7 @@ public class SpendingTrackerTimeService extends Service {
 									.getSymbol());
 						} catch (Exception e) {
 							// TODO: m_Debug option 
-							Log.d(TAG, e.getMessage().toString());
+							DebugServiceReminderTime( e.getMessage().toString());
 							
 						}
 						
@@ -215,13 +218,17 @@ public class SpendingTrackerTimeService extends Service {
 
 						m_NotificationManager.notify(12021982, m_Notification);
 						
+				}else{
+					DebugServiceReminderTime(String.format("Skipping Reminder %s type %s at %s:%s amount %s",
+							reminders[i][0],reminders[i][1],reminders[i][2],reminders[i][3],
+							reminders[i][4]));
 				}
 
 			}
 		} catch (Exception e) {
 			// 
-			Log.d(TAG, e.toString());
-			e.printStackTrace();
+			DebugServiceReminderTime( e.toString());
+			
 		}
 
 	}
