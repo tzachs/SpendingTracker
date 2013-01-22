@@ -3,6 +3,8 @@ package com.tzachsolomon.spendingtracker;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -40,6 +42,14 @@ public class FragmentDialogRemindersTimeManage extends SherlockDialogFragment
 		listViewTimeReminders.setOnCreateContextMenuListener(this);
 
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// 
+		super.onCreate(savedInstanceState);
+		setStyle(DialogFragment.STYLE_NO_FRAME,com.actionbarsherlock.R.style.Theme_Sherlock_Light_Dialog);
+				
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -68,6 +78,8 @@ public class FragmentDialogRemindersTimeManage extends SherlockDialogFragment
 		initilaizeValues(view);
 		
 		getDialog().setTitle("Time Reminders Manager");
+		
+		
 
 		((ActivityMain1) mActivity).setFragmentReminderTimeManagerRef(getTag());
 

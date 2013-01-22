@@ -2,6 +2,8 @@ package com.tzachsolomon.spendingtracker;
 
 import java.util.ArrayList;
 
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +36,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		CategoriesManagerListener, UpdateSpentEntryListener,
 		ReminderTimeListener {
 
+	
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
 	private ClassDbEngine mSpendingTrackerDbEngine;
@@ -368,6 +371,20 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mFragemtGeneral.initSpinnerCategories();
 		mFragmentCategoriesManager.initCategories();
 
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// 
+		super.onActivityResult(requestCode, resultCode,  data);
+		switch (requestCode){
+		case ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES:
+			ClassCommonUtilities.DEBUG_DB = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_DB,false);
+			ClassCommonUtilities.DEBUG_FRAGMENT_GENERAL = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_GENERAL,false);
+			ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_LOCATION = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION,false);
+			ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME,false);
+			break;
+		}
 	}
 
 	public void onUpdateSpentEntryClicked(Bundle values) {

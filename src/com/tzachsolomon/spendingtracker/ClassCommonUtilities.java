@@ -17,13 +17,40 @@ public final class ClassCommonUtilities {
 	public static final String TYPE_REMINDER_TIME_SATURDAY = "7";
 	public static final String TYPE_REMINDER_TIME_DAY_DONT_CARE = "-1";
 	public static final int REQUEST_CODE_ACTIVITY_PREFERENCES = 1000;
+	public static final String PREF_KEY_DEBUG_DB = "checkBoxPrefDebugDb";
+	public static final String PREF_KEY_DEBUG_FRAGMENT_GENERAL = "checkBoxPrefFragmentGeneral";
+	public static final String PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME = "checkBoxPrefFragmentReminderTime";
+	public static final String PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION = "checkBoxPrefFragmentReminderLocation";
+	public static final String PREF_KEY_DEBUG_FRAGMENT_ADMIN = "checkBoxPrefFragmentAdmin";
 	
 	public static boolean DEBUG_DB = false;
+	public static boolean DEBUG_FRAGMENT_GENERAL = false;
+	public static boolean DEBUG_FRAGMENT_REMINDER_TIME = false;
+	public static boolean DEBUG_FRAGMENT_REMINDER_LOCATION = false;
 	
-	public static void DebugDb (String tag, String message){
+	public static void DebugDb (String message){
 		if ( DEBUG_DB){
-			Log.d(tag, message);
+			Log.d("DEBUG_DB", message);
 		}
 	}
+	
+	public static void DebugFragmentGeneral (String message){
+		if ( DEBUG_FRAGMENT_GENERAL){
+			Log.d("DEBUG_FRAGMENT_GENERAL", message);
+		}
+	}
+	
+	public static void DebugFragmentReminderTime (String message){
+		if ( DEBUG_FRAGMENT_REMINDER_TIME){
+			Log.d("DEBUG_FRAGMENT_REMINDER_TIME", message);
+		}
+	}
+	
+	public static void DebugFragmentReminderLocation (String message){
+		if ( DEBUG_FRAGMENT_REMINDER_LOCATION){
+			Log.d("DEBUG_FRAGMENT_REMINDER_LOCATION", message);
+		}
+	}
+
 
 }

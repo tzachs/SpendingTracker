@@ -33,10 +33,6 @@ import android.util.Xml;
 
 public class ClassDbEngine {
 
-	private static final String TAG = "SpendingTrackerDbEngine";
-
-	
-
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_AMOUNT = "colAmount";
 	public static final String KEY_CATEGORY = "colCategory";
@@ -130,8 +126,8 @@ public class ClassDbEngine {
 					+ " TEXT NOT NULL, " + KEY_CATEGORY + " TEXT NOT NULL "
 					+ ");";
 
-			DebugDb(TAG, "Executing the following queries: ");
-			DebugDb(TAG, sqlQuery);
+			DebugDb("Executing the following queries: ");
+			DebugDb(sqlQuery);
 
 			db.execSQL(sqlQuery);
 
@@ -172,7 +168,7 @@ public class ClassDbEngine {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-			DebugDb(TAG, DATABASE_NAME + "is upgraded from version "
+			DebugDb(DATABASE_NAME + "is upgraded from version "
 					+ oldVersion + " to version " + newVersion);
 
 			createTableLocationReminders(db);
@@ -217,7 +213,7 @@ public class ClassDbEngine {
 				Attributes attributes) throws SAXException {
 			//
 			try {
-				// DebugDb(TAG, "startElement " + localName);
+				// DebugDb( "startElement " + localName);
 				if (localName.contentEquals("TABLE")) {
 					String tableName = attributes.getValue("NAME");
 
@@ -227,16 +223,16 @@ public class ClassDbEngine {
 
 					if (tableName.contentEquals(ClassDbEngine.TABLE_CATEGORIES)) {
 						inTableCategories = true;
-						DebugDb(TAG, "in table " + TABLE_CATEGORIES);
+						DebugDb("in table " + TABLE_CATEGORIES);
 
 					} else if (tableName
 							.contentEquals(ClassDbEngine.TABLE_REMINDERS)) {
 						inTableReminders = true;
-						DebugDb(TAG, "in table " + TABLE_REMINDERS);
+						DebugDb("in table " + TABLE_REMINDERS);
 					} else if (tableName
 							.contentEquals(ClassDbEngine.TABLE_SPENDING)) {
 						inTableSpending = true;
-						DebugDb(TAG, "in table " + TABLE_SPENDING);
+						DebugDb( "in table " + TABLE_SPENDING);
 					}
 
 				} else if (localName.contentEquals("ENTRY")) {
@@ -250,7 +246,7 @@ public class ClassDbEngine {
 
 					for (i = 0; i < count; i++) {
 						values[i] = attributes.getValue(i);
-						DebugDb(TAG, "Attribute is " + attributes.getQName(i)
+						DebugDb("Attribute is " + attributes.getQName(i)
 								+ " Value is " + values[i]);
 
 					}
@@ -268,7 +264,7 @@ public class ClassDbEngine {
 					}
 				}
 			} catch (Exception e) {
-				DebugDb(TAG, e.getMessage());
+				DebugDb(e.getMessage());
 
 			}
 
@@ -444,7 +440,7 @@ public class ClassDbEngine {
 				KEY_DATE, KEY_COMMENT };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		DebugDb(TAG, "checking for day " + todayInMonthString);
+		DebugDb("checking for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
@@ -454,7 +450,7 @@ public class ClassDbEngine {
 		iColAmount = c.getColumnIndex(KEY_AMOUNT);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb(TAG, "Found entry at date " + c.getString(iColDate));
+			DebugDb("Found entry at date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 		}
 
@@ -490,8 +486,8 @@ public class ClassDbEngine {
 
 		thisMonthString = (thisMonth < 10 ? "0" : "") + thisMonth;
 		thisYearString = Integer.toString(thisYear);
-		DebugDb(TAG, "Found Year " + thisYearString);
-		DebugDb(TAG, "Found Month" + thisMonthString);
+		DebugDb("Found Year " + thisYearString);
+		DebugDb("Found Month" + thisMonthString);
 
 		// getting today in the week
 		today = now.get(Calendar.DAY_OF_WEEK);
@@ -507,7 +503,7 @@ public class ClassDbEngine {
 
 			today = todayInMonth - i;
 			todayInMonthString = (today < 10 ? "0" : "") + today;
-			DebugDb(TAG, "Adding entry for day " + todayInMonthString);
+			DebugDb( "Adding entry for day " + todayInMonthString);
 			filter.append(KEY_DATE);
 			filter.append(" LIKE '%" + thisYearString + thisMonthString
 					+ todayInMonthString + "T%'");
@@ -517,12 +513,12 @@ public class ClassDbEngine {
 		}
 		today = todayInMonth - i;
 		todayInMonthString = (today < 10 ? "0" : "") + today;
-		DebugDb(TAG, "Adding entry for day " + todayInMonthString);
+		DebugDb( "Adding entry for day " + todayInMonthString);
 		filter.append(KEY_DATE);
 		filter.append(" LIKE '%" + thisYearString + thisMonthString
 				+ todayInMonthString + "T%'");
 
-		DebugDb(TAG, "using filter " + filter.toString());
+		DebugDb( "using filter " + filter.toString());
 
 		this.open();
 
@@ -533,7 +529,7 @@ public class ClassDbEngine {
 		iColAmount = c.getColumnIndex(KEY_AMOUNT);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb(TAG, "Found entry at date " + c.getString(iColDate));
+			DebugDb( "Found entry at date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 
 		}
@@ -569,7 +565,7 @@ public class ClassDbEngine {
 
 		// Making sure digit 1 - 9 are 01 - 09
 		monthString = (month < 10 ? "0" : "") + month;
-		DebugDb(TAG, "checking for day " + monthString);
+		DebugDb( "checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
 				+ monthString + "__T%'", null, null, null, null);
@@ -578,7 +574,7 @@ public class ClassDbEngine {
 		iColDate = c.getColumnIndex(KEY_DATE);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb(TAG, "Found entry from date " + c.getString(iColDate));
+			DebugDb( "Found entry from date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 		}
 
@@ -659,7 +655,7 @@ public class ClassDbEngine {
 		//
 		this.open();
 
-		DebugDb(TAG, "Deleting category " + i_Category);
+		DebugDb( "Deleting category " + i_Category);
 		ourDatabase.delete(TABLE_CATEGORIES, KEY_CATEGORY + "=\'" + i_Category
 				+ "\'", null);
 
@@ -748,7 +744,7 @@ public class ClassDbEngine {
 				KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		DebugDb(TAG, "getting all entries for day " + todayInMonthString);
+		DebugDb( "getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
@@ -825,7 +821,7 @@ public class ClassDbEngine {
 
 			today = todayInMonth - i;
 			todayInMonthString = (today < 10 ? "0" : "") + today;
-			DebugDb(TAG, "adding entry for day " + todayInMonthString);
+			DebugDb( "adding entry for day " + todayInMonthString);
 			filter.append(KEY_DATE);
 			filter.append(" LIKE '%" + thisYearString + thisMonthString
 					+ todayInMonthString + "T%'");
@@ -836,7 +832,7 @@ public class ClassDbEngine {
 
 		today = todayInMonth - i;
 		todayInMonthString = (today < 10 ? "0" : "") + today;
-		DebugDb(TAG, "adding entry for day " + todayInMonthString);
+		DebugDb( "adding entry for day " + todayInMonthString);
 		filter.append(KEY_DATE);
 		filter.append(" LIKE '%" + thisYearString + thisMonthString
 				+ todayInMonthString + "T%'");
@@ -847,7 +843,7 @@ public class ClassDbEngine {
 				KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		DebugDb(TAG, "getting all entries for day " + todayInMonthString);
+		DebugDb( "getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, filter.toString(), null,
 				null, null, m_SortByKey);
@@ -860,7 +856,7 @@ public class ClassDbEngine {
 		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
+			DebugDb( String.format("Row ID: %s", c.getShort(iRowID)));
 
 			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
@@ -898,7 +894,7 @@ public class ClassDbEngine {
 			now = i_Calendar;
 		}
 
-		DebugDb(TAG, "Getting month entries using " + now.toString());
+		DebugDb( "Getting month entries using " + now.toString());
 
 		month = now.get(Calendar.MONTH) + 1;
 
@@ -909,7 +905,7 @@ public class ClassDbEngine {
 
 		// Making sure digit 1 - 9 are 01 - 09
 		monthString = (month < 10 ? "0" : "") + month;
-		DebugDb(TAG, "checking for day " + monthString);
+		DebugDb( "checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
 				+ monthString + "__T%'", null, null, null, m_SortByKey);
@@ -923,7 +919,7 @@ public class ClassDbEngine {
 		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb(TAG, String.format("Row ID: %s", c.getShort(iRowID)));
+			DebugDb( String.format("Row ID: %s", c.getShort(iRowID)));
 
 			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
@@ -1077,7 +1073,7 @@ public class ClassDbEngine {
 
 			}
 		} catch (Exception e) {
-			DebugDb(TAG, e.getMessage().toString());
+			DebugDb( e.getMessage().toString());
 		}
 
 		c.close();
@@ -1095,7 +1091,7 @@ public class ClassDbEngine {
 
 		ret = ourDatabase.delete(TABLE_REMINDERS, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		DebugDb(TAG, "Number of rows affected is " + Integer.toString(ret));
+		DebugDb( "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1155,7 +1151,7 @@ public class ClassDbEngine {
 		ret = ourDatabase.update(TABLE_SPENDING, cv, KEY_ROWID + "=" + m_RowId,
 				null);
 
-		DebugDb(TAG, "Updated rows: " + ret);
+		DebugDb( "Updated rows: " + ret);
 
 		this.close();
 
@@ -1192,10 +1188,10 @@ public class ClassDbEngine {
 				i_XmlSerializer.startTag(null, "ENTRY");
 
 				for (i = 0; i < columnCount; i++) {
-					DebugDb(TAG, "Column is " + columns[i]);
-					DebugDb(TAG,
+					DebugDb( "Column is " + columns[i]);
+					DebugDb(
 							"Column index is " + c.getColumnIndex(columns[i]));
-					DebugDb(TAG,
+					DebugDb(
 							"Value is "
 									+ c.getString(c.getColumnIndex(columns[i])));
 					try {
@@ -1272,11 +1268,11 @@ public class ClassDbEngine {
 
 		} catch (IOException e) {
 			ret = e.getMessage();
-			DebugDb(TAG, e.getMessage());
+			DebugDb( e.getMessage());
 		} catch (NullPointerException e) {
 			//
 			ret = e.getMessage();
-			DebugDb(TAG, e.getMessage());
+			DebugDb( e.getMessage());
 		}
 
 		return ret;
@@ -1311,7 +1307,7 @@ public class ClassDbEngine {
 		} catch (Exception e) {
 			//
 			ret = e.getMessage();
-			DebugDb(TAG, e.getMessage());
+			DebugDb( e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -1373,7 +1369,7 @@ public class ClassDbEngine {
 
 		ret = ourDatabase.delete(TABLE_SPENDING, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		DebugDb(TAG, "Number of rows affected is " + Integer.toString(ret));
+		DebugDb( "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1453,7 +1449,7 @@ public class ClassDbEngine {
 
 		} catch (Exception e) {
 			//
-			DebugDb(TAG, e.getMessage().toString());
+			DebugDb( e.getMessage().toString());
 
 		}
 
@@ -1530,7 +1526,7 @@ public class ClassDbEngine {
 
 		ret = ourDatabase.delete(TABLE_LOCATION_REMINDERS, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		DebugDb(TAG, "Number of rows affected is " + Integer.toString(ret));
+		DebugDb( "Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
