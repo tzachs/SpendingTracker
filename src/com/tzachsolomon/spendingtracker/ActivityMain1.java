@@ -3,6 +3,7 @@ package com.tzachsolomon.spendingtracker;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,12 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoriesManager.CategoriesManagerListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoryAdd.AddCategoryListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogEditSpentEntry.UpdateSpentEntryListener;
@@ -78,6 +81,11 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		
+
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 
@@ -93,6 +101,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				FragmentAdminDb.class, null);
 
 	}
+	
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
@@ -182,6 +191,38 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		fragmentCategoriesManager.show(getSupportFragmentManager(),
 				"FragmentCategoriesManager");
 
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// 
+		switch (item.getItemId()){
+			
+		case android.R.id.home:
+			mTabsAdapter.setTabPage(0);
+			break;
+			case R.id.menuExit:
+				finish();
+				break;
+			case R.id.menuPrefernces:
+				Intent intent = new Intent(ActivityMain1.this, ActivityPreferences.class);
+				
+				startActivityForResult(intent, ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES);
+				
+				
+				break;
+			default:
+				break;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// 
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.mainmenu, menu);
+		return true;
 	}
 
 	public void onAddTimeReminderClicked(ArrayList<ClassTypeReminderTime> values) {

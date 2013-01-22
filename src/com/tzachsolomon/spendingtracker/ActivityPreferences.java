@@ -1,13 +1,15 @@
 package com.tzachsolomon.spendingtracker;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
+import android.preference.PreferenceScreen;
 
-public class Preferences extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class ActivityPreferences extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 	
 	private PreferenceCategory	preferenceCategoryLocationAdvanced;
 	private SharedPreferences m_SharedPreferences;
@@ -21,10 +23,6 @@ public class Preferences extends PreferenceActivity implements SharedPreferences
 		m_SharedPreferences = PreferenceManager
 			.getDefaultSharedPreferences(getBaseContext());
 		
-		preferenceCategoryLocationAdvanced = (PreferenceCategory)findPreference("preferenceCategoryLocationAdvanced");
-		
-		preferenceCategoryLocationAdvanced.setEnabled(m_SharedPreferences.getBoolean("checkBoxPreferencesLocationService", false));
-		
 		
 	}
 	
@@ -36,6 +34,17 @@ public class Preferences extends PreferenceActivity implements SharedPreferences
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		
 	}
+	
+	@SuppressWarnings("deprecation")
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference)
+    {
+    	super.onPreferenceTreeClick(preferenceScreen, preference);
+    	if (preference!=null)
+	    	if (preference instanceof PreferenceScreen)
+	        	if (((PreferenceScreen)preference).getDialog()!=null)
+	        		((PreferenceScreen)preference).getDialog().getWindow().getDecorView().setBackgroundDrawable(this.getWindow().getDecorView().getBackground().getConstantState().newDrawable());
+    	return false;
+    }
 	
 	@Override
 	protected void onPause() {

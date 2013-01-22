@@ -16,6 +16,7 @@ public final class ClassCommonUtilities {
 	public static final String TYPE_REMINDER_TIME_FRIDAY = "6";
 	public static final String TYPE_REMINDER_TIME_SATURDAY = "7";
 	public static final String TYPE_REMINDER_TIME_DAY_DONT_CARE = "-1";
+	public static final int REQUEST_CODE_ACTIVITY_PREFERENCES = 1000;
 	
 	public static boolean DEBUG_DB = false;
 	

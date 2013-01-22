@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string-array name="arrayLanguagesLabels">
-		<item>English</item>
-		<item>Italiano</item>
-	</string-array>
-	<string-array name="arrayLanguagesValues">
-	    <item>English</item>
-		<item>Italian</item>
-	</string-array>
+        <item>English</item>
+    </string-array>
+    <string-array name="arrayLanguagesValues">
+        <item>English</item>
+    </string-array>
 
     <string name="app_name">Spending Tracker</string>
     <string name="app_description">Spending Tracker</string>
-	    
     <string name="spinnerPrompt">Choose a category</string>
-    
+
     <!-- Dialog -->
     <string name="spentMoneyDialogTitleText">Spent money?</string>
-    
- 
     <string name="addCategoryTitle">Add a category</string>
     <string name="addCategoryMessage">Enter the name of the category</string>
     <string name="deleteCategoryTitle">Delete category?</string>
     <string name="stringDidYouSpend">Did you spend on</string>
-    
 
     <!-- RADIO BUTTON -->
 
@@ -41,7 +35,7 @@
 
     <!-- TEXT VIEWS -->
 
-	<string name="textViewAddEntryText">Add an entry</string>
+    <string name="textViewAddEntryText">Add an entry</string>
     <string name="textViewSpentTodayText">Total spent today: </string>
     <string name="textViewSpentWeekText">Total spent this week: </string>
     <string name="textViewSpentMonthText">Total spent this month: </string>
@@ -59,8 +53,7 @@
 
     <!-- BUTTONS -->
 
-	
-	<string name="buttonCategoriesEditText">Edit</string>
+    <string name="buttonCategoriesEditText">Edit</string>
     <string name="buttonAddReminderText">Add reminder</string>
     <string name="buttonQuickAddInsertText">Add entry</string>
     <string name="buttonShowTodayEntriesText">Show Today Entries</string>
@@ -72,8 +65,7 @@
 
     <!-- CHECK BOXES -->
 
-	<string name="checkBoxAutoExitText">Auto close</string>
-    
+    <string name="checkBoxAutoExitText">Auto close</string>
     <string name="checkBoxSaturdayText">Saturday</string>
     <string name="checkBoxSaturdayHint">7</string>
     <string name="checkBoxFridayText">Friday</string>
@@ -93,8 +85,8 @@
 
     <string name="menuItemReminderDeleteText">Delete</string>
     <string name="menuItemSpentStatisticsTitle">Statistics</string>
-    
-    <!--  Alert dialog title -->
+
+    <!-- Alert dialog title -->
     <string name="alertDialogViewEntriesSpentTitleEdit">Edit entry</string>
     <string name="alertDialogViewEntriesSpentTitleDelete">Delete entry</string>
     <string name="alertDialogViewEntriesSpentPositiveEdit">Edit</string>
@@ -109,17 +101,15 @@
     <string name="alertDialogImportDatabaseMessage">Are you sure you want to import?\nThis will delete the current database</string>
     <string name="alertDialogImportDatabasePositive">Import</string>
     <string name="alertDialogImportDatabaseNegative">Cancel</string>
-    
     <string name="entryDeleted">Entry Deleted</string>
     <string name="entryUpdated">Entry Updated</string>
-    
+
     <!-- TABS -->
-    
+
     <string name="textViewTabTextGeneral">General</string>
     <string name="textViewTabTextTimeReminders">Time</string>
     <string name="textViewTabTextLocationReminders">Location</string>
     <string name="textViewTabTextEntries">Entries</string>
-    
     <string name="dialogPositiveYes">Yes</string>
     <string name="dialogPositiveNo">No</string>
     <string name="dialogTitleDeleteAllEntries">Delete all entries</string>
@@ -131,7 +121,6 @@
     <string name="toastMessageAddedWeeklyReminderOn">"Added weekly reminder on "</string>
     <string name="toastMessageWithTime">" with time "</string>
     <string name="toastMessageAddedMonthlyReminder">"Added Monthly reminder at "</string>
-    
     <string name="toastMessageEnabledTimeReminderService">Enabled Time Reminder service</string>
     <string name="toastMessageDisabledTimeReminderService">Disabled Time Reminder service</string>
     <string name="toastMessageEnabledLocationReminderService">Enabled Location Reminder service</string>
@@ -157,9 +146,5 @@
     <string name="del">Del</string>
     <string name="edit">Edit</string>
     <string name="manage_time_reminders">Manage Time Reminders</string>
-    
-    
-    
-    
 
 </resources>
