@@ -192,20 +192,23 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 		if (amount.length() > 0) {
 
-			for (ClassTypeReminderTime reminderTime : values) {
-				mSpendingTrackerDbEngine.insertNewTimeReminder(
-						reminderTime.getmType(), reminderTime.getmHour(),
-						reminderTime.getmMinute(), reminderTime.getmDay(),
-						amount, category);
-				sb.append(reminderTime.toToastMessage());
-				sb.append("\n");
+			if (!values.isEmpty()) {
 
+				for (ClassTypeReminderTime reminderTime : values) {
+					mSpendingTrackerDbEngine.insertNewTimeReminder(
+							reminderTime.getmType(), reminderTime.getmHour(),
+							reminderTime.getmMinute(), reminderTime.getmDay(),
+							amount, category);
+					sb.append(reminderTime.toToastMessage());
+					sb.append("\n");
+
+				}
+				sb.append("Category: " + category);
+				sb.append("Amount: " + amount);
+				Toast.makeText(ActivityMain1.this, sb.toString(),
+						Toast.LENGTH_LONG).show();
+				sb.setLength(0);
 			}
-			sb.append("Category: " + category);
-			sb.append("Amount: " + amount);
-			Toast.makeText(ActivityMain1.this, sb.toString(), Toast.LENGTH_LONG)
-					.show();
-			sb.setLength(0);
 		} else {
 			Toast.makeText(ActivityMain1.this, "Please fill in amount",
 					Toast.LENGTH_LONG).show();

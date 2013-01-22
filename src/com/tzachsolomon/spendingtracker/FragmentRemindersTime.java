@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
@@ -205,6 +206,8 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	private void buttonAddTimeReminder_Clicked() {
 		//
 
+		boolean valid = false;
+
 		if (mButtonAddEntrySpentListener != null) {
 			ArrayList<ClassTypeReminderTime> values = new ArrayList<ClassTypeReminderTime>();
 			String currentHour = timePicker.getCurrentHour().toString();
@@ -215,6 +218,7 @@ public class FragmentRemindersTime extends SherlockFragment implements
 				values.add(new ClassTypeReminderTime("-1",
 						TYPE_REMINDER_TIME_EVERYDAY, currentHour,
 						currentMinute, TYPE_REMINDER_TIME_DAY_DONT_CARE, "", ""));
+				valid = true;
 				break;
 
 			case R.id.radioButtonWeekly:
@@ -222,54 +226,76 @@ public class FragmentRemindersTime extends SherlockFragment implements
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_SUNDAY, "", ""));
+					valid = true;
 
 				}
 				if (checkBoxMonday.isChecked()) {
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_MONDAY, "", ""));
+					valid = true;
 
 				}
 				if (checkBoxTuesday.isChecked()) {
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_TUESDAY, "", ""));
+					valid = true;
 				}
 				if (checkBoxWednesday.isChecked()) {
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_WEDNESDAY, "", ""));
+					valid = true;
 				}
 				if (checkBoxThursday.isChecked()) {
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_THURSDAY, "", ""));
+					valid = true;
 				}
 				if (checkBoxFriday.isChecked()) {
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_FRIDAY, "", ""));
+					valid = true;
 				}
 				if (checkBoxSaturday.isChecked()) {
 					values.add(new ClassTypeReminderTime("-1",
 							TYPE_REMINDER_TIME_WEEKLY, currentHour,
 							currentMinute, TYPE_REMINDER_TIME_SATURDAY, "", ""));
+					valid = true;
+				}
+
+				if (!valid) {
+					Toast.makeText(getSherlockActivity(),
+							"Make sure at least one day is checked",
+							Toast.LENGTH_LONG).show();
 				}
 
 				break;
 
 			case R.id.radioButtonMonthly:
-				values.add(new ClassTypeReminderTime("-1",
-						TYPE_REMINDER_TIME_MONTHLY, currentHour, currentMinute,
-						editTextDayInMonth.getText().toString(), "", ""));
+				if (editTextDayInMonth.getText().length() > 0) {
+					values.add(new ClassTypeReminderTime("-1",
+							TYPE_REMINDER_TIME_MONTHLY, currentHour,
+							currentMinute, editTextDayInMonth.getText()
+									.toString(), "", ""));
+					valid = true;
+				} else {
+					Toast.makeText(getSherlockActivity(),
+							"Please fill in day in month", Toast.LENGTH_LONG)
+							.show();
+				}
 
 				break;
 
 			default:
 				break;
 			}
-
-			mButtonAddEntrySpentListener.onAddTimeReminderClicked(values);
+			if (valid) {
+				mButtonAddEntrySpentListener.onAddTimeReminderClicked(values);
+			}
 		}
 
 	}
