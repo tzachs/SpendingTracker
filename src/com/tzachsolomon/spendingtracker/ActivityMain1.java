@@ -1,17 +1,29 @@
 package com.tzachsolomon.spendingtracker;
 
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.DebugActivityMain;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_ACTIVITY_MAIN;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_DB;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_FRAGMENT_GENERAL;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_SERVICE_REMINDER_TIME;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.TYPE_REMINDER_TIME_EVERYDAY;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.TYPE_REMINDER_TIME_MONTHLY;
+import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.TYPE_REMINDER_TIME_WEEKLY;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
+import java.util.Queue;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -19,16 +31,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -58,6 +65,10 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private FragmentDialogRemindersTimeManage mFragmentDialogRemindersTimeManage;
 	private PendingIntent mTimeAlarmSender;
 	private NotificationManager mNotificationManager;
+	private BroadcastReceiver m_BroadcastReceiverLocationUpdate;
+	private FragmentRemindersLocation mFragmentRemindersLocation;
+	private PendingIntent m_LocationAlarmSender;
+	private ArrayList<Location> mLocations;
 
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
@@ -83,6 +94,11 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				.getService(ActivityMain1.this, 0, new Intent(
 						ActivityMain1.this, SpendingTrackerTimeService.class),
 						0);
+		
+		m_LocationAlarmSender = PendingIntent.getService(
+				ActivityMain1.this, 0, new Intent(
+						ActivityMain1.this,
+						SpendingTrackerLocationService.class), 0);
 
 		updatePreferences();
 
@@ -124,9 +140,9 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
-		
+
 		actionBar.removeAllTabs();
-		
+
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 
 		mTabsAdapter.addTab(actionBar.newTab().setText("General"),
@@ -137,10 +153,12 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 			mTabsAdapter.addTab(actionBar.newTab().setText("Time Reminder"),
 					FragmentRemindersTime.class, null);
 		}
-		
-		if (mSharedPreferences.getBoolean("checkBoxPrefReminderLocation", false)) {
-		mTabsAdapter.addTab(actionBar.newTab().setText("Location Reminder"),
-				FragmentRemindersLocation.class, null);
+
+		if (mSharedPreferences
+				.getBoolean("checkBoxPrefReminderLocation", false)) {
+			mTabsAdapter.addTab(
+					actionBar.newTab().setText("Location Reminder"),
+					FragmentRemindersLocation.class, null);
 		}
 		mTabsAdapter.addTab(actionBar.newTab().setText("Admin"),
 				FragmentAdminDb.class, null);
@@ -226,8 +244,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
-		
-		
+
 	}
 
 	public void onButtonCategoriesEditClicked() {
@@ -405,6 +422,17 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mFragmentCategoriesManager = (FragmentDialogCategoriesManager) getSupportFragmentManager()
 				.findFragmentByTag(tag);
 	}
+	
+	public void setFragmentReminderLocationRef(String tag) {
+		// 
+		mFragmentRemindersLocation = (FragmentRemindersLocation)getSupportFragmentManager().findFragmentByTag(tag);
+		while (!mLocations.isEmpty()){
+			mFragmentRemindersLocation.updateLocationTextViews(mLocations.get(0));
+			mLocations.remove(0);
+		}
+		
+	}
+
 
 	public void onDeleteCategoryClicked(String categoryName) {
 		//
@@ -443,6 +471,112 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		super.onResume();
 		checkServiceStatus();
 		checkPendingReminder();
+		startLocationService();
+	}
+
+	/**
+	 * Function will start the location service and cancel the location alarm
+	 * manager in order prevent from the alarm manager to stop the location
+	 * service
+	 * 
+	 */
+	private void startLocationService() {
+		//
+
+		boolean checkBoxPreferencesLocationService = mSharedPreferences
+				.getBoolean("checkBoxPrefReminderLocation", false);
+
+		cancelLocationAlarmManager();
+
+		// checking the location service option is enabled
+		if (checkBoxPreferencesLocationService) {
+			// the location service is enabled, thus disabling the alarm
+			// location manager
+			mLocations = new ArrayList<Location>();
+			Intent service = new Intent(this,
+					SpendingTrackerLocationService.class);
+
+				
+			startService(service);
+
+		}
+		IntentFilter iFilter = new IntentFilter(
+				SpendingTrackerLocationService.ACTION_FILTER);
+
+		m_BroadcastReceiverLocationUpdate = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				//
+				Location location = (Location) intent.getExtras().get(
+						"location");
+
+				Toast.makeText(ActivityMain1.this, "Location updated",
+						Toast.LENGTH_SHORT).show();
+				
+				if (mFragmentRemindersLocation!=null){
+					mFragmentRemindersLocation.updateLocationTextViews(location);
+				}else{
+					mLocations.add(location);
+				}
+
+			}
+		};
+
+		registerReceiver(m_BroadcastReceiverLocationUpdate, iFilter);
+
+	}
+
+	private void cancelLocationAlarmManager() {
+		//
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.cancel(m_LocationAlarmSender);
+	}
+
+	/**
+	 * Function will start the location service and cancel the location alarm
+	 * manager in order prevent from the alarm manager to stop the location
+	 * service
+	 * 
+	 */
+	private void stopLocationService() {
+		//
+
+		boolean checkBoxPreferencesLocationService = mSharedPreferences
+				.getBoolean("checkBoxPrefReminderLocation", false);
+
+		Intent service = new Intent(this, SpendingTrackerLocationService.class);
+
+		stopService(service);
+
+		// checking the location service option is enabled
+		if (checkBoxPreferencesLocationService) {
+			// the location service is enabled, thus disabling the alarm
+			// location manager
+			startLocationAlarmManager();
+
+		}
+
+	}
+
+	private void startLocationAlarmManager() {
+		//
+		Calendar firstTime = Calendar.getInstance();
+		firstTime.setTimeInMillis(SystemClock.elapsedRealtime());
+
+		// Schedule the alarm!
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+				firstTime.getTimeInMillis(), 60000, m_LocationAlarmSender);
+
+	}
+
+	@Override
+	protected void onPause() {
+		//
+		super.onPause();
+		unregisterReceiver(m_BroadcastReceiverLocationUpdate);
+		stopLocationService();
 	}
 
 	private void checkPendingReminder() {
@@ -590,4 +724,5 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	}
 
+	
 }

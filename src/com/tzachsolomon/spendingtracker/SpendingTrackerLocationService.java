@@ -1,6 +1,5 @@
 package com.tzachsolomon.spendingtracker;
 
-
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
@@ -105,9 +104,16 @@ public class SpendingTrackerLocationService extends Service implements
 	private void initLocalationManager() {
 
 		//
+		// TODO: enable using GPS
 		m_LocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		m_LocationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, this);
+		
+		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
+		intent.putExtra("location", m_LocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+
+		sendBroadcast(intent);
+		
 
 	}
 
@@ -117,19 +123,6 @@ public class SpendingTrackerLocationService extends Service implements
 		m_NotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 	}
-//
-//	@Override
-//	public void onLocationChanged(Location location) {
-//		// update the activity UI
-//		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
-//		intent.putExtra("location", location);
-//
-//		sendBroadcast(intent);
-//		
-//		// check if to send notification
-//		checkReminders(location);
-//
-//	}
 
 	private void checkReminders(Location i_CurrentLocation) {
 		//
@@ -155,33 +148,29 @@ public class SpendingTrackerLocationService extends Service implements
 	private void sendNotification(ContentValues i_Data) {
 		//
 		Calendar calendar = Calendar.getInstance();
-		
-		
-		
+
 		Bundle extras = new Bundle();
 		Intent intent = new Intent(getBaseContext(),
 				ActivitySpendingTracker.class);
 		String amount = i_Data.getAsString(ClassDbEngine.KEY_AMOUNT);
-		String category = i_Data
-				.getAsString(ClassDbEngine.KEY_CATEGORY);
+		String category = i_Data.getAsString(ClassDbEngine.KEY_CATEGORY);
 		String rowId = i_Data.getAsString(ClassDbEngine.KEY_ROWID);
 		String locationName = i_Data
 				.getAsString(ClassDbEngine.KEY_LOCATION_NAME);
-		int notificationId = 0; 
+		int notificationId = 0;
 
 		if (m_SpendingTrackerDbEngine.isLocationChanged(rowId) == false) {
 			Log.d(TAG, "Already sent a notification once about this location");
 		} else {
-			
+
 			calendar.setTimeInMillis(System.currentTimeMillis());
-			
+
 			notificationId += calendar.get(Calendar.SECOND);
 			notificationId += calendar.get(Calendar.MINUTE);
 			notificationId += calendar.get(Calendar.HOUR_OF_DAY);
 			notificationId += calendar.get(Calendar.DAY_OF_MONTH);
 			notificationId += calendar.get(Calendar.MONTH);
 			notificationId += calendar.get(Calendar.YEAR);
-			
 
 			extras.putBoolean("fromNotifaction", true);
 			extras.putString(ClassDbEngine.KEY_AMOUNT, amount);
@@ -258,7 +247,8 @@ public class SpendingTrackerLocationService extends Service implements
 
 	}
 
-	private float getDistance(Location i_CurrentLocation, ContentValues contentValues) {
+	private float getDistance(Location i_CurrentLocation,
+			ContentValues contentValues) {
 		//
 		float ret = -1;
 		try {
@@ -276,10 +266,8 @@ public class SpendingTrackerLocationService extends Service implements
 					.getAsDouble(ClassDbEngine.KEY_LONGITUDE));
 			location.setProvider(contentValues
 					.getAsString(ClassDbEngine.KEY_PROVIDER));
-			location.setSpeed(contentValues
-					.getAsFloat(ClassDbEngine.KEY_SPEED));
-			location.setTime(contentValues
-					.getAsLong(ClassDbEngine.KEY_TIME));
+			location.setSpeed(contentValues.getAsFloat(ClassDbEngine.KEY_SPEED));
+			location.setTime(contentValues.getAsLong(ClassDbEngine.KEY_TIME));
 
 			ret = i_CurrentLocation.distanceTo(location);
 
@@ -295,43 +283,34 @@ public class SpendingTrackerLocationService extends Service implements
 
 		return ret;
 	}
-//
-//	@Override
-//	public void onProviderDisabled(String provider) {
-//		//
-//
-//	}
-//
-//	@Override
-//	public void onProviderEnabled(String provider) {
-//		//
-//
-//	}
-//
-//	@Override
-//	public void onStatusChanged(String provider, int status, Bundle extras) {
-//		//
-//
-//	}
+
+	
 
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		
+		// update the activity UI
+		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
+		intent.putExtra("location", location);
+
+		sendBroadcast(intent);
+
+		// check if to send notification
+		checkReminders(location);
+
 	}
 
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

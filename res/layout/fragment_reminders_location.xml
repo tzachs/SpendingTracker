@@ -4,149 +4,173 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewAccuracyLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewAccuracyLabel" />
 
         <TextView
             android:id="@+id/textViewAccuracyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewAccuracyLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewAltitudeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewAltitudeLabel" />
 
         <TextView
             android:id="@+id/textViewAltitudeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewAltitudeLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewBearingLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewBearingLabel" />
 
         <TextView
             android:id="@+id/textViewBearingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewBearingLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewLatitudeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewLatitudeLabel" />
 
         <TextView
             android:id="@+id/textViewLatitudeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewLatitudeLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewLongitudeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewLongitudeLabel" />
 
         <TextView
             android:id="@+id/textViewLongitudeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewLongitudeLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewProviderLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewProviderLabel" />
 
         <TextView
             android:id="@+id/textViewProviderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewProviderLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewSpeedLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewSpeedLabel" />
 
         <TextView
             android:id="@+id/textViewSpeedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@+id/textViewSpeedLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/textViewTimeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:layout_weight="50"
+            android:text="@string/textViewTimeLabel" />
 
         <TextView
             android:id="@+id/textViewTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_toRightOf="@id/textViewTimeLabel" />
-    </RelativeLayout>
+            android:layout_weight="50" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
