@@ -72,6 +72,16 @@ public class FragmentDialogEditSpentEntry extends SherlockDialogFragment
 		View ret = inflater.inflate(R.layout.fragment_dialog_edit_spent_entry,
 				container);
 
+		initializeVariables(ret);
+
+		initSpinnerCategories();
+
+		getDialog().setTitle("Update spent entry");
+
+		return ret;
+	}
+
+	private void initializeVariables(View ret) {
 		textViewEntryId = (TextView) ret.findViewById(R.id.textViewEntryId);
 
 		editTextAmount = (EditText) ret.findViewById(R.id.editTextAmount);
@@ -92,12 +102,6 @@ public class FragmentDialogEditSpentEntry extends SherlockDialogFragment
 		spinnerCategories = (Spinner) ret.findViewById(R.id.spinnerCategories);
 
 		spinnerCategories.setOnItemSelectedListener(this);
-
-		initSpinnerCategories();
-
-		getDialog().setTitle("Update spent entry");
-
-		return ret;
 	}
 
 	public void initSpinnerCategories() {
@@ -136,6 +140,8 @@ public class FragmentDialogEditSpentEntry extends SherlockDialogFragment
 		}
 
 	}
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -67,6 +67,8 @@ public class FragmentDialogRemindersTimeManage extends SherlockDialogFragment
 
 		super.onAttach(activity);
 	}
+	
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

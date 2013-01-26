@@ -6,6 +6,8 @@ import java.util.Calendar;
 import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +20,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -31,6 +36,7 @@ import com.tzachsolomon.spendingtracker.FragmentDialogCategoriesManager.Categori
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoryAdd.AddCategoryListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogEditSpentEntry.UpdateSpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogRemindersTimeManage.ReminderTimeListener;
+import com.tzachsolomon.spendingtracker.FragmentDialogSpentNotification.FragmentDialogSpentListener;
 import com.tzachsolomon.spendingtracker.FragmentEntries.SpentEntryListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonAddEntrySpentListener;
 import com.tzachsolomon.spendingtracker.FragmentGeneral.ButtonCategoriesEditListener;
@@ -40,9 +46,8 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
 		TimeReminderListener, SpentEntryListener, AddCategoryListener,
 		CategoriesManagerListener, UpdateSpentEntryListener,
-		ReminderTimeListener {
+		ReminderTimeListener, FragmentDialogSpentListener {
 
-	
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
 	private ClassDbEngine mSpendingTrackerDbEngine;
@@ -52,6 +57,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private FragmentDialogCategoriesManager mFragmentCategoriesManager;
 	private FragmentDialogRemindersTimeManage mFragmentDialogRemindersTimeManage;
 	private PendingIntent mTimeAlarmSender;
+	private NotificationManager mNotificationManager;
 
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
@@ -74,22 +80,28 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		initializeActionBar();
 
 		initializeVariables();
-		
-		mTimeAlarmSender = PendingIntent.getService(
-				ActivityMain1.this, 0, new Intent(
-						ActivityMain1.this,
-						SpendingTrackerTimeService.class), 0);
-		
+
+		mTimeAlarmSender = PendingIntent
+				.getService(ActivityMain1.this, 0, new Intent(
+						ActivityMain1.this, SpendingTrackerTimeService.class),
+						0);
+
 		updatePreferences();
 	}
-	
+
 	public void updatePreferences() {
-		ClassCommonUtilities.DEBUG_DB = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_DB,false);
-		ClassCommonUtilities.DEBUG_FRAGMENT_GENERAL = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_GENERAL,false);
-		ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_LOCATION = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION,false);
-		ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME,false);
-		ClassCommonUtilities.DEBUG_SERVICE_REMINDER_TIME = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_SERVICE_REMINDER_TIME,false);
-		ClassCommonUtilities.DEBUG_ACTIVITY_MAIN = mSharedPreferences.getBoolean(PREF_KEY_DEBUG_ACTIVITY_MAIN,false);
+		ClassCommonUtilities.DEBUG_DB = mSharedPreferences.getBoolean(
+				PREF_KEY_DEBUG_DB, false);
+		ClassCommonUtilities.DEBUG_FRAGMENT_GENERAL = mSharedPreferences
+				.getBoolean(PREF_KEY_DEBUG_FRAGMENT_GENERAL, false);
+		ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_LOCATION = mSharedPreferences
+				.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION, false);
+		ClassCommonUtilities.DEBUG_FRAGMENT_REMINDER_TIME = mSharedPreferences
+				.getBoolean(PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME, false);
+		ClassCommonUtilities.DEBUG_SERVICE_REMINDER_TIME = mSharedPreferences
+				.getBoolean(PREF_KEY_DEBUG_SERVICE_REMINDER_TIME, false);
+		ClassCommonUtilities.DEBUG_ACTIVITY_MAIN = mSharedPreferences
+				.getBoolean(PREF_KEY_DEBUG_ACTIVITY_MAIN, false);
 	}
 
 	private void initializeVariables() {
@@ -97,6 +109,8 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mSpendingTrackerDbEngine = new ClassDbEngine(this);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
+
+		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 	}
 
@@ -110,8 +124,6 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
-		
-
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 
@@ -127,7 +139,6 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				FragmentAdminDb.class, null);
 
 	}
-	
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
@@ -218,34 +229,35 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				"FragmentCategoriesManager");
 
 	}
-	
+
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// 
-		switch (item.getItemId()){
-			
+		//
+		switch (item.getItemId()) {
+
 		case android.R.id.home:
 			mTabsAdapter.setTabPage(0);
 			break;
-			case R.id.menuExit:
-				finish();
-				break;
-			case R.id.menuPrefernces:
-				Intent intent = new Intent(ActivityMain1.this, ActivityPreferences.class);
-				
-				startActivityForResult(intent, ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES);
-				
-				
-				break;
-			default:
-				break;
+		case R.id.menuExit:
+			finish();
+			break;
+		case R.id.menuPrefernces:
+			Intent intent = new Intent(ActivityMain1.this,
+					ActivityPreferences.class);
+
+			startActivityForResult(intent,
+					ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES);
+
+			break;
+		default:
+			break;
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// 
+		//
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.mainmenu, menu);
 		return true;
@@ -395,7 +407,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mFragmentCategoriesManager.initCategories();
 
 	}
-	
+
 	private void checkServiceStatus() {
 		//
 		try {
@@ -409,46 +421,103 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 			if (checkBoxPreferencsReminderService) {
 
 				startTimeAlarmManager();
-			}	
+			}
 		} catch (Exception e) {
 			DebugActivityMain(e.toString());
 		}
 
 	}
-	
+
 	@Override
 	protected void onResume() {
-		// 
+		//
 		super.onResume();
 		checkServiceStatus();
+		checkPendingReminder();
 	}
-	
+
+	private void checkPendingReminder() {
+		// Function checks if there is a pending reminder
+		// Currently only support one reminder
+
+		Bundle extras = getIntent().getExtras();
+
+		int flag = getIntent().getFlags()
+				& Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY;
+
+		if (extras != null && flag == 0) {
+
+			getIntent().getExtras().clear();
+
+			DebugActivityMain("Found extras, checking if starting from reminder");
+			boolean isReminder = false;
+			if (extras.containsKey(TYPE_REMINDER_TIME_EVERYDAY)) {
+				DebugActivityMain("Starting from everyday reminder");
+				getIntent().removeExtra(TYPE_REMINDER_TIME_EVERYDAY);
+
+				isReminder = true;
+
+			} else if (extras.containsKey(TYPE_REMINDER_TIME_WEEKLY)) {
+				DebugActivityMain("Starting from weekly reminder");
+				getIntent().removeExtra(TYPE_REMINDER_TIME_WEEKLY);
+				isReminder = true;
+			} else if (extras.containsKey(TYPE_REMINDER_TIME_MONTHLY)) {
+				DebugActivityMain("Starting from monthly reminder");
+				getIntent().removeExtra(TYPE_REMINDER_TIME_MONTHLY);
+				isReminder = true;
+				
+			// TODO: this might be wrong!!!!
+			} else if (extras.containsKey(ClassDbEngine.KEY_REMINDER_TYPE)) {
+				DebugActivityMain("Starting from location reminder");
+				isReminder = true;
+				String rowId = extras.getString(ClassDbEngine.KEY_REMINDER_ID);
+				mSpendingTrackerDbEngine.changeLocationReminderToPressed(rowId);
+			}
+
+			if (isReminder) {
+
+				// Cancel notification
+				int notificationId = extras.getInt("notificationId");
+
+				mNotificationManager.cancel(notificationId);
+				mNotificationManager.cancel(12021982);
+
+				FragmentDialogSpentNotification fragmentDialogSpentNotification = new FragmentDialogSpentNotification();
+				Bundle args = new Bundle();
+				fragmentDialogSpentNotification.setArguments(extras);
+				fragmentDialogSpentNotification.show(
+						getSupportFragmentManager(),
+						"fragmentDialogSpentNotification");
+
+			}
+
+		}
+
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// 
-		super.onActivityResult(requestCode, resultCode,  data);
-		switch (requestCode){
+		//
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
 		case ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES:
 			updatePreferences();
-			
+
 			break;
 		}
 	}
 
-	
-	
 	private void cancelTimeAlarmManager() {
 		//
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		am.cancel(mTimeAlarmSender);
 	}
-	
+
 	private void startTimeAlarmManager() {
 		//
 		Calendar firstTime = Calendar.getInstance();
 		firstTime.setTimeInMillis(System.currentTimeMillis());
 
-		
 		int secondsToAdd = 60 - firstTime.get(Calendar.SECOND);
 
 		DebugActivityMain("Starting Time service using alarm manager in "
@@ -463,10 +532,6 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				firstTime.getTimeInMillis(), 60000, mTimeAlarmSender);
 
 	}
-	
-	
-	
-
 
 	public void onUpdateSpentEntryClicked(Bundle values) {
 		//
@@ -495,6 +560,24 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		fragmentDialogRemindersTimeManage.show(getSupportFragmentManager(),
 				"FragmentDialogRemindersTimeManage");
 
+	}
+
+	public void onSpentClicked(Bundle values) {
+		//
+		
+		onButtonAddEntrySpentClicked(values);
+		if (values.getBoolean("autoClose")) {
+			this.finish();
+		}
+
+	}
+
+	public void onSpentNoClicked(boolean autoClose) {
+		// 
+		if ( autoClose){
+			this.finish();
+		}
+		
 	}
 
 }
