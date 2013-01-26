@@ -40,14 +40,14 @@
             <PreferenceCategory android:title="Time based Reminders" >
                 <CheckBoxPreference
                     android:defaultValue="true"
-                    android:key="checkBoxPreferencsReminderService"
+                    android:key="checkBoxPrefReminderTime"
                     android:summary="Use time reminders"
                     android:title="Enable" />
             </PreferenceCategory>
             <PreferenceCategory android:title="Location based Reminders" >
                 <CheckBoxPreference
                     android:defaultValue="false"
-                    android:key="checkBoxPreferencesLocationService"
+                    android:key="checkBoxPrefReminderLocation"
                     android:summary="Use location for reminders (Still in BETA so it doesn&apos;t affect at all)"
                     android:title="Enable" />
 

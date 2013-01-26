@@ -77,8 +77,6 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 		setContentView(mViewPager);
 
-		initializeActionBar();
-
 		initializeVariables();
 
 		mTimeAlarmSender = PendingIntent
@@ -87,6 +85,8 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 						0);
 
 		updatePreferences();
+
+		initializeActionBar();
 	}
 
 	public void updatePreferences() {
@@ -124,17 +124,24 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
-
+		
+		actionBar.removeAllTabs();
+		
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 
 		mTabsAdapter.addTab(actionBar.newTab().setText("General"),
 				FragmentGeneral.class, null);
 		mTabsAdapter.addTab(actionBar.newTab().setText("Entries"),
 				FragmentEntries.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Time Reminder"),
-				FragmentRemindersTime.class, null);
+		if (mSharedPreferences.getBoolean("checkBoxPrefReminderTime", true)) {
+			mTabsAdapter.addTab(actionBar.newTab().setText("Time Reminder"),
+					FragmentRemindersTime.class, null);
+		}
+		
+		if (mSharedPreferences.getBoolean("checkBoxPrefReminderLocation", false)) {
 		mTabsAdapter.addTab(actionBar.newTab().setText("Location Reminder"),
 				FragmentRemindersLocation.class, null);
+		}
 		mTabsAdapter.addTab(actionBar.newTab().setText("Admin"),
 				FragmentAdminDb.class, null);
 
@@ -219,6 +226,8 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
+		
+		
 	}
 
 	public void onButtonCategoriesEditClicked() {
@@ -465,8 +474,8 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				DebugActivityMain("Starting from monthly reminder");
 				getIntent().removeExtra(TYPE_REMINDER_TIME_MONTHLY);
 				isReminder = true;
-				
-			// TODO: this might be wrong!!!!
+
+				// TODO: this might be wrong!!!!
 			} else if (extras.containsKey(ClassDbEngine.KEY_REMINDER_TYPE)) {
 				DebugActivityMain("Starting from location reminder");
 				isReminder = true;
@@ -502,6 +511,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		switch (requestCode) {
 		case ClassCommonUtilities.REQUEST_CODE_ACTIVITY_PREFERENCES:
 			updatePreferences();
+			initializeActionBar();
 
 			break;
 		}
@@ -564,7 +574,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	public void onSpentClicked(Bundle values) {
 		//
-		
+
 		onButtonAddEntrySpentClicked(values);
 		if (values.getBoolean("autoClose")) {
 			this.finish();
@@ -573,11 +583,11 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	}
 
 	public void onSpentNoClicked(boolean autoClose) {
-		// 
-		if ( autoClose){
+		//
+		if (autoClose) {
 			this.finish();
 		}
-		
+
 	}
 
 }

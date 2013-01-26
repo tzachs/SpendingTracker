@@ -89,6 +89,9 @@
         android:layout_below="@+id/editTextComment"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="@string/buttonQuickAddInsertText" />
+        android:text="@string/buttonQuickAddInsertText">
+         <requestFocus/>
+        
+        </Button>
 
 </RelativeLayout>
