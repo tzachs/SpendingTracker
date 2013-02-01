@@ -183,7 +183,7 @@ public class SpendingTrackerTimeService extends Service {
 							sb.append(Currency.getInstance(Locale.getDefault())
 									.getSymbol());
 						} catch (Exception e) {
-							// TODO: m_Debug option 
+							// 
 							DebugServiceReminderTime( e.getMessage().toString());
 							
 						}

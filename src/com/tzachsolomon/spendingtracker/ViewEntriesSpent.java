@@ -324,7 +324,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 		String result = "";
 
 		try {
-			result = m_SpendingTrackerDbEngine.importFromXMLFile(XMLFILE);
+			
 			updateTableLayout();
 
 		} catch (Exception e) {
@@ -338,15 +338,7 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 
 	private void exportDatabase() {
 
-		String result = "";
-		try {
-			result = m_SpendingTrackerDbEngine.exportToXMLFile(XMLFILE);
-		} catch (Exception e) {
-			//
-			result = e.getMessage();
-		}
-
-		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		
 
 	}
 
@@ -625,49 +617,49 @@ public class ViewEntriesSpent extends Activity implements OnGestureListener,
 	}
 
 	public boolean onDoubleTap(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	public boolean onDoubleTapEvent(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	public boolean onSingleTapConfirmed(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 

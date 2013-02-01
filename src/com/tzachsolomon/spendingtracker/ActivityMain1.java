@@ -16,14 +16,17 @@ import java.util.Calendar;
 import java.util.Queue;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -39,6 +42,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.tzachsolomon.spendingtracker.ClassDbEngine.DatabaseImportExportListener;
+import com.tzachsolomon.spendingtracker.FragmentAdminDb.AdminDbListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoriesManager.CategoriesManagerListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogCategoryAdd.AddCategoryListener;
 import com.tzachsolomon.spendingtracker.FragmentDialogEditSpentEntry.UpdateSpentEntryListener;
@@ -53,8 +58,10 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		ButtonAddEntrySpentListener, ButtonCategoriesEditListener,
 		TimeReminderListener, SpentEntryListener, AddCategoryListener,
 		CategoriesManagerListener, UpdateSpentEntryListener,
-		ReminderTimeListener, FragmentDialogSpentListener {
+		ReminderTimeListener, FragmentDialogSpentListener, AdminDbListener,
+		DatabaseImportExportListener {
 
+	private final static String XMLFILE = "spendingTracker.xml";
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
 	private ClassDbEngine mSpendingTrackerDbEngine;
@@ -69,6 +76,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private FragmentRemindersLocation mFragmentRemindersLocation;
 	private PendingIntent m_LocationAlarmSender;
 	private ArrayList<Location> mLocations;
+	private ProgressDialog mProgressDialog;
 
 	// TODO: delete entry with dialog
 	// TODO: update spent entry
@@ -94,10 +102,9 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				.getService(ActivityMain1.this, 0, new Intent(
 						ActivityMain1.this, SpendingTrackerTimeService.class),
 						0);
-		
-		m_LocationAlarmSender = PendingIntent.getService(
-				ActivityMain1.this, 0, new Intent(
-						ActivityMain1.this,
+
+		m_LocationAlarmSender = PendingIntent.getService(ActivityMain1.this, 0,
+				new Intent(ActivityMain1.this,
 						SpendingTrackerLocationService.class), 0);
 
 		updatePreferences();
@@ -123,6 +130,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private void initializeVariables() {
 		//
 		mSpendingTrackerDbEngine = new ClassDbEngine(this);
+		mSpendingTrackerDbEngine.setDatabaseImportExportListener(this);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
 
@@ -422,17 +430,18 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mFragmentCategoriesManager = (FragmentDialogCategoriesManager) getSupportFragmentManager()
 				.findFragmentByTag(tag);
 	}
-	
+
 	public void setFragmentReminderLocationRef(String tag) {
-		// 
-		mFragmentRemindersLocation = (FragmentRemindersLocation)getSupportFragmentManager().findFragmentByTag(tag);
-		while (!mLocations.isEmpty()){
-			mFragmentRemindersLocation.updateLocationTextViews(mLocations.get(0));
+		//
+		mFragmentRemindersLocation = (FragmentRemindersLocation) getSupportFragmentManager()
+				.findFragmentByTag(tag);
+		while (!mLocations.isEmpty()) {
+			mFragmentRemindersLocation.updateLocationTextViews(mLocations
+					.get(0));
 			mLocations.remove(0);
 		}
-		
-	}
 
+	}
 
 	public void onDeleteCategoryClicked(String categoryName) {
 		//
@@ -496,7 +505,6 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 			Intent service = new Intent(this,
 					SpendingTrackerLocationService.class);
 
-				
 			startService(service);
 
 		}
@@ -513,10 +521,11 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 				Toast.makeText(ActivityMain1.this, "Location updated",
 						Toast.LENGTH_SHORT).show();
-				
-				if (mFragmentRemindersLocation!=null){
-					mFragmentRemindersLocation.updateLocationTextViews(location);
-				}else{
+
+				if (mFragmentRemindersLocation != null) {
+					mFragmentRemindersLocation
+							.updateLocationTextViews(location);
+				} else {
 					mLocations.add(location);
 				}
 
@@ -724,5 +733,47 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	}
 
-	
+	public void onDatabaseExportClicked() {
+		//
+		mProgressDialog = new ProgressDialog(ActivityMain1.this);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setTitle("Database export to file " + XMLFILE);
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setMessage("Exporting database ...");
+		mProgressDialog.show();
+		
+		mSpendingTrackerDbEngine.exportToXMLFile(XMLFILE);
+	}
+
+	public void onDatabaseImportClicked() {
+		//
+		mProgressDialog = new ProgressDialog(ActivityMain1.this);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setTitle("Database import from file" + XMLFILE);
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setMessage("Importing database ...");
+		mProgressDialog.show();
+		
+		mSpendingTrackerDbEngine.importFromXMLFile(XMLFILE);
+
+	}
+
+	public void onImportFinished(String result) {
+		//
+		mProgressDialog.dismiss();
+		Toast.makeText(ActivityMain1.this, result, Toast.LENGTH_LONG).show();
+	}
+
+	public void onExportFinished(String result) {
+		//
+		mProgressDialog.dismiss();
+		Toast.makeText(ActivityMain1.this, result, Toast.LENGTH_LONG).show();
+	}
+
+	public void onDatabaseImportExportUpdateMessage(String result) {
+		//
+		mProgressDialog.setMessage(result);
+
+	}
+
 }

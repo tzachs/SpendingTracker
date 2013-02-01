@@ -1,5 +1,6 @@
 package com.tzachsolomon.spendingtracker;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,77 +13,86 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class FragmentAdminDb extends SherlockFragment implements OnClickListener {
+public class FragmentAdminDb extends SherlockFragment implements
+		OnClickListener {
 
-	private final static String XMLFILE = "spendingTracker.xml";
-	private ClassDbEngine m_SpendingTrackerDbEngine;
+
+
 	private Button buttonDbExport;
 	private Button buttonDbImport;
-	
+	private AdminDbListener mAdminDbListener;
+
+	public interface AdminDbListener {
+		public void onDatabaseExportClicked();
+
+		public void onDatabaseImportClicked();
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		//
+		super.onAttach(activity);
+
+		try {
+			mAdminDbListener = (AdminDbListener)activity;
+		} catch (ClassCastException e) {
+
+			throw new ClassCastException(activity.toString()
+					+ " must implement AdminDbListener listener");
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// 
+		//
 		super.onCreate(savedInstanceState);
+
 		
-		m_SpendingTrackerDbEngine = new ClassDbEngine(this.getSherlockActivity());
 	}
-	
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		//
 		View view = inflater.inflate(R.layout.fragment_admin_db, null);
-		
-		buttonDbExport = (Button)view.findViewById(R.id.buttonDbExport);
-		buttonDbImport = (Button)view.findViewById(R.id.buttonDbImport);
-		
+
+		buttonDbExport = (Button) view.findViewById(R.id.buttonDbExport);
+		buttonDbImport = (Button) view.findViewById(R.id.buttonDbImport);
+
 		buttonDbExport.setOnClickListener(this);
 		buttonDbImport.setOnClickListener(this);
 
-				
 		return view;
 	}
 
 	public void onClick(View v) {
-		// 
-		switch (v.getId()){
+		//
+		switch (v.getId()) {
 		case R.id.buttonDbExport:
 			buttonDbExport_Clicked();
 			break;
-			
+
 		case R.id.buttonDbImport:
 			buttonDbImport_Clicked();
 			break;
-			
+
 		}
-		
-		
-		
-				
+
 	}
 
 	private void buttonDbExport_Clicked() {
 		// TODO Auto-generated method stub
-		
+		if ( mAdminDbListener!= null){
+			mAdminDbListener.onDatabaseExportClicked();
+		}
 	}
 
 	private void buttonDbImport_Clicked() {
 		// TODO: change this to Async listener
-		String result = "";
-
-		try {
-			result = m_SpendingTrackerDbEngine.importFromXMLFile(XMLFILE);
-			
-
-		} catch (Exception e) {
-			//
-			result = e.getMessage();
-			e.printStackTrace();
+		if ( mAdminDbListener!= null){
+			mAdminDbListener.onDatabaseImportClicked();
 		}
-
-		Toast.makeText(this.getSherlockActivity(), result, Toast.LENGTH_LONG).show();
 		
 
 
 	}
-
 }

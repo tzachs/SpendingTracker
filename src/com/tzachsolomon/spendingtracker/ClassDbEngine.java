@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.format.Time;
 import android.util.Log;
@@ -75,6 +76,15 @@ public class ClassDbEngine {
 	private SQLiteDatabase ourDatabase;
 
 	private String m_SortByKey;
+	private DatabaseImportExportListener mDatabaseImportExportListener;
+
+	public interface DatabaseImportExportListener {
+		public void onImportFinished(String result);
+
+		public void onExportFinished(String result);
+
+		public void onDatabaseImportExportUpdateMessage(String result);
+	}
 
 	private static class DbHelper extends SQLiteOpenHelper {
 
@@ -168,8 +178,8 @@ public class ClassDbEngine {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-			DebugDb(DATABASE_NAME + "is upgraded from version "
-					+ oldVersion + " to version " + newVersion);
+			DebugDb(DATABASE_NAME + "is upgraded from version " + oldVersion
+					+ " to version " + newVersion);
 
 			createTableLocationReminders(db);
 
@@ -232,7 +242,7 @@ public class ClassDbEngine {
 					} else if (tableName
 							.contentEquals(ClassDbEngine.TABLE_SPENDING)) {
 						inTableSpending = true;
-						DebugDb( "in table " + TABLE_SPENDING);
+						DebugDb("in table " + TABLE_SPENDING);
 					}
 
 				} else if (localName.contentEquals("ENTRY")) {
@@ -503,7 +513,7 @@ public class ClassDbEngine {
 
 			today = todayInMonth - i;
 			todayInMonthString = (today < 10 ? "0" : "") + today;
-			DebugDb( "Adding entry for day " + todayInMonthString);
+			DebugDb("Adding entry for day " + todayInMonthString);
 			filter.append(KEY_DATE);
 			filter.append(" LIKE '%" + thisYearString + thisMonthString
 					+ todayInMonthString + "T%'");
@@ -513,12 +523,12 @@ public class ClassDbEngine {
 		}
 		today = todayInMonth - i;
 		todayInMonthString = (today < 10 ? "0" : "") + today;
-		DebugDb( "Adding entry for day " + todayInMonthString);
+		DebugDb("Adding entry for day " + todayInMonthString);
 		filter.append(KEY_DATE);
 		filter.append(" LIKE '%" + thisYearString + thisMonthString
 				+ todayInMonthString + "T%'");
 
-		DebugDb( "using filter " + filter.toString());
+		DebugDb("using filter " + filter.toString());
 
 		this.open();
 
@@ -529,7 +539,7 @@ public class ClassDbEngine {
 		iColAmount = c.getColumnIndex(KEY_AMOUNT);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb( "Found entry at date " + c.getString(iColDate));
+			DebugDb("Found entry at date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 
 		}
@@ -565,7 +575,7 @@ public class ClassDbEngine {
 
 		// Making sure digit 1 - 9 are 01 - 09
 		monthString = (month < 10 ? "0" : "") + month;
-		DebugDb( "checking for day " + monthString);
+		DebugDb("checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
 				+ monthString + "__T%'", null, null, null, null);
@@ -574,7 +584,7 @@ public class ClassDbEngine {
 		iColDate = c.getColumnIndex(KEY_DATE);
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb( "Found entry from date " + c.getString(iColDate));
+			DebugDb("Found entry from date " + c.getString(iColDate));
 			ret += c.getFloat(iColAmount);
 		}
 
@@ -655,7 +665,7 @@ public class ClassDbEngine {
 		//
 		this.open();
 
-		DebugDb( "Deleting category " + i_Category);
+		DebugDb("Deleting category " + i_Category);
 		ourDatabase.delete(TABLE_CATEGORIES, KEY_CATEGORY + "=\'" + i_Category
 				+ "\'", null);
 
@@ -744,7 +754,7 @@ public class ClassDbEngine {
 				KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		DebugDb( "getting all entries for day " + todayInMonthString);
+		DebugDb("getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns,
 				KEY_DATE + " LIKE '%" + thisYearString + thisMonthString
@@ -821,7 +831,7 @@ public class ClassDbEngine {
 
 			today = todayInMonth - i;
 			todayInMonthString = (today < 10 ? "0" : "") + today;
-			DebugDb( "adding entry for day " + todayInMonthString);
+			DebugDb("adding entry for day " + todayInMonthString);
 			filter.append(KEY_DATE);
 			filter.append(" LIKE '%" + thisYearString + thisMonthString
 					+ todayInMonthString + "T%'");
@@ -832,7 +842,7 @@ public class ClassDbEngine {
 
 		today = todayInMonth - i;
 		todayInMonthString = (today < 10 ? "0" : "") + today;
-		DebugDb( "adding entry for day " + todayInMonthString);
+		DebugDb("adding entry for day " + todayInMonthString);
 		filter.append(KEY_DATE);
 		filter.append(" LIKE '%" + thisYearString + thisMonthString
 				+ todayInMonthString + "T%'");
@@ -843,7 +853,7 @@ public class ClassDbEngine {
 				KEY_DATE };
 		// making sure digit 1 - 9 are 01 - 09
 		todayInMonthString = (todayInMonth < 10 ? "0" : "") + todayInMonth;
-		DebugDb( "getting all entries for day " + todayInMonthString);
+		DebugDb("getting all entries for day " + todayInMonthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, filter.toString(), null,
 				null, null, m_SortByKey);
@@ -856,7 +866,7 @@ public class ClassDbEngine {
 		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb( String.format("Row ID: %s", c.getShort(iRowID)));
+			DebugDb(String.format("Row ID: %s", c.getShort(iRowID)));
 
 			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
@@ -894,7 +904,7 @@ public class ClassDbEngine {
 			now = i_Calendar;
 		}
 
-		DebugDb( "Getting month entries using " + now.toString());
+		DebugDb("Getting month entries using " + now.toString());
 
 		month = now.get(Calendar.MONTH) + 1;
 
@@ -905,7 +915,7 @@ public class ClassDbEngine {
 
 		// Making sure digit 1 - 9 are 01 - 09
 		monthString = (month < 10 ? "0" : "") + month;
-		DebugDb( "checking for day " + monthString);
+		DebugDb("checking for day " + monthString);
 
 		c = ourDatabase.query(TABLE_SPENDING, columns, KEY_DATE + " LIKE '%___"
 				+ monthString + "__T%'", null, null, null, m_SortByKey);
@@ -919,7 +929,7 @@ public class ClassDbEngine {
 		i = 0;
 
 		for (c.moveToLast(); !c.isBeforeFirst(); c.moveToPrevious()) {
-			DebugDb( String.format("Row ID: %s", c.getShort(iRowID)));
+			DebugDb(String.format("Row ID: %s", c.getShort(iRowID)));
 
 			ret.add(new ClassTypeEntrySpent(c.getString(iRowID), c
 					.getString(iAmount), c.getString(iCategory), c
@@ -960,8 +970,8 @@ public class ClassDbEngine {
 
 			ret.add(new ClassTypeReminderTime(c.getString(iRowID), c
 					.getString(iType), c.getString(iHour),
-					c.getString(iMinute), c.getString(iDay), c.getString(iCategory),c
-					.getString(iAmount)));
+					c.getString(iMinute), c.getString(iDay), c
+							.getString(iCategory), c.getString(iAmount)));
 
 		}
 
@@ -1073,7 +1083,7 @@ public class ClassDbEngine {
 
 			}
 		} catch (Exception e) {
-			DebugDb( e.getMessage().toString());
+			DebugDb(e.getMessage().toString());
 		}
 
 		c.close();
@@ -1091,7 +1101,7 @@ public class ClassDbEngine {
 
 		ret = ourDatabase.delete(TABLE_REMINDERS, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		DebugDb( "Number of rows affected is " + Integer.toString(ret));
+		DebugDb("Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1151,7 +1161,7 @@ public class ClassDbEngine {
 		ret = ourDatabase.update(TABLE_SPENDING, cv, KEY_ROWID + "=" + m_RowId,
 				null);
 
-		DebugDb( "Updated rows: " + ret);
+		DebugDb("Updated rows: " + ret);
 
 		this.close();
 
@@ -1188,12 +1198,10 @@ public class ClassDbEngine {
 				i_XmlSerializer.startTag(null, "ENTRY");
 
 				for (i = 0; i < columnCount; i++) {
-					DebugDb( "Column is " + columns[i]);
-					DebugDb(
-							"Column index is " + c.getColumnIndex(columns[i]));
-					DebugDb(
-							"Value is "
-									+ c.getString(c.getColumnIndex(columns[i])));
+					DebugDb("Column is " + columns[i]);
+					DebugDb("Column index is " + c.getColumnIndex(columns[i]));
+					DebugDb("Value is "
+							+ c.getString(c.getColumnIndex(columns[i])));
 					try {
 						if (c.isNull(c.getColumnIndex(columns[i]))) {
 							i_XmlSerializer.attribute(null, columns[i], "");
@@ -1234,84 +1242,13 @@ public class ClassDbEngine {
 
 	}
 
-	public String exportToXMLFile(String i_Filename) {
-		String ret = "DB exported okay to " + i_Filename;
-
-		File newXmlFile = new File(Environment.getExternalStorageDirectory()
-				+ "/" + i_Filename);
-		try {
-			newXmlFile.createNewFile();
-
-			FileOutputStream fileOutputStream = new FileOutputStream(newXmlFile);
-
-			XmlSerializer xmlSerializer = Xml.newSerializer();
-
-			xmlSerializer.setOutput(fileOutputStream, "UTF-8");
-			xmlSerializer.startDocument(null, Boolean.valueOf(true));
-
-			xmlSerializer.setFeature(
-					"http://xmlpull.org/v1/doc/features.html#indent-output",
-					true);
-
-			xmlSerializer.startTag(null, "ROOT");
-
-			exportTableToXML(xmlSerializer, TABLE_CATEGORIES);
-			exportTableToXML(xmlSerializer, TABLE_REMINDERS);
-			exportTableToXML(xmlSerializer, TABLE_SPENDING);
-
-			xmlSerializer.endTag(null, "ROOT");
-
-			xmlSerializer.endDocument();
-			xmlSerializer.flush();
-
-			fileOutputStream.close();
-
-		} catch (IOException e) {
-			ret = e.getMessage();
-			DebugDb( e.getMessage());
-		} catch (NullPointerException e) {
-			//
-			ret = e.getMessage();
-			DebugDb( e.getMessage());
-		}
-
-		return ret;
+	public void exportToXMLFile(String i_Filename) {
+		new AsyncTaskDatabaseExport().execute(i_Filename);
 	}
 
-	public String importFromXMLFile(String i_XmlFile) {
-		String ret = "DB imported okay from " + i_XmlFile;
+	public void importFromXMLFile(String i_XmlFile) {
 
-		File xmlFile = new File(Environment.getExternalStorageDirectory() + "/"
-				+ i_XmlFile);
-		try {
-			if (xmlFile.canRead()) {
-				SAXParserFactory saxParserFactory = SAXParserFactory
-						.newInstance();
-				SAXParser saxParser = saxParserFactory.newSAXParser();
-				FileInputStream fileInputStream = new FileInputStream(xmlFile);
-				Reader reader = new InputStreamReader(fileInputStream);
-				InputSource inputSource = new InputSource(reader);
-				inputSource.setEncoding("UTF-8");
-				XmlImportDataHandler xmlImportDataHandler = new XmlImportDataHandler();
-
-				saxParser.parse(inputSource, xmlImportDataHandler);
-
-				createCategoresFromImport(xmlImportDataHandler.getCategories());
-				createRemindersFromImport(xmlImportDataHandler.getReminders());
-				createSpendingFromImport(xmlImportDataHandler.getSpending());
-
-			} else {
-				ret = "Could not read " + i_XmlFile;
-			}
-
-		} catch (Exception e) {
-			//
-			ret = e.getMessage();
-			DebugDb( e.getMessage());
-			e.printStackTrace();
-		}
-
-		return ret;
+		new AsyncTaskDatabaseImport().execute(i_XmlFile);
 
 	}
 
@@ -1369,7 +1306,7 @@ public class ClassDbEngine {
 
 		ret = ourDatabase.delete(TABLE_SPENDING, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		DebugDb( "Number of rows affected is " + Integer.toString(ret));
+		DebugDb("Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1449,7 +1386,7 @@ public class ClassDbEngine {
 
 		} catch (Exception e) {
 			//
-			DebugDb( e.getMessage().toString());
+			DebugDb(e.getMessage().toString());
 
 		}
 
@@ -1526,7 +1463,7 @@ public class ClassDbEngine {
 
 		ret = ourDatabase.delete(TABLE_LOCATION_REMINDERS, KEY_ROWID + "='"
 				+ i_ReminderId + "'", null);
-		DebugDb( "Number of rows affected is " + Integer.toString(ret));
+		DebugDb("Number of rows affected is " + Integer.toString(ret));
 
 		this.close();
 
@@ -1548,6 +1485,198 @@ public class ClassDbEngine {
 		ourDatabase.insert(TABLE_REMINDERS_QUEUE, null, cv);
 
 		this.close();
+
+	}
+
+	private class AsyncTaskDatabaseExport extends
+			AsyncTask<String, Integer, String> {
+
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			//
+			String message = "";
+			super.onProgressUpdate(values);
+			switch (values[0]) {
+			case 0:
+				message = "Exporting Categories Table";
+				break;
+			case 1:
+				message = "Exporting Reminders Table";
+				break;
+			case 2:
+				message = "Exporting Spent entries Table";
+				break;
+
+			}
+
+			if (mDatabaseImportExportListener != null && message.length() > 0) {
+				mDatabaseImportExportListener
+						.onDatabaseImportExportUpdateMessage(message);
+			}
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			//
+			super.onPostExecute(result);
+			if (mDatabaseImportExportListener != null) {
+				mDatabaseImportExportListener.onExportFinished(result);
+			}
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			//
+			String i_Filename = params[0];
+			String ret = "DB exported okay to " + i_Filename;
+
+			File newXmlFile = new File(
+					Environment.getExternalStorageDirectory() + "/"
+							+ i_Filename);
+			try {
+				newXmlFile.createNewFile();
+
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						newXmlFile);
+
+				XmlSerializer xmlSerializer = Xml.newSerializer();
+
+				xmlSerializer.setOutput(fileOutputStream, "UTF-8");
+				xmlSerializer.startDocument(null, Boolean.valueOf(true));
+
+				xmlSerializer
+						.setFeature(
+								"http://xmlpull.org/v1/doc/features.html#indent-output",
+								true);
+
+				xmlSerializer.startTag(null, "ROOT");
+
+				publishProgress(0);
+				exportTableToXML(xmlSerializer, TABLE_CATEGORIES);
+				publishProgress(1);
+				exportTableToXML(xmlSerializer, TABLE_REMINDERS);
+				publishProgress(2);
+				exportTableToXML(xmlSerializer, TABLE_SPENDING);
+
+				xmlSerializer.endTag(null, "ROOT");
+
+				xmlSerializer.endDocument();
+				xmlSerializer.flush();
+
+				fileOutputStream.close();
+
+			} catch (IOException e) {
+				ret = e.getMessage();
+				DebugDb(e.getMessage());
+			} catch (NullPointerException e) {
+				//
+				ret = e.getMessage();
+				DebugDb(e.getMessage());
+			}
+
+			return ret;
+
+		}
+
+	}
+
+	private class AsyncTaskDatabaseImport extends
+			AsyncTask<String, Integer, String> {
+
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			//
+			String message = "";
+			super.onProgressUpdate(values);
+			switch (values[0]) {
+			case 0:
+				message = "Parsing XML File...";
+				break;
+			case 1:
+				message = "Creating Categories Table";
+				break;
+			case 2:
+				message = "Creating Reminders Table";
+
+				break;
+			case 3:
+				message = "Creating Spent entries Table";
+
+				break;
+			}
+
+			if (mDatabaseImportExportListener != null && message.length() > 0) {
+				mDatabaseImportExportListener
+						.onDatabaseImportExportUpdateMessage(message);
+			}
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			//
+			super.onPostExecute(result);
+			if (mDatabaseImportExportListener != null) {
+				mDatabaseImportExportListener.onImportFinished(result);
+			}
+
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			String i_XmlFile = params[0];
+			String ret = "DB imported okay from " + i_XmlFile;
+
+			File xmlFile = new File(Environment.getExternalStorageDirectory()
+					+ "/" + i_XmlFile);
+			try {
+				if (xmlFile.canRead()) {
+
+					SAXParserFactory saxParserFactory = SAXParserFactory
+							.newInstance();
+					SAXParser saxParser = saxParserFactory.newSAXParser();
+					FileInputStream fileInputStream = new FileInputStream(
+							xmlFile);
+					Reader reader = new InputStreamReader(fileInputStream);
+					InputSource inputSource = new InputSource(reader);
+					inputSource.setEncoding("UTF-8");
+					XmlImportDataHandler xmlImportDataHandler = new XmlImportDataHandler();
+
+					publishProgress(0);
+					saxParser.parse(inputSource, xmlImportDataHandler);
+					publishProgress(1);
+					createCategoresFromImport(xmlImportDataHandler
+							.getCategories());
+					publishProgress(2);
+
+					createRemindersFromImport(xmlImportDataHandler
+							.getReminders());
+					publishProgress(3);
+
+					createSpendingFromImport(xmlImportDataHandler.getSpending());
+
+				} else {
+					ret = "Could not read " + i_XmlFile;
+				}
+
+			} catch (Exception e) {
+				//
+				ret = e.getMessage();
+				DebugDb(e.getMessage());
+				e.printStackTrace();
+			}
+
+			//
+			return ret;
+		}
+
+	}
+
+	public void setDatabaseImportExportListener(
+			DatabaseImportExportListener listener) {
+		mDatabaseImportExportListener = listener;
+		//
 
 	}
 

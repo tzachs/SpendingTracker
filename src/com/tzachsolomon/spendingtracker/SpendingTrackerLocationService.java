@@ -36,7 +36,7 @@ public class SpendingTrackerLocationService extends Service implements
 	private LocationManager m_LocationManager;
 	private SharedPreferences m_SharedPreferences;
 	private int m_ValidDistance;
-
+	private boolean mUseGpsProvider;
 	private boolean m_DebugMode;
 
 	@Override
@@ -103,17 +103,24 @@ public class SpendingTrackerLocationService extends Service implements
 
 	private void initLocalationManager() {
 
-		//
-		// TODO: enable using GPS
-		m_LocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		m_LocationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 0, 0, this);
-		
 		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
-		intent.putExtra("location", m_LocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+		
+		m_LocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		mUseGpsProvider = m_LocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		
+		if (mUseGpsProvider) {
+			m_LocationManager.requestLocationUpdates(
+					LocationManager.GPS_PROVIDER, 0, 0, this);
+			intent.putExtra("location", m_LocationManager
+					.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+		} else {
+			m_LocationManager.requestLocationUpdates(
+					LocationManager.NETWORK_PROVIDER, 0, 0, this);
+			intent.putExtra("location", m_LocationManager
+					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+		}
 
 		sendBroadcast(intent);
-		
 
 	}
 
@@ -284,8 +291,6 @@ public class SpendingTrackerLocationService extends Service implements
 		return ret;
 	}
 
-	
-
 	public void onLocationChanged(Location location) {
 		// update the activity UI
 		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
@@ -299,17 +304,17 @@ public class SpendingTrackerLocationService extends Service implements
 	}
 
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 

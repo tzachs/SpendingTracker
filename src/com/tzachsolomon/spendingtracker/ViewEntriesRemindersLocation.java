@@ -235,7 +235,7 @@ public class ViewEntriesRemindersLocation extends Activity implements OnClickLis
 	}
 
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
