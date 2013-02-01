@@ -24,6 +24,7 @@ public class ClassTypeEntrySpent {
 	public String getRowId() {
 		// 
 		return mRowId;
+		
 	}
 
 	public String getCategory() {

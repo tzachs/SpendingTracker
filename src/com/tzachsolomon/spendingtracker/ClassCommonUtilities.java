@@ -1,12 +1,5 @@
 package com.tzachsolomon.spendingtracker;
 
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_ACTIVITY_MAIN;
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_DB;
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_FRAGMENT_GENERAL;
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_FRAGMENT_REMINDER_LOCATION;
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_FRAGMENT_REMINDER_TIME;
-import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.PREF_KEY_DEBUG_SERVICE_REMINDER_TIME;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public final class ClassCommonUtilities {

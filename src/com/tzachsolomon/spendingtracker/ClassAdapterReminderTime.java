@@ -1,6 +1,8 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.tzachsolomon.spendingtracker.R.layout;
@@ -42,6 +44,8 @@ public class ClassAdapterReminderTime extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		//
 		View ret = convertView;
+		Currency currency = Currency.getInstance(Locale.getDefault());
+		String symbol = currency.getSymbol();
 
 		if (ret == null) {
 			ret = mInflater.inflate(R.layout.list_item_reminder_time, null);
@@ -56,12 +60,12 @@ public class ClassAdapterReminderTime extends BaseAdapter {
 		TextView day = (TextView) ret.findViewById(R.id.textViewDay);
 		TextView type = (TextView) ret.findViewById(R.id.textViewType);
 
-		amount.setText(mItems.get(position).getmAmount());
-		rowNumber.setText(mItems.get(position).getmRowId());
+		amount.setText(mItems.get(position).getmAmount() + symbol);
+		rowNumber.setText(mItems.get(position).getmRowId() + ") ");
 		category.setText(mItems.get(position).getmCategory());
 		hour.setText(mItems.get(position).getmHour());
 		minute.setText(mItems.get(position).getmMinute());
-		day.setText(mItems.get(position).getmDay());
+		day.setText(mItems.get(position).getmDayNormilized());
 		type.setText(mItems.get(position).getmType());
 
 		return ret;
