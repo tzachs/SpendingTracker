@@ -360,14 +360,15 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		if (validEntry) {
 			mSpendingTrackerDbEngine.insertNewSpending(amount, category,
 					comments, null);
+			// showing message to user that entry was added
+			if (mSharedPreferences.getBoolean("cbShowEntryAdded", true)) {
+				Toast.makeText(ActivityMain1.this,
+						getString(R.string.toastMessageEntryAdded),
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 
-		// showing message to user that entry was added
-		if (mSharedPreferences.getBoolean("cbShowEntryAdded", true)) {
-			Toast.makeText(ActivityMain1.this,
-					getString(R.string.toastMessageEntryAdded),
-					Toast.LENGTH_SHORT).show();
-		}
+		
 
 		if (mFragemtGeneral != null) {
 			mFragemtGeneral.updateSpentDayWeekMonth();
