@@ -39,6 +39,7 @@ public class ClassTypeEntrySpent {
 	
 	public String getTime() {
 		return mDate.split("T")[1].substring(0, 6);
+		
 	}
 	
 	

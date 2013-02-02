@@ -175,7 +175,7 @@ public class EditEntrySpent extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 

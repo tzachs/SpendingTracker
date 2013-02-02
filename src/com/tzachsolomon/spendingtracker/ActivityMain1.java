@@ -79,13 +79,20 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private ProgressDialog mProgressDialog;
 
 	// TODO: delete entry with dialog
-	// TODO: update spent entry
+	// 
 	// TODO: admin reminders
 	// TODO: default TAB
 	// TODO: first time setup
 	// TODO: import, export db async
 	// TODO: share spending
 	// TODO: time reminder auto sync to date / time
+	// TODO: export to Google Document
+	// TODO: add option to place tab on bottom instead of up
+	// TODO: add colors to categories
+	// TODO: add graphs
+	// TODO: auto export database (auto backup)
+	// TODO: auto import in case re installing the app
+	// TODO: add learning mode
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -298,7 +305,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	}
 
 	public void onAddTimeReminderClicked(ArrayList<ClassTypeReminderTime> values) {
-		// TODO Auto-generated method stub
+		//
 		String amount = mFragemtGeneral.getAmount();
 		String category = mFragemtGeneral.getCategory();
 		StringBuilder sb = new StringBuilder();
@@ -741,7 +748,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setMessage("Exporting database ...");
 		mProgressDialog.show();
-		
+
 		mSpendingTrackerDbEngine.exportToXMLFile(XMLFILE);
 	}
 
@@ -753,7 +760,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setMessage("Importing database ...");
 		mProgressDialog.show();
-		
+
 		mSpendingTrackerDbEngine.importFromXMLFile(XMLFILE);
 
 	}

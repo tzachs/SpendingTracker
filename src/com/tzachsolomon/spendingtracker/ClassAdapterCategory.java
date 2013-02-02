@@ -25,7 +25,7 @@ public class ClassAdapterCategory extends BaseAdapter {
 	}
 
 	public int getCount() {
-		// TODO Auto-generated method stub
+		// 
 		return mItems.size();
 	}
 

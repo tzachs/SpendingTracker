@@ -71,13 +71,7 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 		OnTabChangeListener, OnCheckedChangeListener,
 		LocationListener, OnClickListener {
 
-	// TODO: export to Google Document
-	// TODO: add option to place tab on bottom instead of up
-	// TODO: add colors to categories
-	// TODO: add graphs
-	// TODO: auto export database (auto backup)
-	// TODO: auto import in case re installing the app
-	// TODO: add learning mode
+	
 
 	/** Called when the activity is first created. */
 	private static final String TAG = ActivitySpendingTracker.class
@@ -1303,7 +1297,7 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 	}
 
 	private void updateWeekSpent() {
-		// TODO: change 1 to variable indicating first day of week
+		// 
 		textViewSpentWeek.setText(getString(R.string.textViewSpentWeekText)
 				+ m_SpendingTrackerDbEngine.getSpentThisWeek(1));
 
@@ -1420,37 +1414,37 @@ public class ActivitySpendingTracker extends SherlockFragmentActivity implements
 	}
 
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public void onTabChanged(String tabId) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 

@@ -55,7 +55,7 @@ public class ActivityPreferences extends SherlockPreferenceActivity implements S
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 	

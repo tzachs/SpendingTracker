@@ -1,6 +1,8 @@
 package com.tzachsolomon.spendingtracker;
 
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -30,6 +32,8 @@ public class ClassAdapterEntriesSpent extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		//
 		View ret = convertView;
+		Currency currency = Currency.getInstance(Locale.getDefault());
+		String symbol = currency.getSymbol();
 
 		if (ret == null) {
 			ret = mLayoutInflater.inflate(R.layout.list_item_entry_spent, null);
@@ -41,9 +45,8 @@ public class ClassAdapterEntriesSpent extends BaseAdapter {
 		TextView date = (TextView) ret.findViewById(R.id.textViewDate);
 		TextView time = (TextView) ret.findViewById(R.id.textViewTime);
 		amount.setText(mActivity.getString(R.string.amount) + ": "
-				+ mItem.get(position).getAmount());
-		rowId.setText(mActivity.getString(R.string._rowNumber) + ": "
-				+ mItem.get(position).getRowId());
+				+ mItem.get(position).getAmount() + symbol);
+		rowId.setText(mItem.get(position).getRowId()  + ") ");
 		category.setText(mActivity.getString(R.string.category) + ": "
 				+ mItem.get(position).getCategory());
 		date.setText(mActivity.getString(R.string.date) + ": "

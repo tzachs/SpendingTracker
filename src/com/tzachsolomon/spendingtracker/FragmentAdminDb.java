@@ -80,14 +80,14 @@ public class FragmentAdminDb extends SherlockFragment implements
 	}
 
 	private void buttonDbExport_Clicked() {
-		// TODO Auto-generated method stub
+		// 
 		if ( mAdminDbListener!= null){
 			mAdminDbListener.onDatabaseExportClicked();
 		}
 	}
 
 	private void buttonDbImport_Clicked() {
-		// TODO: change this to Async listener
+		// 
 		if ( mAdminDbListener!= null){
 			mAdminDbListener.onDatabaseImportClicked();
 		}
