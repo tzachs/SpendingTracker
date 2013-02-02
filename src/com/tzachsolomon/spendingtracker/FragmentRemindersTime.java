@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class FragmentRemindersTime extends SherlockFragment implements
 		OnCheckedChangeListener, OnClickListener {

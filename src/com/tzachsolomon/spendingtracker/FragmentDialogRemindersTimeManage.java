@@ -4,22 +4,20 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.ListView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.tzachsolomon.spendingtracker.FragmentDialogCategoriesManager.CategoriesManagerListener;
 
 public class FragmentDialogRemindersTimeManage extends SherlockDialogFragment
 		implements OnMenuItemClickListener {

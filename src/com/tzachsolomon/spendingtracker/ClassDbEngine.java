@@ -29,7 +29,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.format.Time;
-import android.util.Log;
+
 import android.util.Xml;
 
 public class ClassDbEngine {

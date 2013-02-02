@@ -13,10 +13,8 @@ import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.TYPE_REMINDE
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Queue;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -26,7 +24,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -83,16 +80,14 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	// TODO: admin reminders
 	// TODO: default TAB
 	// TODO: first time setup
-	// TODO: import, export db async
 	// TODO: share spending
-	// TODO: time reminder auto sync to date / time
-	// TODO: export to Google Document
 	// TODO: add option to place tab on bottom instead of up
 	// TODO: add colors to categories
 	// TODO: add graphs
 	// TODO: auto export database (auto backup)
 	// TODO: auto import in case re installing the app
 	// TODO: add learning mode
+	// TODO: scrolling of spent entries
 
 	@Override
 	protected void onCreate(Bundle arg0) {

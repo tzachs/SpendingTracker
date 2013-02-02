@@ -19,7 +19,7 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		//
-		m_SharedPreferences = m_SharedPreferences = PreferenceManager
+		m_SharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 
 		if (m_SharedPreferences.getBoolean("checkBoxPreferencsReminderService",

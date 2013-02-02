@@ -5,7 +5,6 @@ import java.util.Currency;
 import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.tzachsolomon.spendingtracker.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
