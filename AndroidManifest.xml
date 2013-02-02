@@ -1,36 +1,34 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tzachsolomon.spendingtracker"
     android:versionCode="31"
     android:versionName="0.31" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"  />
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
 
     <application
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock.Light" >
-         
+        android:theme="@style/Theme.Styled" >
         <activity
             android:name="com.tzachsolomon.spendingtracker.ActivityMain1"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:configChanges="locale"
-             >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="About"
             android:label="@string/app_name" >
@@ -39,7 +37,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
         </activity>
         <activity
             android:name="com.tzachsolomon.spendingtracker.ActivityPreferences"
@@ -92,10 +89,8 @@
             android:name=".SpendingTrackerTimeService"
             android:process=":SpendingTrackerTimeService" >
         </service>
-        <service 
-            android:name="SpendingTrackerLocationService"
-            
-            ></service>
+        <service android:name="SpendingTrackerLocationService" >
+        </service>
 
         <receiver android:name=".BootReceiver" >
             <intent-filter>

@@ -44,7 +44,6 @@ public class FragmentGeneral extends SherlockFragment implements
 	private String m_CategorySelected;
 	private ClassDbEngine m_SpendingTrackerDbEngine;
 	private SherlockFragmentActivity mActivity;
-	private ArrayList<ClassTypeCategory> m_Categories;
 	private TextView textViewSpentToday;
 	private TextView textViewSpentMonth;
 	private TextView textViewSpentWeek;
@@ -171,7 +170,7 @@ public class FragmentGeneral extends SherlockFragment implements
 			String[] m_Categories1 = m_SpendingTrackerDbEngine.getCategoriesStringArray();
 
 			ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-					mActivity, android.R.layout.simple_spinner_item,
+					mActivity, R.layout.spinner_item_line,
 					m_Categories1);
 
 			spinnerCategories.setAdapter(spinnerArrayAdapter);
