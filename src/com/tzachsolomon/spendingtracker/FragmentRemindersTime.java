@@ -63,15 +63,7 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		//
 		super.onCreate(savedInstanceState);
-		mTickReceiver = new BroadcastReceiver() {
-			public void onReceive(android.content.Context context, Intent intent) {
-				final String action = intent.getAction();
-				if (action.contentEquals(Intent.ACTION_TIME_TICK)) {
-					initTimePicker();
-				}
-			}
 
-		};
 	}
 
 	@Override
@@ -231,19 +223,30 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
 
-			if (mTickReceiver != null) {
-				IntentFilter filter = new IntentFilter();
-				filter.addAction(Intent.ACTION_TIME_CHANGED);
-				filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
-				filter.addAction(Intent.ACTION_TIME_TICK);
+			mTickReceiver = new BroadcastReceiver() {
+				public void onReceive(android.content.Context context,
+						Intent intent) {
+					final String action = intent.getAction();
+					if (action.contentEquals(Intent.ACTION_TIME_TICK)) {
+						initTimePicker();
+					}
+				}
 
-				mActivity.registerReceiver(mTickReceiver, filter);
-			}
+			};
+
+			IntentFilter filter = new IntentFilter();
+			filter.addAction(Intent.ACTION_TIME_CHANGED);
+			filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+			filter.addAction(Intent.ACTION_TIME_TICK);
+
+			mActivity.registerReceiver(mTickReceiver, filter);
 
 		} else {
 			if (mTickReceiver != null) {
 				mActivity.unregisterReceiver(mTickReceiver);
+				mTickReceiver = null;
 			}
+
 		}
 	}
 
