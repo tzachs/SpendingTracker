@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import static com.tzachsolomon.spendingtracker.ClassCommonUtilities.*;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +16,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class FragmentRemindersTime extends SherlockFragment implements
-		OnCheckedChangeListener, OnClickListener {
+		OnCheckedChangeListener, OnClickListener, OnSeekBarChangeListener {
 
 	public interface TimeReminderListener {
 		public void onAddTimeReminderClicked(
@@ -37,7 +44,7 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	private TimeReminderListener mButtonAddEntrySpentListener;
 	private Button buttonAddTimeReminder;
 	private Button buttonManageTimeReminderEntries;
-	private TimePicker timePicker;
+
 	private CheckBox checkBoxSunday;
 	private CheckBox checkBoxMonday;
 	private CheckBox checkBoxTuesday;
@@ -45,11 +52,32 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	private CheckBox checkBoxThursday;
 	private CheckBox checkBoxFriday;
 	private CheckBox checkBoxSaturday;
+	private SeekBar seekBarHours;
+	private SeekBar seekBarMinutes;
+	private TextView textViewHours;
+	private TextView textViewMinutes;
+	private SherlockFragmentActivity mActivity;
+	private BroadcastReceiver mTickReceiver;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		//
+		super.onCreate(savedInstanceState);
+		mTickReceiver = new BroadcastReceiver() {
+			public void onReceive(android.content.Context context, Intent intent) {
+				final String action = intent.getAction();
+				if (action.contentEquals(Intent.ACTION_TIME_TICK)) {
+					initTimePicker();
+				}
+			}
+
+		};
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		//
-
+		super.onAttach(activity);
 		try {
 			mButtonAddEntrySpentListener = (TimeReminderListener) activity;
 		} catch (ClassCastException e) {
@@ -57,7 +85,8 @@ public class FragmentRemindersTime extends SherlockFragment implements
 					+ " must implement TimeReminderListener ");
 		}
 
-		super.onAttach(activity);
+		mActivity = (SherlockFragmentActivity) activity;
+
 	}
 
 	@Override
@@ -66,6 +95,13 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		//
 		View view = inflater.inflate(R.layout.fragment_reminders_time, null);
 
+		initializeVariables(view);
+
+		return view;
+
+	}
+
+	private void initializeVariables(View view) {
 		relativeLayoutDayCheckboxes = (RelativeLayout) view
 				.findViewById(R.id.relativeLayoutDayCheckboxes);
 
@@ -84,8 +120,15 @@ public class FragmentRemindersTime extends SherlockFragment implements
 				.findViewById(R.id.buttonManageTimeReminderEntries);
 		buttonManageTimeReminderEntries.setOnClickListener(this);
 
-		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-		timePicker.setIs24HourView(true);
+		seekBarHours = (SeekBar) view.findViewById(R.id.seekBarHours);
+		seekBarMinutes = (SeekBar) view.findViewById(R.id.seekBarMinutes);
+
+		textViewHours = (TextView) view.findViewById(R.id.textViewHours);
+		textViewMinutes = (TextView) view.findViewById(R.id.textViewMinutes);
+
+		seekBarHours.setOnSeekBarChangeListener(this);
+		seekBarMinutes.setOnSeekBarChangeListener(this);
+
 		initTimePicker();
 
 		checkBoxSunday = (CheckBox) view.findViewById(R.id.checkBoxSunday);
@@ -96,9 +139,6 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		checkBoxThursday = (CheckBox) view.findViewById(R.id.checkBoxThursday);
 		checkBoxFriday = (CheckBox) view.findViewById(R.id.checkBoxFriday);
 		checkBoxSaturday = (CheckBox) view.findViewById(R.id.checkBoxSaturday);
-
-		return view;
-
 	}
 
 	@Override
@@ -175,10 +215,36 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	}
 
 	private void initTimePicker() {
-		timePicker.setCurrentHour(Calendar.getInstance().get(
+
+		seekBarHours.setProgress(Calendar.getInstance().get(
 				Calendar.HOUR_OF_DAY));
-		timePicker
-				.setCurrentMinute(Calendar.getInstance().get(Calendar.MINUTE));
+		seekBarMinutes.setProgress(Calendar.getInstance().get(Calendar.MINUTE));
+
+		textViewHours.setText(String.valueOf(seekBarHours.getProgress()));
+		textViewMinutes.setText(String.valueOf(seekBarMinutes.getProgress()));
+
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		//
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+
+			if (mTickReceiver != null) {
+				IntentFilter filter = new IntentFilter();
+				filter.addAction(Intent.ACTION_TIME_CHANGED);
+				filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+				filter.addAction(Intent.ACTION_TIME_TICK);
+
+				mActivity.registerReceiver(mTickReceiver, filter);
+			}
+
+		} else {
+			if (mTickReceiver != null) {
+				mActivity.unregisterReceiver(mTickReceiver);
+			}
+		}
 	}
 
 	public void onClick(View v) {
@@ -209,8 +275,8 @@ public class FragmentRemindersTime extends SherlockFragment implements
 
 		if (mButtonAddEntrySpentListener != null) {
 			ArrayList<ClassTypeReminderTime> values = new ArrayList<ClassTypeReminderTime>();
-			String currentHour = timePicker.getCurrentHour().toString();
-			String currentMinute = timePicker.getCurrentMinute().toString();
+			String currentHour = String.valueOf(seekBarHours.getProgress());
+			String currentMinute = String.valueOf(seekBarMinutes.getProgress());
 
 			switch (radioGroupReminders.getCheckedRadioButtonId()) {
 			case R.id.radioButtonEveryday:
@@ -296,6 +362,31 @@ public class FragmentRemindersTime extends SherlockFragment implements
 				mButtonAddEntrySpentListener.onAddTimeReminderClicked(values);
 			}
 		}
+
+	}
+
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		//
+		switch (seekBar.getId()) {
+		case R.id.seekBarHours:
+			textViewHours.setText(String.valueOf(seekBarHours.getProgress()));
+			break;
+		case R.id.seekBarMinutes:
+			textViewMinutes
+					.setText(String.valueOf(seekBarMinutes.getProgress()));
+			break;
+		}
+
+	}
+
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
 
 	}
 

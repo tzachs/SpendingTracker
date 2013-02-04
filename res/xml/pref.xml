@@ -11,12 +11,17 @@
                     android:key="prefAppLanguage"
                     android:summary="Allows you to change the language of the application"
                     android:title="Language" />
-
                 <CheckBoxPreference
                     android:defaultValue="true"
                     android:key="cbShowEntryAdded"
-                    android:summary="Show entry added message"
-                    android:title="Show entry added" />
+                    android:summary="Show Spent Entry added to database message"
+                    android:title="Show Spent added" />
+                <CheckBoxPreference 
+                    android:defaultValue="true"
+                    android:key="checkBoxPrefShowTitle"
+                    android:summary="Show the top title"
+                    android:title="Show Top Title"
+                    />
             </PreferenceCategory>
             <PreferenceCategory android:title="Notifications" >
                 <CheckBoxPreference

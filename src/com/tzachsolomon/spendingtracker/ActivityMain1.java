@@ -144,12 +144,13 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		//
 
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
+		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowHomeEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
+		boolean showTitle = mSharedPreferences.getBoolean("checkBoxPrefShowTitle", true);
+		actionBar.setDisplayHomeAsUpEnabled(showTitle);
+		actionBar.setDisplayShowHomeEnabled(showTitle);
+		actionBar.setDisplayShowTitleEnabled(showTitle);
+				
 
 		actionBar.removeAllTabs();
 

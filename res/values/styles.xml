@@ -9,6 +9,7 @@
 
     <style name="MyEditTextStyle" parent="@android:style/Widget.EditText">
         <item name="android:background">@drawable/custom_edittext</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="MySpinnerStyle">
@@ -18,7 +19,10 @@
         <item name="android:clickable">true</item>
     </style>
 
+    
+
     <style name="Theme.Styled" parent="Theme.Sherlock.Light">
+        
         <item name="android:buttonStyle">@style/MyButtonStyle</item>
         <item name="android:spinnerStyle">@style/MySpinnerStyle</item>
         <item name="android:editTextStyle">@style/MyEditTextStyle</item>
