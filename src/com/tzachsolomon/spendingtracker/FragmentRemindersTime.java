@@ -213,7 +213,8 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		seekBarMinutes.setProgress(Calendar.getInstance().get(Calendar.MINUTE));
 
 		textViewHours.setText(String.valueOf(seekBarHours.getProgress()));
-		textViewMinutes.setText(String.valueOf(seekBarMinutes.getProgress()));
+		setMinutesText();
+		
 
 	}
 
@@ -368,6 +369,15 @@ public class FragmentRemindersTime extends SherlockFragment implements
 
 	}
 
+	public void setMinutesText() {
+		int value = seekBarMinutes.getProgress();
+		String strValue = Integer.toString(value);
+		if (value < 10) {
+			strValue = "0" + value;
+		}
+		textViewMinutes.setText(strValue);
+	}
+
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		//
@@ -376,20 +386,28 @@ public class FragmentRemindersTime extends SherlockFragment implements
 			textViewHours.setText(String.valueOf(seekBarHours.getProgress()));
 			break;
 		case R.id.seekBarMinutes:
-			textViewMinutes
-					.setText(String.valueOf(seekBarMinutes.getProgress()));
+			setMinutesText();
 			break;
 		}
 
 	}
 
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
+		// 
+		switch (seekBar.getId()){
+		
+		case R.id.seekBarHours:
+			Toast.makeText(mActivity, "Sets hour in time reminder",Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.seekBarMinutes:
+			Toast.makeText(mActivity, "Sets minutes in time reminder",Toast.LENGTH_SHORT).show();
+			break;
+		}
 
 	}
 
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
+		// 
 
 	}
 
