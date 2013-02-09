@@ -149,6 +149,10 @@
     <string name="_">&lt;&lt;&lt;</string>
     <string name="buttonEntriesBackText">Back</string>
     <string name="buttonEntriesNextText">Next</string>
+    <string name="number_of_entries">Number of entries</string>
+    <string name="average_spending">Average spending</string>
+    <string name="max">Max</string>
+    <string name="min">Min</string>
     
 
 </resources>

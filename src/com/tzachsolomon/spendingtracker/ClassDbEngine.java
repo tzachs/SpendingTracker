@@ -316,6 +316,8 @@ public class ClassDbEngine {
 	public ClassDbEngine(Context i_Context) {
 		ourContext = i_Context;
 		m_SortByKey = ClassDbEngine.KEY_ROWID;
+		// TODO: change this to filter
+		m_SortByKey = KEY_DATE;
 	}
 
 	public ClassDbEngine open() throws SQLException {
@@ -672,44 +674,35 @@ public class ClassDbEngine {
 		this.close();
 
 	}
-
-	public String[][] getTableSpendingData() {
-		//
-		String[][] ret = null;
-		String[] columns = new String[] { KEY_ROWID, KEY_AMOUNT, KEY_CATEGORY };
-
-		// opening database
-		this.open();
-		// selecting all
-		//
-		Cursor c = ourDatabase.query(TABLE_SPENDING, columns, null, null, null,
-				null, null);
-
-		// setting 2 dimensional array
-		ret = new String[c.getCount()][columns.length];
-
-		int iRowID = c.getColumnIndex(KEY_ROWID);
-		int iAmount = c.getColumnIndex(KEY_AMOUNT);
-		int iCategory = c.getColumnIndex(KEY_CATEGORY);
-
-		int i = 0;
-
-		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-
-			ret[i][iRowID] = c.getString(iRowID);
-			ret[i][iAmount] = c.getString(iAmount);
-			ret[i][iCategory] = c.getString(iCategory);
-
-			i++;
-
+	
+	public ArrayList<ClassTypeEntrySpentSummary> getSpentSummary(Calendar iCalendar){
+		ArrayList<ClassTypeEntrySpentSummary> ret = new ArrayList<ClassTypeEntrySpentSummary>();
+		
+		String month = String.valueOf(iCalendar.get(Calendar.MONTH) +1);
+		if ( !(month.contentEquals("11") || month.contentEquals("12")) ){
+			month = "0" + String.valueOf(iCalendar.get(Calendar.MONTH) +1);
 		}
-
+		String year = String.valueOf(iCalendar.get(Calendar.YEAR));
+		
+		String query = String.format("SELECT count(%s), max(%s), min(%s), avg(%s), %s FROM %s WHERE %s " +
+				"LIKE '%s%s%%' GROUP BY %s ", KEY_ROWID, KEY_AMOUNT,KEY_AMOUNT,KEY_AMOUNT, KEY_CATEGORY,TABLE_SPENDING,
+				KEY_DATE,year,month,KEY_CATEGORY);
+		this.open();
+		
+		Cursor c = ourDatabase.rawQuery(query, null);
+		
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+			ret.add(new ClassTypeEntrySpentSummary(c.getString(3), c.getString(1), c.getString(4), c.getString(2), c.getString(0)));
+		}
+		
 		c.close();
-
+		
 		this.close();
-
+		
 		return ret;
 	}
+	
+	
 
 	/**
 	 * Function return the all the entries spent on specific day using

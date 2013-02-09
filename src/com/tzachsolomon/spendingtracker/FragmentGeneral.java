@@ -1,6 +1,5 @@
 package com.tzachsolomon.spendingtracker;
 
-import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;

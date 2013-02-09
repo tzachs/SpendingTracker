@@ -30,12 +30,33 @@
             android:text="@string/radioButtonMonthlyText" />
     </RadioGroup>
 
+    <RadioGroup
+        android:id="@+id/radioGroupType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radioGroupEntries"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radioButtonDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Details" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Summary" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/buttonEntriesBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioGroupEntries"
+        android:layout_below="@+id/radioGroupType"
         android:padding="8dp"
         android:text="@string/buttonEntriesBackText" />
 
@@ -44,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/radioGroupEntries"
+        android:layout_alignTop="@+id/buttonEntriesBack"
         android:padding="8dp"
         android:text="@string/buttonEntriesNextText" />
 

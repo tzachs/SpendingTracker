@@ -29,15 +29,16 @@ public class FragmentEntries extends SherlockFragment implements
 
 	private ListView listViewEntriesSpent;
 	private ClassAdapterEntriesSpent mEntriesSpent;
+	private ClassAdapterEntriesSpentSummary mEntriesSpentSummary;
 	private ClassDbEngine mDbEngine;
 	private Calendar mCalendar;
 	private RadioGroup radioGroupEntries;
 	private SherlockFragmentActivity mActivity;
 	private SpentEntryListener mSpentEntryListener;
-
 	private Button buttonEntriesNext;
-
 	private Button buttonEntriesBack;
+
+	private RadioGroup radioGroupType;
 
 	public interface SpentEntryListener {
 		public void onSpentEntryDeleted(String rowId);
@@ -66,10 +67,8 @@ public class FragmentEntries extends SherlockFragment implements
 			Bundle savedInstanceState) {
 		//
 		View view = inflater.inflate(R.layout.fragment_entries, null);
-		
-		initializeVariables(view);
 
-		
+		initializeVariables(view);
 
 		((ActivityMain1) mActivity).setFragmentEntriesRef(getTag());
 
@@ -77,19 +76,21 @@ public class FragmentEntries extends SherlockFragment implements
 	}
 
 	private void initializeVariables(View view) {
-		// 
+		//
 		listViewEntriesSpent = (ListView) view
 				.findViewById(R.id.listViewEntriesSpent);
 		radioGroupEntries = (RadioGroup) view
 				.findViewById(R.id.radioGroupEntries);
 		radioGroupEntries.setOnCheckedChangeListener(this);
-		
-		buttonEntriesNext = (Button)view.findViewById(R.id.buttonEntriesNext);
-		buttonEntriesBack = (Button)view.findViewById(R.id.buttonEntriesBack);
-		
+		radioGroupType = (RadioGroup) view.findViewById(R.id.radioGroupType);
+		radioGroupType.setOnCheckedChangeListener(this);
+
+		buttonEntriesNext = (Button) view.findViewById(R.id.buttonEntriesNext);
+		buttonEntriesBack = (Button) view.findViewById(R.id.buttonEntriesBack);
+
 		buttonEntriesNext.setOnClickListener(this);
 		buttonEntriesBack.setOnClickListener(this);
-		
+
 	}
 
 	public void onClick(View v) {
@@ -98,7 +99,7 @@ public class FragmentEntries extends SherlockFragment implements
 		case R.id.buttonEntriesBack:
 			buttonEntriesBack_Clicked();
 			break;
-			
+
 		case R.id.buttonEntriesNext:
 			buttonEntriesNext_Clicked();
 			break;
@@ -107,13 +108,13 @@ public class FragmentEntries extends SherlockFragment implements
 	}
 
 	private void buttonEntriesBack_Clicked() {
-		// 
+		//
 		updateListViewAdapter(-1);
-		
+
 	}
 
 	private void buttonEntriesNext_Clicked() {
-		// 
+		//
 		updateListViewAdapter(1);
 	}
 
@@ -122,7 +123,7 @@ public class FragmentEntries extends SherlockFragment implements
 		//
 		super.onActivityCreated(savedInstanceState);
 		registerForContextMenu(listViewEntriesSpent);
-		
+
 	}
 
 	@Override
@@ -144,8 +145,9 @@ public class FragmentEntries extends SherlockFragment implements
 		switch (item.getItemId()) {
 		case 1:
 			if (mSpentEntryListener != null) {
-				mSpentEntryListener.onSpentEntryEditRequest(mEntriesSpent.getItemAsBundle(info.position));
-						
+				mSpentEntryListener.onSpentEntryEditRequest(mEntriesSpent
+						.getItemAsBundle(info.position));
+
 			}
 
 			break;
@@ -183,38 +185,64 @@ public class FragmentEntries extends SherlockFragment implements
 	}
 
 	public void updateListViewAdapter(int direction) {
-		updateListViewAdapter(radioGroupEntries.getCheckedRadioButtonId(),direction);
+		updateListViewAdapter(radioGroupEntries.getCheckedRadioButtonId(),
+				direction);
 	}
 
 	private void updateListViewAdapter(int checkedId, int direction) {
 		//
+		boolean detailsChosen = false;
+		if (radioGroupType.getCheckedRadioButtonId() == R.id.radioButtonDetails) {
+			detailsChosen = true;
+		}
+
 		switch (checkedId) {
 		case R.id.radioButtonEntiresMonthly:
 			mCalendar.add(Calendar.MONTH, direction);
-			
-			mEntriesSpent = new ClassAdapterEntriesSpent(
-					this.getSherlockActivity(),
-					mDbEngine.getSpentThisMonthEnteries(mCalendar));
+			if (detailsChosen) {
+				mEntriesSpent = new ClassAdapterEntriesSpent(
+						this.getSherlockActivity(),
+						mDbEngine.getSpentThisMonthEnteries(mCalendar));
+			} else {
+				mEntriesSpentSummary = new ClassAdapterEntriesSpentSummary(
+						this.getSherlockActivity(),
+						mDbEngine.getSpentSummary(mCalendar));
+			}
 			break;
 		case R.id.radioButtonEntriesEveryday:
 			mCalendar.add(Calendar.DAY_OF_MONTH, direction);
-			mEntriesSpent = new ClassAdapterEntriesSpent(
-					this.getSherlockActivity(),
-					mDbEngine.getSpentDailyEntries(mCalendar));
+			if (detailsChosen) {
+				mEntriesSpent = new ClassAdapterEntriesSpent(
+						this.getSherlockActivity(),
+						mDbEngine.getSpentDailyEntries(mCalendar));
+			} else {
+				mEntriesSpentSummary = new ClassAdapterEntriesSpentSummary(
+						this.getSherlockActivity(),
+						mDbEngine.getSpentSummary(mCalendar));
+			}
 			break;
 		case R.id.radioButtonEntriesWeekly:
 			mCalendar.add(Calendar.DATE, direction * 7);
-			mEntriesSpent = new ClassAdapterEntriesSpent(
-					this.getSherlockActivity(),
-					mDbEngine.getSpentThisWeekEnteries(1, mCalendar));
+			if (detailsChosen) {
+				mEntriesSpent = new ClassAdapterEntriesSpent(
+						this.getSherlockActivity(),
+						mDbEngine.getSpentThisWeekEnteries(1, mCalendar));
+			} else {
+				mEntriesSpentSummary = new ClassAdapterEntriesSpentSummary(
+						this.getSherlockActivity(),
+						mDbEngine.getSpentSummary(mCalendar));
+			}
 			break;
 
 		}
 
 		if (listViewEntriesSpent != null) {
-			listViewEntriesSpent.setAdapter(mEntriesSpent);
-		} 
-
+			if (detailsChosen) {
+				listViewEntriesSpent.setAdapter(mEntriesSpent);
+			} else {
+				listViewEntriesSpent.setAdapter(mEntriesSpentSummary);
+			}
+		}
 
 	}
 
@@ -225,11 +253,9 @@ public class FragmentEntries extends SherlockFragment implements
 	}
 
 	public void updateListViewAdapter() {
-		// 
+		//
 		updateListViewAdapter(0);
-		
+
 	}
-	
-	
 
 }
