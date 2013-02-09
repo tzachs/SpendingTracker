@@ -2,6 +2,7 @@ package com.tzachsolomon.spendingtracker;
 
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -235,6 +236,16 @@ public class FragmentGeneral extends SherlockFragment implements
 	
 	public String getCategory(){
 		return m_CategorySelected;
+	}
+
+	public void highlightEditCategories(boolean state) {
+		// 
+		if (state){
+		buttonCategoriesEdit.setTextColor(Color.RED);
+		}else{
+			buttonCategoriesEdit.setTextColor(Color.BLACK);
+		}
+		
 	}
 
 

@@ -145,13 +145,13 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		//
 
 		ActionBar actionBar = getSupportActionBar();
-		
+
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		boolean showTitle = mSharedPreferences.getBoolean("checkBoxPrefShowTitle", true);
+		boolean showTitle = mSharedPreferences.getBoolean(
+				"checkBoxPrefShowTitle", true);
 		actionBar.setDisplayHomeAsUpEnabled(showTitle);
 		actionBar.setDisplayShowHomeEnabled(showTitle);
 		actionBar.setDisplayShowTitleEnabled(showTitle);
-				
 
 		actionBar.removeAllTabs();
 
@@ -261,6 +261,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 	public void onButtonCategoriesEditClicked() {
 		//
+		mFragemtGeneral.highlightEditCategories(false);
 		FragmentDialogCategoriesManager fragmentCategoriesManager = new FragmentDialogCategoriesManager();
 
 		fragmentCategoriesManager.show(getSupportFragmentManager(),
@@ -341,44 +342,52 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 		String comments = values.getString("comments");
 		boolean validEntry = true;
 
-		if (amount.isEmpty()) {
-			Toast.makeText(ActivityMain1.this, "Please fill in the amount",
+		if (category == null) {
+
+			Toast.makeText(
+					ActivityMain1.this,
+					"Seems like no category was added, please the edit button in order to add categories",
 					Toast.LENGTH_LONG).show();
-			validEntry = false;
-		}
-
-		if (category.isEmpty()) {
-			Toast.makeText(ActivityMain1.this, "Please fill in the category",
-					Toast.LENGTH_LONG).show();
-			validEntry = false;
-		}
-
-		// if ( comments.isEmpty() ){
-		// Toast.makeText(ActivityMain1.this, "Please fill in the comments",
-		// Toast.LENGTH_LONG).show();
-		// validEntry = false;
-		// }
-
-		if (validEntry) {
-			mSpendingTrackerDbEngine.insertNewSpending(amount, category,
-					comments, null);
-			// showing message to user that entry was added
-			if (mSharedPreferences.getBoolean("cbShowEntryAdded", true)) {
-				Toast.makeText(ActivityMain1.this,
-						getString(R.string.toastMessageEntryAdded),
-						Toast.LENGTH_SHORT).show();
+			mFragemtGeneral.highlightEditCategories(true);
+		} else {
+			if (amount.isEmpty()) {
+				Toast.makeText(ActivityMain1.this, "Please fill in the amount",
+						Toast.LENGTH_LONG).show();
+				validEntry = false;
 			}
-		}
 
-		
+			if (category.isEmpty()) {
+				Toast.makeText(ActivityMain1.this,
+						"Please fill in the category", Toast.LENGTH_LONG)
+						.show();
+				validEntry = false;
+			}
 
-		if (mFragemtGeneral != null) {
-			mFragemtGeneral.updateSpentDayWeekMonth();
+			// if ( comments.isEmpty() ){
+			// Toast.makeText(ActivityMain1.this, "Please fill in the comments",
+			// Toast.LENGTH_LONG).show();
+			// validEntry = false;
+			// }
 
-		}
+			if (validEntry) {
+				mSpendingTrackerDbEngine.insertNewSpending(amount, category,
+						comments, null);
+				// showing message to user that entry was added
+				if (mSharedPreferences.getBoolean("cbShowEntryAdded", true)) {
+					Toast.makeText(ActivityMain1.this,
+							getString(R.string.toastMessageEntryAdded),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
 
-		if (mFragmentEntries != null) {
-			mFragmentEntries.updateListViewAdapter();
+			if (mFragemtGeneral != null) {
+				mFragemtGeneral.updateSpentDayWeekMonth();
+
+			}
+
+			if (mFragmentEntries != null) {
+				mFragmentEntries.updateListViewAdapter();
+			}
 		}
 
 	}
