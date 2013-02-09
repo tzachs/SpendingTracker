@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -30,10 +30,29 @@
             android:text="@string/radioButtonMonthlyText" />
     </RadioGroup>
 
+    <Button
+        android:id="@+id/buttonEntriesBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/radioGroupEntries"
+        android:padding="8dp"
+        android:text="@string/buttonEntriesBackText" />
+
+    <Button
+        android:id="@+id/buttonEntriesNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/radioGroupEntries"
+        android:padding="8dp"
+        android:text="@string/buttonEntriesNextText" />
+
     <ListView
         android:id="@+id/listViewEntriesSpent"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/buttonEntriesBack" >
     </ListView>
 
-</LinearLayout>
+</RelativeLayout>

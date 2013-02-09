@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -21,7 +23,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class FragmentEntries extends SherlockFragment implements
-		OnCheckedChangeListener {
+		OnCheckedChangeListener, OnClickListener {
 
 	private static final String TAG = FragmentEntries.class.getSimpleName();
 
@@ -32,6 +34,10 @@ public class FragmentEntries extends SherlockFragment implements
 	private RadioGroup radioGroupEntries;
 	private SherlockFragmentActivity mActivity;
 	private SpentEntryListener mSpentEntryListener;
+
+	private Button buttonEntriesNext;
+
+	private Button buttonEntriesBack;
 
 	public interface SpentEntryListener {
 		public void onSpentEntryDeleted(String rowId);
@@ -60,24 +66,55 @@ public class FragmentEntries extends SherlockFragment implements
 			Bundle savedInstanceState) {
 		//
 		View view = inflater.inflate(R.layout.fragment_entries, null);
+		
+		initializeVariables(view);
 
-		listViewEntriesSpent = (ListView) view
-				.findViewById(R.id.listViewEntriesSpent);
-		radioGroupEntries = (RadioGroup) view
-				.findViewById(R.id.radioGroupEntries);
-		radioGroupEntries.setOnCheckedChangeListener(this);
+		
 
 		((ActivityMain1) mActivity).setFragmentEntriesRef(getTag());
 
 		return view;
 	}
 
+	private void initializeVariables(View view) {
+		// 
+		listViewEntriesSpent = (ListView) view
+				.findViewById(R.id.listViewEntriesSpent);
+		radioGroupEntries = (RadioGroup) view
+				.findViewById(R.id.radioGroupEntries);
+		radioGroupEntries.setOnCheckedChangeListener(this);
+		
+		buttonEntriesNext = (Button)view.findViewById(R.id.buttonEntriesNext);
+		buttonEntriesBack = (Button)view.findViewById(R.id.buttonEntriesBack);
+		
+		buttonEntriesNext.setOnClickListener(this);
+		buttonEntriesBack.setOnClickListener(this);
+		
+	}
+
 	public void onClick(View v) {
 		//
 		switch (v.getId()) {
-
+		case R.id.buttonEntriesBack:
+			buttonEntriesBack_Clicked();
+			break;
+			
+		case R.id.buttonEntriesNext:
+			buttonEntriesNext_Clicked();
+			break;
 		}
 
+	}
+
+	private void buttonEntriesBack_Clicked() {
+		// 
+		updateListViewAdapter(-1);
+		
+	}
+
+	private void buttonEntriesNext_Clicked() {
+		// 
+		updateListViewAdapter(1);
 	}
 
 	@Override
@@ -145,24 +182,28 @@ public class FragmentEntries extends SherlockFragment implements
 		updateListViewAdapter();
 	}
 
-	public void updateListViewAdapter() {
-		updateListViewAdapter(radioGroupEntries.getCheckedRadioButtonId());
+	public void updateListViewAdapter(int direction) {
+		updateListViewAdapter(radioGroupEntries.getCheckedRadioButtonId(),direction);
 	}
 
-	private void updateListViewAdapter(int checkedId) {
+	private void updateListViewAdapter(int checkedId, int direction) {
 		//
 		switch (checkedId) {
 		case R.id.radioButtonEntiresMonthly:
+			mCalendar.add(Calendar.MONTH, direction);
+			
 			mEntriesSpent = new ClassAdapterEntriesSpent(
 					this.getSherlockActivity(),
 					mDbEngine.getSpentThisMonthEnteries(mCalendar));
 			break;
 		case R.id.radioButtonEntriesEveryday:
+			mCalendar.add(Calendar.DAY_OF_MONTH, direction);
 			mEntriesSpent = new ClassAdapterEntriesSpent(
 					this.getSherlockActivity(),
 					mDbEngine.getSpentDailyEntries(mCalendar));
 			break;
 		case R.id.radioButtonEntriesWeekly:
+			mCalendar.add(Calendar.DATE, direction * 7);
 			mEntriesSpent = new ClassAdapterEntriesSpent(
 					this.getSherlockActivity(),
 					mDbEngine.getSpentThisWeekEnteries(1, mCalendar));
@@ -182,5 +223,13 @@ public class FragmentEntries extends SherlockFragment implements
 		updateListViewAdapter();
 
 	}
+
+	public void updateListViewAdapter() {
+		// 
+		updateListViewAdapter(0);
+		
+	}
+	
+	
 
 }

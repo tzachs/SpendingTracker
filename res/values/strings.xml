@@ -146,5 +146,9 @@
     <string name="del">Del</string>
     <string name="edit">Edit</string>
     <string name="manage_time_reminders">Manage Time Reminders</string>
+    <string name="_">&lt;&lt;&lt;</string>
+    <string name="buttonEntriesBackText">Back</string>
+    <string name="buttonEntriesNextText">Next</string>
+    
 
 </resources>

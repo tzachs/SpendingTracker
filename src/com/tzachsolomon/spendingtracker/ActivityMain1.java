@@ -76,7 +76,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	private ProgressDialog mProgressDialog;
 
 	// TODO: delete entry with dialog
-	// 
+
 	// TODO: admin reminders
 	// TODO: default TAB
 	// TODO: first time setup
@@ -88,6 +88,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	// TODO: auto import in case re installing the app
 	// TODO: add learning mode
 	// TODO: scrolling of spent entries
+	// TODO: change spent entries to order by time
 
 	@Override
 	protected void onCreate(Bundle arg0) {
