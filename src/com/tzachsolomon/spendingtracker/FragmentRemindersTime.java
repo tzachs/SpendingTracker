@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
-import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -212,8 +211,9 @@ public class FragmentRemindersTime extends SherlockFragment implements
 				Calendar.HOUR_OF_DAY));
 		seekBarMinutes.setProgress(Calendar.getInstance().get(Calendar.MINUTE));
 
-		textViewHours.setText(String.valueOf(seekBarHours.getProgress()));
-		setMinutesText();
+		
+		setHourMinuteText(textViewMinutes,seekBarMinutes);
+		setHourMinuteText(textViewHours,seekBarHours);
 		
 
 	}
@@ -369,13 +369,15 @@ public class FragmentRemindersTime extends SherlockFragment implements
 
 	}
 
-	public void setMinutesText() {
-		int value = seekBarMinutes.getProgress();
+
+	
+	public void setHourMinuteText(TextView textView, SeekBar seekBar) {
+		int value = seekBar.getProgress();
 		String strValue = Integer.toString(value);
 		if (value < 10) {
 			strValue = "0" + value;
 		}
-		textViewMinutes.setText(strValue);
+		textView.setText(strValue);
 	}
 
 	public void onProgressChanged(SeekBar seekBar, int progress,
@@ -383,10 +385,10 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		//
 		switch (seekBar.getId()) {
 		case R.id.seekBarHours:
-			textViewHours.setText(String.valueOf(seekBarHours.getProgress()));
+			setHourMinuteText(textViewHours, seekBarHours);
 			break;
 		case R.id.seekBarMinutes:
-			setMinutesText();
+			setHourMinuteText(textViewMinutes, seekBarMinutes);
 			break;
 		}
 

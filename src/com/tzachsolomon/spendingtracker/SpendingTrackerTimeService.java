@@ -51,13 +51,7 @@ public class SpendingTrackerTimeService extends Service {
 
 	}
 
-	@Override
-	public void onStart(Intent intent, int startId) {
-		//
-		ClassCommonUtilities.DebugServiceReminderTime("Time reminder service started");
-
-		super.onStart(intent, startId);
-	}
+	
 	private void initializeVariables() {
 		m_SpendingTrackerDbEngine = new ClassDbEngine(this);
 		m_Calendar = Calendar.getInstance();

@@ -649,7 +649,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				mNotificationManager.cancel(12021982);
 
 				FragmentDialogSpentNotification fragmentDialogSpentNotification = new FragmentDialogSpentNotification();
-				Bundle args = new Bundle();
+				
 				fragmentDialogSpentNotification.setArguments(extras);
 				fragmentDialogSpentNotification.show(
 						getSupportFragmentManager(),

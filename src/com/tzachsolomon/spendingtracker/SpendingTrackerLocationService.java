@@ -94,13 +94,6 @@ public class SpendingTrackerLocationService extends Service implements
 
 	}
 
-	@Override
-	public void onStart(Intent intent, int startId) {
-		//
-		super.onStart(intent, startId);
-
-	}
-
 	private void initLocalationManager() {
 
 		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);

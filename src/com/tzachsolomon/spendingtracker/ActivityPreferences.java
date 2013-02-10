@@ -12,7 +12,7 @@ import android.preference.PreferenceScreen;
 public class ActivityPreferences extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 	
 	private PreferenceCategory	preferenceCategoryLocationAdvanced;
-	private SharedPreferences m_SharedPreferences;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +20,7 @@ public class ActivityPreferences extends SherlockPreferenceActivity implements S
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.pref);
 		
-		m_SharedPreferences = PreferenceManager
-			.getDefaultSharedPreferences(getBaseContext());
+
 		
 		
 	}

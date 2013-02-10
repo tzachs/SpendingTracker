@@ -25,7 +25,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 public class FragmentEntries extends SherlockFragment implements
 		OnCheckedChangeListener, OnClickListener {
 
-	private static final String TAG = FragmentEntries.class.getSimpleName();
+	
 
 	private ListView listViewEntriesSpent;
 	private ClassAdapterEntriesSpent mEntriesSpent;
@@ -90,6 +90,9 @@ public class FragmentEntries extends SherlockFragment implements
 
 		buttonEntriesNext.setOnClickListener(this);
 		buttonEntriesBack.setOnClickListener(this);
+		
+		mCalendar = Calendar.getInstance();
+		mCalendar.setTimeInMillis(System.currentTimeMillis());
 
 	}
 
