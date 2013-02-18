@@ -286,6 +286,7 @@ public class SpendingTrackerLocationService extends Service implements
 
 	public void onLocationChanged(Location location) {
 		// update the activity UI
+		if ( location !=null){
 		Intent intent = new Intent(SpendingTrackerLocationService.ACTION_FILTER);
 		intent.putExtra("location", location);
 
@@ -293,6 +294,7 @@ public class SpendingTrackerLocationService extends Service implements
 
 		// check if to send notification
 		checkReminders(location);
+		}
 
 	}
 
