@@ -25,8 +25,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 public class FragmentEntries extends SherlockFragment implements
 		OnCheckedChangeListener, OnClickListener {
 
-	
-
 	private ListView listViewEntriesSpent;
 	private ClassAdapterEntriesSpent mEntriesSpent;
 	private ClassAdapterEntriesSpentSummary mEntriesSpentSummary;
@@ -90,7 +88,7 @@ public class FragmentEntries extends SherlockFragment implements
 
 		buttonEntriesNext.setOnClickListener(this);
 		buttonEntriesBack.setOnClickListener(this);
-		
+
 		mCalendar = Calendar.getInstance();
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 
@@ -133,10 +131,12 @@ public class FragmentEntries extends SherlockFragment implements
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		//
-		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(Menu.NONE, 1, Menu.NONE, "Edit");
-		menu.add(Menu.NONE, 2, Menu.NONE, "Delete");
-		menu.add(Menu.NONE, 3, Menu.NONE, "Share");
+		if (radioGroupType.getCheckedRadioButtonId() == R.id.radioButtonDetails) {
+
+			menu.add(Menu.NONE, 1, Menu.NONE, "Edit");
+			menu.add(Menu.NONE, 2, Menu.NONE, "Delete");
+			menu.add(Menu.NONE, 3, Menu.NONE, "Share");
+		}
 
 	}
 
