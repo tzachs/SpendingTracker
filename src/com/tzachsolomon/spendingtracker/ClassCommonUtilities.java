@@ -25,6 +25,7 @@ public final class ClassCommonUtilities {
 	public static final String PREF_KEY_DEBUG_FRAGMENT_ADMIN = "checkBoxPrefFragmentAdmin";
 	public static final String PREF_KEY_DEBUG_SERVICE_REMINDER_TIME = "checkBoxPrefServiceReminderTime";
 	public static final String PREF_KEY_DEBUG_SERVICE_REMINDER_LOCATION = "checkBoxPrefServiceReminderLocation";
+	public static final String NOTIFICATION_ID = "notification_id";
 
 	public static boolean DEBUG_ACTIVITY_MAIN = false;
 	public static boolean DEBUG_DB = false;

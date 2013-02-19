@@ -89,6 +89,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	// TODO: add learning mode
 	// TODO: scrolling of spent entries
 	// TODO: change spent entries to order by time
+	// TODO: support multiple notification
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -643,7 +644,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 			if (isReminder) {
 
 				// Cancel notification
-				int notificationId = extras.getInt("notificationId");
+				int notificationId = extras.getInt(ClassCommonUtilities.NOTIFICATION_ID);
 
 				mNotificationManager.cancel(notificationId);
 				mNotificationManager.cancel(12021982);

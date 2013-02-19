@@ -149,6 +149,10 @@ public class SpendingTrackerTimeService extends Service {
 					extras.putString(ClassDbEngine.KEY_CATEGORY,
 							reminders[i][6]);
 					
+					int notifyId = (int)(System.currentTimeMillis() / (long)1982);
+					
+					extras.putInt(ClassCommonUtilities.NOTIFICATION_ID, notifyId);
+					
 					m_Intent.putExtras(extras);
 
 					m_Intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -207,9 +211,8 @@ public class SpendingTrackerTimeService extends Service {
 						if (enableVibrate) {
 							m_Notification.defaults |= Notification.DEFAULT_VIBRATE;
 						}
-						
 
-						m_NotificationManager.notify(12021982, m_Notification);
+						m_NotificationManager.notify(notifyId, m_Notification);
 						
 				}else{
 					DebugServiceReminderTime(String.format("Skipping Reminder %s type %s at %s:%s amount %s",
