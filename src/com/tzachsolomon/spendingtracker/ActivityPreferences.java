@@ -5,6 +5,7 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
@@ -63,8 +64,31 @@ public class ActivityPreferences extends SherlockPreferenceActivity implements
 			String key) {
 		//
 		if (key.contentEquals("prefMondayFirstDayOfWeek")) {
+			CheckBoxPreference prefWorkdaySunday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWorkdaySunday");
+			CheckBoxPreference prefWorkdayMonday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWorkdayMonday");
+			CheckBoxPreference prefWorkdayTuesday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWorkdayTuesday");
+			CheckBoxPreference prefWorkdayWednesday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWordayWednesday");
+			CheckBoxPreference prefWorkdayThursday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWorkdayThursday");
+			CheckBoxPreference prefWorkdayFriday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWorkdayFriday");
+			CheckBoxPreference prefWorkdaySaturday = (CheckBoxPreference) getPreferenceScreen()
+					.findPreference("prefWorkdaySaturday");
+
 			Editor editor = sharedPreferences.edit();
 			if (sharedPreferences.getBoolean("prefMondayFirstDayOfWeek", true)) {
+				prefWorkdayFriday.setChecked(true);
+				prefWorkdayMonday.setChecked(true);
+				prefWorkdaySaturday.setChecked(false);
+				prefWorkdaySunday.setChecked(false);
+				prefWorkdayThursday.setChecked(true);
+				prefWorkdayTuesday.setChecked(true);
+				prefWorkdayWednesday.setChecked(true);
+
 				editor.putBoolean("prefWorkdaySunday", false);
 				editor.putBoolean("prefWorkdayMonday", true);
 				editor.putBoolean("prefWorkdayTuesday", true);
@@ -74,6 +98,14 @@ public class ActivityPreferences extends SherlockPreferenceActivity implements
 				editor.putBoolean("prefWorkdaySaturday", false);
 
 			} else {
+				prefWorkdayFriday.setChecked(false);
+				prefWorkdayMonday.setChecked(true);
+				prefWorkdaySaturday.setChecked(false);
+				prefWorkdaySunday.setChecked(true);
+				prefWorkdayThursday.setChecked(true);
+				prefWorkdayTuesday.setChecked(true);
+				prefWorkdayWednesday.setChecked(true);
+
 				editor.putBoolean("prefWorkdaySunday", true);
 				editor.putBoolean("prefWorkdayMonday", true);
 				editor.putBoolean("prefWorkdayTuesday", true);
@@ -83,6 +115,7 @@ public class ActivityPreferences extends SherlockPreferenceActivity implements
 				editor.putBoolean("prefWorkdaySaturday", false);
 			}
 			editor.commit();
+
 		}
 
 	}
