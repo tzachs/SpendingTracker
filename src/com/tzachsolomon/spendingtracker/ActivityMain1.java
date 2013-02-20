@@ -87,9 +87,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 	// TODO: auto export database (auto backup)
 	// TODO: auto import in case re installing the app
 	// TODO: add learning mode
-	// TODO: scrolling of spent entries
-	// TODO: change spent entries to order by time
-	// TODO: support multiple notification
+	// TODO: about fragment
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -647,7 +645,7 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 				int notificationId = extras.getInt(ClassCommonUtilities.NOTIFICATION_ID);
 
 				mNotificationManager.cancel(notificationId);
-				mNotificationManager.cancel(12021982);
+				
 
 				FragmentDialogSpentNotification fragmentDialogSpentNotification = new FragmentDialogSpentNotification();
 				

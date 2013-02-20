@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,6 +59,8 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	private TextView textViewMinutes;
 	private SherlockFragmentActivity mActivity;
 	private BroadcastReceiver mTickReceiver;
+	private CheckBox checkBoxWorkingDays;
+	private SharedPreferences mSharedPreferences;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,10 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	}
 
 	private void initializeVariables(View view) {
+
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mActivity.getBaseContext());
+
 		relativeLayoutDayCheckboxes = (RelativeLayout) view
 				.findViewById(R.id.relativeLayoutDayCheckboxes);
 
@@ -130,6 +138,11 @@ public class FragmentRemindersTime extends SherlockFragment implements
 		checkBoxThursday = (CheckBox) view.findViewById(R.id.checkBoxThursday);
 		checkBoxFriday = (CheckBox) view.findViewById(R.id.checkBoxFriday);
 		checkBoxSaturday = (CheckBox) view.findViewById(R.id.checkBoxSaturday);
+
+		checkBoxWorkingDays = (CheckBox) view
+				.findViewById(R.id.checkBoxWorkingDays);
+
+		checkBoxWorkingDays.setOnClickListener(this);
 	}
 
 	@Override
@@ -211,10 +224,8 @@ public class FragmentRemindersTime extends SherlockFragment implements
 				Calendar.HOUR_OF_DAY));
 		seekBarMinutes.setProgress(Calendar.getInstance().get(Calendar.MINUTE));
 
-		
-		setHourMinuteText(textViewMinutes,seekBarMinutes);
-		setHourMinuteText(textViewHours,seekBarHours);
-		
+		setHourMinuteText(textViewMinutes, seekBarMinutes);
+		setHourMinuteText(textViewHours, seekBarHours);
 
 	}
 
@@ -254,12 +265,44 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	public void onClick(View v) {
 		//
 		switch (v.getId()) {
+		case R.id.checkBoxWorkingDays:
+			checkBoxWorkingDays_Clicked();
+			break;
 		case R.id.buttonAddTimeReminder:
 			buttonAddTimeReminder_Clicked();
 			break;
 		case R.id.buttonManageTimeReminderEntries:
 			buttonManageTimeReminderEntries_Clicked();
 			break;
+		}
+
+	}
+
+	private void checkBoxWorkingDays_Clicked() {
+		//
+		if (checkBoxWorkingDays.isChecked()) {
+			checkBoxSunday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdaySunday", false));
+			checkBoxMonday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdayMonday", true));
+			checkBoxTuesday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdayTuesday", true));
+			checkBoxWednesday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdayWednesday", true));
+			checkBoxThursday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdayThursday", true));
+			checkBoxFriday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdayFriday", true));
+			checkBoxSaturday.setChecked(mSharedPreferences.getBoolean(
+					"prefWorkdaySaturday", false));
+		} else {
+			checkBoxFriday.setChecked(false);
+			checkBoxMonday.setChecked(false);
+			checkBoxSaturday.setChecked(false);
+			checkBoxSunday.setChecked(false);
+			checkBoxThursday.setChecked(false);
+			checkBoxTuesday.setChecked(false);
+			checkBoxWednesday.setChecked(false);
 		}
 
 	}
@@ -369,8 +412,6 @@ public class FragmentRemindersTime extends SherlockFragment implements
 
 	}
 
-
-	
 	public void setHourMinuteText(TextView textView, SeekBar seekBar) {
 		int value = seekBar.getProgress();
 		String strValue = Integer.toString(value);
@@ -395,21 +436,23 @@ public class FragmentRemindersTime extends SherlockFragment implements
 	}
 
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// 
-		switch (seekBar.getId()){
-		
+		//
+		switch (seekBar.getId()) {
+
 		case R.id.seekBarHours:
-			Toast.makeText(mActivity, "Sets hour in time reminder",Toast.LENGTH_SHORT).show();
+			Toast.makeText(mActivity, "Sets hour in time reminder",
+					Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.seekBarMinutes:
-			Toast.makeText(mActivity, "Sets minutes in time reminder",Toast.LENGTH_SHORT).show();
+			Toast.makeText(mActivity, "Sets minutes in time reminder",
+					Toast.LENGTH_SHORT).show();
 			break;
 		}
 
 	}
 
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		// 
+		//
 
 	}
 

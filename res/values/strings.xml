@@ -7,6 +7,24 @@
     <string-array name="arrayLanguagesValues">
         <item>English</item>
     </string-array>
+    <string-array name="arrayFirstDayOfWeekLables">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+    <string-array name="arrayFirstDayOfWeekValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
 
     <string name="app_name">Spending Tracker</string>
     <string name="app_description">Spending Tracker</string>
@@ -153,6 +171,5 @@
     <string name="average_spending">Average spending</string>
     <string name="max">Max</string>
     <string name="min">Min</string>
-    
 
 </resources>

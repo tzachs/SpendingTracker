@@ -92,7 +92,7 @@
         android:id="@+id/relativeLayoutDayCheckboxes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <CheckBox
             android:id="@+id/checkBoxSunday"
@@ -150,6 +150,13 @@
             android:layout_below="@id/checkBoxWednesday"
             android:hint="@string/checkBoxSaturdayHint"
             android:text="@string/checkBoxSaturdayText" />
+
+        <CheckBox
+            android:id="@+id/checkBoxWorkingDays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/checkBoxSaturday"
+            android:text="Working days" />
     </RelativeLayout>
 
     <Button

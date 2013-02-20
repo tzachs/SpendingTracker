@@ -163,6 +163,8 @@ public class SpendingTrackerLocationService extends Service implements
 			Log.d(TAG, "Already sent a notification once about this location");
 		} else {
 
+			
+			// TODO: change this to only currentTimeMillis
 			calendar.setTimeInMillis(System.currentTimeMillis());
 
 			notificationId += calendar.get(Calendar.SECOND);
@@ -178,7 +180,7 @@ public class SpendingTrackerLocationService extends Service implements
 			extras.putString(ClassDbEngine.KEY_REMINDER_TYPE,
 					ClassDbEngine.KEY_REMINDER_TYPE_LOCATION);
 			extras.putString(ClassDbEngine.KEY_REMINDER_ID, rowId);
-			extras.putInt("notificationId", notificationId);
+			extras.putInt(ClassCommonUtilities.NOTIFICATION_ID, notificationId);
 
 			intent.putExtras(extras);
 

@@ -185,10 +185,8 @@ public class SpendingTrackerTimeService extends Service {
 							
 						}
 						
-						sb.append(getString(R.string.stringDidYouSpend));
-						sb.append(' ');
+						sb.append(" on ");
 						sb.append(reminders[i][6]);
-						sb.append(' ');
 						sb.append("?");
 
 						m_Notification = new Notification(R.drawable.notify,
