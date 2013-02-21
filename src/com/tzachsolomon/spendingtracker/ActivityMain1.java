@@ -321,7 +321,14 @@ public class ActivityMain1 extends SherlockFragmentActivity implements
 
 				}
 				sb.append("Category: " + category);
+				sb.append("\n");
 				sb.append("Amount: " + amount);
+				if ( values.size() > 1 ){
+					sb.insert(0, "Added the following Time reminders:\n");
+				}else{
+					sb.insert(0, "Added the following Time reminder:\n");
+				}
+				
 				Toast.makeText(ActivityMain1.this, sb.toString(),
 						Toast.LENGTH_LONG).show();
 				sb.setLength(0);
