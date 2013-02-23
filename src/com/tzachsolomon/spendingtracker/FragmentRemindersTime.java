@@ -261,6 +261,16 @@ public class FragmentRemindersTime extends SherlockFragment implements
 
 		}
 	}
+	
+	@Override
+	public void onDestroy() {
+		// 
+		super.onDestroy();
+		if (mTickReceiver != null) {
+			mActivity.unregisterReceiver(mTickReceiver);
+			mTickReceiver = null;
+		}
+	}
 
 	public void onClick(View v) {
 		//
