@@ -54,7 +54,7 @@ public class FragmentRemindersLocation extends SherlockFragment {
 
 		initTextViews(view);
 		
-		((ActivityMain1) mActivity).setFragmentReminderLocationRef(getTag());
+		((ActivityMain) mActivity).setFragmentReminderLocationRef(getTag());
 
 		return view;
 
