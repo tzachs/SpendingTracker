@@ -7,6 +7,8 @@ import java.util.Locale;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +55,24 @@ public class ClassAdapterEntriesSpent extends BaseAdapter {
 				+ mItem.get(position).getDate());
 		time.setText(mActivity.getString(R.string.time) + ": "
 				+ mItem.get(position).getTime());
+		
+		if ( position % 2 == 0 ){
+			ret.setBackgroundColor(Color.WHITE);
+			
+			amount.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			rowId.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			category.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			date.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			time.setTextColor(ColorStateList.valueOf(Color.BLUE));
+		}else{
+			ret.setBackgroundColor(Color.rgb(0, 0, 125));
+			amount.setTextColor(ColorStateList.valueOf(Color.WHITE));
+			rowId.setTextColor(ColorStateList.valueOf(Color.WHITE));
+			category.setTextColor(ColorStateList.valueOf(Color.WHITE));
+			date.setTextColor(ColorStateList.valueOf(Color.WHITE));
+			time.setTextColor(ColorStateList.valueOf(Color.WHITE));
+			
+		}
 
 		return ret;
 	}

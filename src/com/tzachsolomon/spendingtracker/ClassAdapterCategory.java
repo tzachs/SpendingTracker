@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,18 @@ public class ClassAdapterCategory extends BaseAdapter {
 
 		textViewListItemCategory
 				.setText(mItems.get(position).getCategoryName());
+		
+		if ( position % 2 == 0 ){
+			ret.setBackgroundColor(Color.WHITE);
+			
+			textViewListItemCategory.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			
+		}else{
+			ret.setBackgroundColor(Color.rgb(0, 0, 125));
+			textViewListItemCategory.setTextColor(ColorStateList.valueOf(Color.WHITE));
+			
+			
+		}
 
 		return ret;
 	}
