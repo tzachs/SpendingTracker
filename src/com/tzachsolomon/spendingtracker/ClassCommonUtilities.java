@@ -27,6 +27,8 @@ public final class ClassCommonUtilities {
 	public static final String PREF_KEY_DEBUG_SERVICE_REMINDER_LOCATION = "checkBoxPrefServiceReminderLocation";
 	public static final String NOTIFICATION_ID = "notification_id";
 	public static final int DELETE_TYPE_SPENT_ENTRIES = 0;
+	public static final int DELETE_TYPE_REMINDERS_TIME_ENTRIES = 1;
+	public static final int DELETE_TYPE_REMINDERS_LOCATION_ENTRIES = 2;
 
 	public static boolean DEBUG_ACTIVITY_MAIN = false;
 	public static boolean DEBUG_DB = false;

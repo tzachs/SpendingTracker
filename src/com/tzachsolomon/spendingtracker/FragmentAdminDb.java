@@ -21,6 +21,8 @@ public class FragmentAdminDb extends SherlockFragment implements
 	private Button buttonDbImport;
 	private AdminDbListener mAdminDbListener;
 	private Button buttonDeleteSpentEntries;
+	private Button buttonDeleteRemindersTime;
+	private Button buttonDeleteReminderLocationEnteries;
 
 	public interface AdminDbListener {
 		public void onDatabaseExportClicked();
@@ -59,7 +61,15 @@ public class FragmentAdminDb extends SherlockFragment implements
 
 		buttonDeleteSpentEntries = (Button) view
 				.findViewById(R.id.buttonDeleteSpentEnteries);
+		buttonDeleteRemindersTime = (Button)view.findViewById(R.id.buttonDeleteReminderTimeEnteries);
+		buttonDeleteReminderLocationEnteries = (Button)view.findViewById(R.id.buttonDeleteReminderLocationEnteries);
+		
 		buttonDeleteSpentEntries.setOnClickListener(this);
+		buttonDeleteRemindersTime.setOnClickListener(this);
+		buttonDeleteReminderLocationEnteries.setOnClickListener(this);
+		
+		
+		
 
 		buttonDbExport.setOnClickListener(this);
 		buttonDbImport.setOnClickListener(this);
@@ -70,6 +80,13 @@ public class FragmentAdminDb extends SherlockFragment implements
 	public void onClick(View v) {
 		//
 		switch (v.getId()) {
+		case R.id.buttonDeleteReminderLocationEnteries:
+			buttonDeleteReminderLocationEnteries_Clicked();
+			break;
+		
+		case R.id.buttonDeleteReminderTimeEnteries:
+			buttonDeleteReminderTimeEnteries_Clicked();
+			break;
 
 		case R.id.buttonDeleteSpentEnteries:
 			buttonDeleteSpentEntries_Clicked();
@@ -86,9 +103,24 @@ public class FragmentAdminDb extends SherlockFragment implements
 
 	}
 
+	private void buttonDeleteReminderLocationEnteries_Clicked() {
+		// 
+		AlertDeleteCancel.newInstance("Delete Location Reminders entries?",
+				ClassCommonUtilities.DELETE_TYPE_REMINDERS_LOCATION_ENTRIES).show(
+				getFragmentManager(), "deleteRemindersLocationEntires");
+	}
+
+	private void buttonDeleteReminderTimeEnteries_Clicked() {
+		// 
+		AlertDeleteCancel.newInstance("Delete Time Reminders entries?",
+				ClassCommonUtilities.DELETE_TYPE_REMINDERS_TIME_ENTRIES).show(
+				getFragmentManager(), "deleteRemindersTimeEntires");
+	}
+
 	private void buttonDeleteSpentEntries_Clicked() {
+		new AlertDeleteCancel();
 		//
-		new AlertDeleteCancel().newInstance("Delete spent entries?",
+		AlertDeleteCancel.newInstance("Delete spent entries?",
 				ClassCommonUtilities.DELETE_TYPE_SPENT_ENTRIES).show(
 				getFragmentManager(), "deleteSpentEntires");
 

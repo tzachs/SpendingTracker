@@ -12,7 +12,7 @@
         android:text="Delete Spent Entries"/>
 
     <Button
-        android:id="@+id/buttonDeleteReminderLocationEnteries"
+        android:id="@+id/buttonDeleteReminderTimeEnteries"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"

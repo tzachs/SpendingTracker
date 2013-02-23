@@ -804,7 +804,16 @@ public class ActivityMain extends SherlockFragmentActivity implements
 			mFragmentEntries.updateListViewAdapter();
 			Toast.makeText(ActivityMain.this, "Spent entries deleted", Toast.LENGTH_LONG).show();
 			break;
-		
+			
+		case ClassCommonUtilities.DELETE_TYPE_REMINDERS_TIME_ENTRIES:
+			mSpendingTrackerDbEngine.deleteRemindersTime();
+			Toast.makeText(ActivityMain.this, "Time reminders entries deleted", Toast.LENGTH_LONG).show();
+			break;
+			
+		case ClassCommonUtilities.DELETE_TYPE_REMINDERS_LOCATION_ENTRIES:
+			mSpendingTrackerDbEngine.deleteRemindersTime();
+			Toast.makeText(ActivityMain.this, "Location reminders deleted", Toast.LENGTH_LONG).show();
+			break;
 		}
 		
 	}

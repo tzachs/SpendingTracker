@@ -653,6 +653,20 @@ public class ClassDbEngine {
 		this.close();
 
 	}
+	
+	public void deleteRemindersTime() {
+		//
+		this.open();
+		ourDatabase.delete(TABLE_REMINDERS,null,null);
+		this.close();
+		
+	}
+	
+	public void deleteRemindersLocation(){
+		this.open();
+		ourDatabase.delete(TABLE_LOCATION_REMINDERS,null,null);
+		this.close();
+	}
 
 	public void deleteSpentEntries() {
 		//
@@ -1086,6 +1100,9 @@ public class ClassDbEngine {
 		return ret;
 
 	}
+	
+	
+
 
 	public void deleteReminderTimeById(String i_ReminderId) {
 		//
@@ -1672,5 +1689,6 @@ public class ClassDbEngine {
 		//
 
 	}
+
 
 }
