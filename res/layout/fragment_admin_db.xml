@@ -5,12 +5,26 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/buttonDeleteAllEnteries"
+        android:id="@+id/buttonDeleteSpentEnteries"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:text="@string/buttonDeleteAllEnteriesText" />
+        android:text="Delete Spent Entries"/>
 
+    <Button
+        android:id="@+id/buttonDeleteReminderLocationEnteries"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:text="Delete Time Reminders"/>
+    
+    <Button
+        android:id="@+id/buttonDeleteReminderLocationEnteries"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:text="Delete Location Reminders"/>
+    
     <Button
         android:id="@+id/buttonDbImport"
         android:layout_width="fill_parent"

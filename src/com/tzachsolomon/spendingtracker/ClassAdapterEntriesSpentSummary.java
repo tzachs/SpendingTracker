@@ -62,16 +62,18 @@ public class ClassAdapterEntriesSpentSummary extends BaseAdapter {
 		min.setText(mActivity.getString(R.string.min) + ": "
 				+ mItem.get(position).getMin()  + symbol);
 		
+		int color = Color.rgb(14, 127, 200);
+		
 		if ( position % 2 == 0 ){
 			ret.setBackgroundColor(Color.WHITE);
 			
-			numberOfEntries.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			average.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			category.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			max.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			min.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			numberOfEntries.setTextColor(ColorStateList.valueOf(color));
+			average.setTextColor(ColorStateList.valueOf(color));
+			category.setTextColor(ColorStateList.valueOf(color));
+			max.setTextColor(ColorStateList.valueOf(color));
+			min.setTextColor(ColorStateList.valueOf(color));
 		}else{
-			ret.setBackgroundColor(Color.rgb(0, 0, 125));
+			ret.setBackgroundColor(color);
 			numberOfEntries.setTextColor(ColorStateList.valueOf(Color.WHITE));
 			average.setTextColor(ColorStateList.valueOf(Color.WHITE));
 			category.setTextColor(ColorStateList.valueOf(Color.WHITE));

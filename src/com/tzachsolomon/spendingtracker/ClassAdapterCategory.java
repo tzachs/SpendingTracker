@@ -55,13 +55,15 @@ public class ClassAdapterCategory extends BaseAdapter {
 		textViewListItemCategory
 				.setText(mItems.get(position).getCategoryName());
 		
+		int color = Color.rgb(14, 127, 200);
+		
 		if ( position % 2 == 0 ){
 			ret.setBackgroundColor(Color.WHITE);
 			
-			textViewListItemCategory.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			textViewListItemCategory.setTextColor(color);
 			
 		}else{
-			ret.setBackgroundColor(Color.rgb(0, 0, 125));
+			ret.setBackgroundColor(color);
 			textViewListItemCategory.setTextColor(ColorStateList.valueOf(Color.WHITE));
 			
 			

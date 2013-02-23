@@ -56,16 +56,18 @@ public class ClassAdapterEntriesSpent extends BaseAdapter {
 		time.setText(mActivity.getString(R.string.time) + ": "
 				+ mItem.get(position).getTime());
 		
+		int color = Color.rgb(14, 127, 200);
+		
 		if ( position % 2 == 0 ){
 			ret.setBackgroundColor(Color.WHITE);
 			
-			amount.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			rowId.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			category.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			date.setTextColor(ColorStateList.valueOf(Color.BLUE));
-			time.setTextColor(ColorStateList.valueOf(Color.BLUE));
+			amount.setTextColor(ColorStateList.valueOf(color));
+			rowId.setTextColor(ColorStateList.valueOf(color));
+			category.setTextColor(ColorStateList.valueOf(color));
+			date.setTextColor(ColorStateList.valueOf(color));
+			time.setTextColor(ColorStateList.valueOf(color));
 		}else{
-			ret.setBackgroundColor(Color.rgb(0, 0, 125));
+			ret.setBackgroundColor(color);
 			amount.setTextColor(ColorStateList.valueOf(Color.WHITE));
 			rowId.setTextColor(ColorStateList.valueOf(Color.WHITE));
 			category.setTextColor(ColorStateList.valueOf(Color.WHITE));
