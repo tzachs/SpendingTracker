@@ -109,7 +109,7 @@ public class FragmentGeneral extends SherlockFragment implements
 
 		initSpinnerCategories();
 
-		((ActivityMain1) mActivity).setFragmentGeneralRef(getTag());
+		((ActivityMain) mActivity).setFragmentGeneralRef(getTag());
 
 		return view;
 	}

@@ -81,7 +81,7 @@ public class FragmentDialogRemindersTimeManage extends SherlockDialogFragment
 		
 		
 
-		((ActivityMain1) mActivity).setFragmentReminderTimeManagerRef(getTag());
+		((ActivityMain) mActivity).setFragmentReminderTimeManagerRef(getTag());
 
 
 		return view;
