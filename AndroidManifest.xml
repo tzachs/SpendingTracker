@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Styled" >
         <activity
-            android:name="com.tzachsolomon.spendingtracker.ActivityMain1"
+            android:name="com.tzachsolomon.spendingtracker.ActivityMain"
             android:configChanges="locale"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >

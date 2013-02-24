@@ -88,7 +88,7 @@ public class FragmentDialogCategoriesManager extends SherlockDialogFragment impl
 
 		getDialog().setTitle("Categories Manager");
 
-		((ActivityMain1) mActivity).setFragmentCategoriesManagerRef(getTag());
+		((ActivityMain) mActivity).setFragmentCategoriesManagerRef(getTag());
 
 		return view;
 	}

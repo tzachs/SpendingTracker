@@ -68,7 +68,7 @@ public class FragmentEntries extends SherlockFragment implements
 
 		initializeVariables(view);
 
-		((ActivityMain1) mActivity).setFragmentEntriesRef(getTag());
+		((ActivityMain) mActivity).setFragmentEntriesRef(getTag());
 
 		return view;
 	}
