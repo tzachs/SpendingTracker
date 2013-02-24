@@ -74,21 +74,21 @@ public class FragmentGeneral extends SherlockFragment implements
 
 	private void updateMonthSpent() {
 		//
-		textViewSpentMonth.setText(getString(R.string.textViewSpentMonthText)
+		textViewSpentMonth.setText(getString(R.string.textViewSpentMonthText) + " "
 				+ m_SpendingTrackerDbEngine.getSpentThisMonth());
 
 	}
 
 	private void updateWeekSpent() {
 		// TODO: change 1 to variable indicating first day of week
-		textViewSpentWeek.setText(getString(R.string.textViewSpentWeekText)
+		textViewSpentWeek.setText(getString(R.string.textViewSpentWeekText) + " "
 				+ m_SpendingTrackerDbEngine.getSpentThisWeek(1));
 
 	}
 
 	private void updateDaySpent() {
 
-		textViewSpentToday.setText(getString(R.string.textViewSpentTodayText)
+		textViewSpentToday.setText(getString(R.string.textViewSpentTodayText) + " "
 				+ m_SpendingTrackerDbEngine.getSpentToday());
 
 	}

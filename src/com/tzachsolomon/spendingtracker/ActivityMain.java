@@ -75,13 +75,9 @@ public class ActivityMain extends SherlockFragmentActivity implements
 	private ArrayList<Location> mLocations;
 	private ProgressDialog mProgressDialog;
 
-	// TODO: delete entry with dialog
-
-	// TODO: admin reminders
 	// TODO: default TAB
 	// TODO: first time setup
 	// TODO: share spending
-	// TODO: add option to place tab on bottom instead of up
 	// TODO: add colors to categories
 	// TODO: add graphs
 	// TODO: auto export database (auto backup)
@@ -112,6 +108,10 @@ public class ActivityMain extends SherlockFragmentActivity implements
 		updatePreferences();
 
 		initializeActionBar();
+		
+		Intent intent = new Intent(ActivityMain.this, ActivityHelp.class);
+		
+		startActivity(intent);
 	}
 
 	public void updatePreferences() {
