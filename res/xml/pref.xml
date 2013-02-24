@@ -42,51 +42,52 @@
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen android:title="Reminders" >
-            <PreferenceScreen android:title="Time based Reminders" >
-                <CheckBoxPreference
-                    android:defaultValue="true"
-                    android:key="checkBoxPrefReminderTime"
-                    android:summary="Use time reminders"
-                    android:title="Enable" />
+            <PreferenceCategory android:title="Time based Reminders" >
+                <PreferenceScreen android:title="Time based Reminders" >
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="checkBoxPrefReminderTime"
+                        android:summary="Use time reminders"
+                        android:title="Enable" />
 
-                <PreferenceScreen
-                    android:summary="Work days settings, First day of week, etc"
-                    android:title="Advanced" >
-                    <CheckBoxPreference
-                        android:key="prefMondayFirstDayOfWeek"
-                        android:summary="Monday first day"
-                        android:title="Is Monday the first day of the working week?" />
-                    <CheckBoxPreference
-                        android:defaultValue="false"
-                        android:key="prefWorkdaySunday"
-                        android:title="Sunday" />
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="prefWorkdayMonday"
-                        android:title="Monday" />
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="prefWorkdayTuesday"
-                        android:title="Tuesday" />
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="prefWordayWednesday"
-                        android:title="Wednesday" />
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="prefWorkdayThursday"
-                        android:title="Thursday" />
-                    <CheckBoxPreference
-                        android:defaultValue="true"
-                        android:key="prefWorkdayFriday"
-                        android:title="Friday" />
-                    <CheckBoxPreference
-                        android:defaultValue="false"
-                        android:key="prefWorkdaySaturday"
-                        android:title="Saturday" />
+                    <PreferenceScreen
+                        android:summary="Work days settings, First day of week, etc"
+                        android:title="Advanced" >
+                        <CheckBoxPreference
+                            android:key="prefMondayFirstDayOfWeek"
+                            android:summary="Monday first day"
+                            android:title="Is Monday the first day of the working week?" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="prefWorkdaySunday"
+                            android:title="Sunday" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="prefWorkdayMonday"
+                            android:title="Monday" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="prefWorkdayTuesday"
+                            android:title="Tuesday" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="prefWordayWednesday"
+                            android:title="Wednesday" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="prefWorkdayThursday"
+                            android:title="Thursday" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="prefWorkdayFriday"
+                            android:title="Friday" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="prefWorkdaySaturday"
+                            android:title="Saturday" />
+                    </PreferenceScreen>
                 </PreferenceScreen>
-            </PreferenceScreen>
-
+            </PreferenceCategory>
             <PreferenceCategory android:title="Location based Reminders" >
                 <CheckBoxPreference
                     android:defaultValue="false"
