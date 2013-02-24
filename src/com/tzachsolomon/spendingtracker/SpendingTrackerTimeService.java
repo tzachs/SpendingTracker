@@ -128,7 +128,7 @@ public class SpendingTrackerTimeService extends Service {
 					Bundle extras = new Bundle();
 
 					m_Intent = new Intent(getBaseContext(),
-							ActivityMain.class);
+							ActivityMain1.class);
 					DebugServiceReminderTime(String.format("Sending notification for Reminder %s type %s at %s:%s amount %s",
 							reminders[i][0],reminders[i][1],reminders[i][2],reminders[i][3],
 							reminders[i][4]));

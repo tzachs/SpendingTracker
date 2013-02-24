@@ -165,7 +165,7 @@ public class FragmentAdminDb extends SherlockFragment implements
 								public void onClick(DialogInterface dialog,
 										int which) {
 									//
-									((ActivityMain) getSherlockActivity())
+									((ActivityMain1) getSherlockActivity())
 											.doDeleteCallback(deleteType);
 
 								}

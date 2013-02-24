@@ -151,7 +151,7 @@ public class SpendingTrackerLocationService extends Service implements
 
 		Bundle extras = new Bundle();
 		Intent intent = new Intent(getBaseContext(),
-				ActivityMain.class);
+				ActivityMain1.class);
 		String amount = i_Data.getAsString(ClassDbEngine.KEY_AMOUNT);
 		String category = i_Data.getAsString(ClassDbEngine.KEY_CATEGORY);
 		String rowId = i_Data.getAsString(ClassDbEngine.KEY_ROWID);
